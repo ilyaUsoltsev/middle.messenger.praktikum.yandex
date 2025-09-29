@@ -1,0 +1,19 @@
+<div class="input">
+    <div class="input__container">
+        {{#if label}}
+            <label class="input__label" for="{{label}}">{{label}}</label>
+        {{/if}}
+        <input
+            class="input__element"
+            id="{{label}}"
+            placeholder="{{placeholder}}"
+            name="{{name}}"
+            type="{{type}}"
+        />
+    </div>
+    {{#if error}}
+        <div class="input__error">
+            <span class="input__text-error">{{error}}</span>
+        </div>
+    {{/if}}
+</div>

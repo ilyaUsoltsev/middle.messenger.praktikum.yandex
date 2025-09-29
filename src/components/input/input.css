@@ -1,0 +1,43 @@
+
+  .input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .input__container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    outline: none;
+  }
+
+  .input__label {
+    min-width: 80px;
+  }
+
+  .input__element {
+    flex-grow: 1;
+    border: 1px solid var(--primary-color);
+    padding: 8px;
+  }
+
+  .input__element::placeholder {
+    color: var(--neutral-color);
+  }
+  
+  .input__element:focus-visible {
+    outline: none;
+  }
+
+  .input__error {
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--font-size-sm);
+  }
+
+  .input__error .input__text-error {
+    color: var(--error-color);
+  }
+  

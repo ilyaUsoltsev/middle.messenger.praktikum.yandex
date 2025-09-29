@@ -1,0 +1,32 @@
+.button {
+    background-color: initial;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    color: var(--neutral-color);
+  }
+  
+  .button__primary {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  .button__secondary {
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+  }
+
+  .button__error {
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+  }
+
+  .button__warning {
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+  }
+  
+ 
+  
