@@ -9,6 +9,9 @@
             placeholder="{{placeholder}}"
             name="{{name}}"
             type="{{type}}"
+            {{#if readOnly}} readonly {{/if}}
+            {{#if disabled}} disabled {{/if}}
+            {{#if value}} value="{{value}}" {{/if}}
         />
     </div>
     {{#if error}}

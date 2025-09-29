@@ -1,11 +1,12 @@
 {{#> Container }}
-    <form class="profile-form">
-    <h1 class="profile-title">Profile</h1>
-        {{> Input label="Name" placeholder="Enter your name" name="name" }}
-        {{> Input label="Email" placeholder="Enter your email" name="email" }}
+    <div class="profile-container">
+    <h1 class="profile-title">My profile</h1>
+        {{> Input label="Name" value="John" name="name" readOnly=true }}
+        {{> Input label="Name" value="John Doe" name="name" readOnly=true }}
+        {{> Input label="Email" value="john.doe@example.com" name="email" readOnly=true }}
         <div class="profile-form__actions">
             {{> Button label="Sign in" variant="primary" }}
             {{> Button label="Register" variant="secondary" }}
         </div>
-    </form>
+    </div>
 {{/ Container }}
