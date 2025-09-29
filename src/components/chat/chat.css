@@ -8,8 +8,12 @@
   cursor: pointer;
 }
 
-.chat:hover, .chat--selected {
+.chat--selected {
   border-right: 4px solid var(--secondary-color);
+}
+
+.chat:hover{
+  border-right: 4px solid var(--primary-color);
 }
 
 .chat__image {
