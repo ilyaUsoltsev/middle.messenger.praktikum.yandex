@@ -13,6 +13,7 @@ const pages = {
     Pages.ChatPage,
     { chats: chatsFixture, selectedChat: chatsFixture[0] },
   ],
+  profile: [Pages.ProfilePage],
   navigation: [
     Pages.NavigatePage,
     {
@@ -23,6 +24,7 @@ const pages = {
         'register',
         'navigation',
         'chatsSelected',
+        'profile',
       ],
     },
   ],
@@ -41,7 +43,7 @@ function navigate(page: string) {
   container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
+document.addEventListener('DOMContentLoaded', () => navigate('profile'));
 
 document.addEventListener('click', (e) => {
   //@ts-ignore
