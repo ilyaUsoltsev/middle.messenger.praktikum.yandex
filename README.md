@@ -6,14 +6,30 @@ Vanilla TS messenger frontend application.
 
 [Figma](https://www.figma.com/design/KOwtXi30jz6p3WZQMYR7hD/Messenger?node-id=0-1&p=f&t=tpbKLLlRviBMiWvQ-0)
 
+## Deployed
+
+[Netlify](https://ilya-messenger.netlify.app/)
+
+## Install dependencies
+
+```bash
+
+npm install
+
+```
+
 ## Start project
 
 ```bash
 
-npm install && npm run start
+npm run start
 
 ```
 
-## Deployed
+## Build project
 
-[Netlify](https://ilya-messenger.netlify.app/)
+```bash
+
+npm run build
+
+```
