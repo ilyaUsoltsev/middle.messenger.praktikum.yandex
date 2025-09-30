@@ -57,7 +57,7 @@ function navigate(page: string) {
   container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('chatsAddUser'));
+document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
 
 document.addEventListener('click', (e) => {
   //@ts-ignore
