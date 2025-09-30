@@ -24,7 +24,7 @@
   }
 
   .input__element::placeholder {
-    color: var(--neutral-color);
+    color: var(--warning-color);
   }
   
   .input__element:focus-visible {
