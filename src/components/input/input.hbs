@@ -4,7 +4,7 @@
             <label class="input__label" for="{{label}}">{{label}}</label>
         {{/if}}
         <input
-            class="input__element"
+            class="input__element {{#if error}} input__text-error{{/if}}"
             id="{{label}}"
             placeholder="{{placeholder}}"
             name="{{name}}"

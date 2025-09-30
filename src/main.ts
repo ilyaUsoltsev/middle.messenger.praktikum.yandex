@@ -15,6 +15,10 @@ const pages = {
   ],
   profile: [Pages.ProfilePage, { update: false, readOnly: true }],
   profileUpdate: [Pages.ProfilePage, { update: true, readOnly: false }],
+  updateAvatar: [
+    Pages.ProfilePage,
+    { update: true, readOnly: false, updateAvatar: true },
+  ],
   password: [Pages.PasswordPage],
   navigation: [
     Pages.NavigatePage,
@@ -28,6 +32,7 @@ const pages = {
         'chatsSelected',
         'profile',
         'profileUpdate',
+        'updateAvatar',
         'password',
       ],
     },

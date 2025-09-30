@@ -1,28 +1,22 @@
-.chats__dialog {
-  display: flex;
+.dialog-container {
+  position: fixed;
+  inset: 0; 
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;             
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  cursor: pointer;
+  justify-content: center;
+  z-index: 1000;
 }
 
-.chats__dialog:hover {
-  background-color: #f5f5f5;
+.dialog {
+  padding: 20px;
+  width: 300px;
+  border: 1px solid var(--primary-color);
 }
-.chats__dialog--active {
-  background-color: #d0d0d0;
-}
-.chats__dialog-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover;
-}
-.chats__dialog-info {
-  flex: 1;
+
+.dialog__footer {
   display: flex;
-  flex-direction: column;           
-    justify-content: center;
-    overflow: hidden;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 20px;
 }

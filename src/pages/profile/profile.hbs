@@ -1,12 +1,10 @@
 {{#> Container }}
     <div class="profile-container">
-
         {{#if update}}
             <h1>Update profile</h1>
         {{else}}
             <h1>My profile</h1>
         {{/if}}
-
         <div class="profile-avatar">
             <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>
            {{#if update}} {{> Button label="Change avatar" variant="secondary" }} {{/if}}
@@ -29,4 +27,12 @@
         </div>
     </div>
 {{/ Container }}
+
 {{> BackButton }}
+
+{{#if updateAvatar}}
+    {{#> Dialog title="Change avatar" }}
+       <Input type="file" name="avatar" label="Choose avatar" />
+    {{/ Dialog}}
+{{/if}}
+
