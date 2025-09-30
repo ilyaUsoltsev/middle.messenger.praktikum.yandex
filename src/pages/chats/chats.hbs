@@ -44,3 +44,9 @@
         </section>
     {{/if}}
 </main>
+
+{{#if addUser}}
+     {{#> Dialog title="Add user" }}
+       {{> Input type="text" name="user_login" label="User login" }}
+    {{/ Dialog}}
+{{/if}}
