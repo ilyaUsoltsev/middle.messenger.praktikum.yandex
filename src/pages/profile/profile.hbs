@@ -1,38 +1,39 @@
-{{#> Container }}
-    <div class="profile-container">
-        {{#if update}}
-            <h1>Update profile</h1>
-        {{else}}
-            <h1>My profile</h1>
-        {{/if}}
-        <div class="profile-avatar">
-            <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>
-           {{#if update}} {{> Button label="Change avatar" variant="secondary" }} {{/if}}
-        </div>
-        {{> Input label="First name" readOnly=readOnly name="first_name" value="John" }}
-        {{> Input label="Second name" readOnly=readOnly name="second_name" value="Doe" }}
-        {{> Input label="Nickname" readOnly=readOnly name="display_name" value="Johnny" }}  
-        {{> Input label="Login" readOnly=readOnly name="login" value="johndoe" }}
-        {{> Input label="Email" readOnly=readOnly name="email" value="john.doe@example.com" }}
-        {{> Input label="Phone" readOnly=readOnly name="phone" value="+1234567890" }}
-        <div class="profile-form__actions">
+<main>
+    {{#> Container }}
+        <div class="profile-container">
             {{#if update}}
-                {{> Button label="Save" variant="primary" }}
-                {{> Button label="Cancel" variant="error" }}
+                <h1>Update profile</h1>
             {{else}}
-                {{> Button label="Change profile" variant="primary" }}
-                {{> Button label="Update password" variant="primary" }}
-                {{> Button label="Logout" variant="error" }}
+                <h1>My profile</h1>
             {{/if}}
+            <div class="profile-avatar">
+                <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>
+            {{#if update}} {{> Button label="Change avatar" variant="secondary" }} {{/if}}
+            </div>
+            {{> Input label="First name" readOnly=readOnly name="first_name" value="John" }}
+            {{> Input label="Second name" readOnly=readOnly name="second_name" value="Doe" }}
+            {{> Input label="Nickname" readOnly=readOnly name="display_name" value="Johnny" }}  
+            {{> Input label="Login" readOnly=readOnly name="login" value="johndoe" }}
+            {{> Input label="Email" readOnly=readOnly name="email" value="john.doe@example.com" }}
+            {{> Input label="Phone" readOnly=readOnly name="phone" value="+1234567890" }}
+            <div class="profile-form__actions">
+                {{#if update}}
+                    {{> Button label="Save" variant="primary" }}
+                    {{> Button label="Cancel" variant="error" }}
+                {{else}}
+                    {{> Button label="Change profile" variant="primary" }}
+                    {{> Button label="Update password" variant="primary" }}
+                    {{> Button label="Logout" variant="error" }}
+                {{/if}}
+            </div>
         </div>
-    </div>
-{{/ Container }}
+    {{/ Container }}
 
-{{> BackButton }}
+    {{> BackButton }}
 
-{{#if updateAvatar}}
-    {{#> Dialog title="Change avatar" }}
-       <Input type="file" name="avatar" label="Choose avatar" />
-    {{/ Dialog}}
-{{/if}}
-
+    {{#if updateAvatar}}
+        {{#> Dialog title="Change avatar" }}
+        <Input type="file" name="avatar" label="Choose avatar" />
+        {{/ Dialog}}
+    {{/if}}
+</main>

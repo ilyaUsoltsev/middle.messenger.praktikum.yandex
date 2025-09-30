@@ -1,4 +1,4 @@
-<main class="chats scrollbar-hide">
+<main>
     <section class="chats__sidebar">
         <div class="chats__sidebar-header">
             {{> Input placeholder="Search chats" name="search" type="text" }}
@@ -43,10 +43,10 @@
             <p class="chats__dialog-empty-text">No chat selected</p>
         </section>
     {{/if}}
-</main>
 
-{{#if addUser}}
-     {{#> Dialog title="Add user" }}
-       {{> Input type="text" name="user_login" label="User login" }}
-    {{/ Dialog}}
-{{/if}}
+    {{#if addUser}}
+        {{#> Dialog title="Add user" }}
+        {{> Input type="text" name="user_login" label="User login" }}
+        {{/ Dialog}}
+    {{/if}}
+</main>
