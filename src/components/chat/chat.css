@@ -12,7 +12,7 @@
   border-right: 4px solid var(--secondary-color);
 }
 
-.chat:hover{
+.chat:hover {
   border-right: 4px solid var(--primary-color);
 }
 

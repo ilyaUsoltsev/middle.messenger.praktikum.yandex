@@ -1,11 +1,11 @@
-
 .input {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-input[type="file"], input[type="file"]::file-selector-button {
+input[type="file"],
+input[type="file"]::file-selector-button {
   font-size: var(--font-size-sm);
   padding: 6px;
   border: 1px solid var(--primary-color);
