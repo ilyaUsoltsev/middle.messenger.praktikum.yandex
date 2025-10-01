@@ -1,13 +1,12 @@
 <main>
   <section class="navigate-container">
     <h1>Pages</h1>
-    <div>
+    <nav>
       <ul>
-        {{! use for loop }}
         {{#each pages}}
           <li><a href="#" page="{{this}}">{{this}}</a></li>
         {{/each}}
       </ul>
-    </div>
+    </nav>
   </section>
 </main>
