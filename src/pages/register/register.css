@@ -1,0 +1,14 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  width: 340px;
+  border: 1px solid var(--primary-color);
+}
+
+.register-form__actions {
+  display: flex;
+  margin-top: 12px;
+  gap: 4px;
+}

@@ -1,0 +1,22 @@
+.dialog-container {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  padding: 20px;
+  width: 300px;
+  border: 1px solid var(--primary-color);
+}
+
+.dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 20px;
+}

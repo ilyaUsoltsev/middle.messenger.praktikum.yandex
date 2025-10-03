@@ -1,0 +1,18 @@
+<main>
+    {{#> Container }}
+        <form class="register-form">
+        <h1 class="register-title">Register</h1>
+            {{> Input label="First name" placeholder="Enter your first name" name="first_name" }}
+            {{> Input label="Second name" placeholder="Enter your last name" name="second_name" }}
+            {{> Input label="Login" placeholder="Enter your login" name="login" }}
+            {{> Input label="Phone" placeholder="Enter your phone" name="phone" }}
+            {{> Input label="Email" placeholder="Enter your email" name="email" }}
+            {{> Input label="Password" placeholder="Enter your password" name="password" type="password" }}
+            {{> Input label="Confirm password" placeholder="Confirm your password" name="confirm_password" type="password" }}
+            <div class="register-form__actions">
+                {{> Button label="Register" variant="primary" }}
+                {{> Button label="Sign in" variant="secondary" }}
+            </div>
+        </form>
+    {{/ Container }}
+</main>

@@ -1,0 +1,120 @@
+.chats {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.chats__sidebar {
+  width: 300px;
+  border-right: 1px solid var(--primary-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.chats__sidebar-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 4px;
+  gap: 4px;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.chats__sidebar-chats {
+  height: calc(100vh - 81px);
+  overflow-y: auto;
+}
+
+.chats__dialog-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.chats__dialog-empty-text {
+  color: var(--secondary-color);
+  font-size: 24px;
+}
+
+.chats__dialog {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--primary-color);
+}
+
+.chats__dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chats__dialog-date {
+  text-align: center;
+  padding: 4px 0;
+  margin-top: 24px;
+  color: var(--secondary-color);
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.chats__dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.chats__dialog-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chats__dialog-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chats__dialog-messages {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.chats__dialog-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--primary-color);
+  padding: 8px;
+}
+
+.chats__dialog-input .input {
+  flex-grow: 1;
+}
+
+.message {
+  max-width: 60%;
+  align-self: flex-start;
+  border-radius: 8px 8px 8px 0;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  padding: 8px;
+}
+
+.message--own {
+  align-self: flex-end;
+  max-width: 60%;
+  border-radius: 8px 8px 0 8px;
+  color: var(--bg-color);
+  padding: 8px;
+  background-color: var(--primary-color);
+}

@@ -1,0 +1,54 @@
+<main>
+    <div class="chats">
+        <section class="chats__sidebar">
+            <div class="chats__sidebar-header">
+                {{> Input placeholder="Search chats" name="search" type="text" }}
+                {{> Button label="My profile" variant="primary" }}
+            </div>
+            <div class="chats__sidebar-chats scrollbar-hide">
+            {{#each chats}}
+                {{> Chat }}
+            {{/each}}
+            </div>
+        </section>
+        {{#if selectedChat}}
+            <section class="chats__dialog">
+            <div class="chats__dialog-header">
+                <div class="chats__dialog-user-info">
+                    <img class="chats__dialog-avatar" src="{{selectedChat.avatar}}" alt="avatar" />
+                    <span class="chats__dialog-name">{{selectedChat.name}}</span>
+                </div>
+                <div class="chats__dialog-actions">
+                    {{> Button label=" + Add user" variant="primary" }}
+                    {{> Button label="- Remove user" variant="warning" }}
+                    {{> Button label="X Delete chat" variant="error" }}
+                </div>
+            </div>
+            <div class="chats__dialog-messages scrollbar-hide">
+                {{#each selectedChat.messages}}
+                    <div class="chats__dialog-date">{{date}}</div>
+                    {{#each messages}}
+                        <div class="message {{#if isOwn}}message--own{{/if}}">
+                        {{text}} @ {{time}}
+                        </div>
+                    {{/each}}
+                {{/each}}
+            </div>
+            <div class="chats__dialog-input">
+                {{> Input placeholder="Type a message" name="message" type="text" }}
+                {{> Button label="Send" variant="secondary" }}
+            </div>
+            </section>
+        {{else}}
+            <section class="chats__dialog-empty">
+                <p class="chats__dialog-empty-text">No chat selected</p>
+            </section>
+        {{/if}}
+
+        {{#if addUser}}
+            {{#> Dialog title="Add user" }}
+            {{> Input type="text" name="user_login" label="User login" }}
+            {{/ Dialog}}
+        {{/if}}
+     </div>
+</main>
