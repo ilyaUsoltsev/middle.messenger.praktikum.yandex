@@ -43,6 +43,7 @@ export const chatsFixture = [
     time: "Yesterday",
     lastMessage: "Got it, thanks!",
     unreadCount: 0,
+    isSelected: false,
   },
   {
     avatar: "./avatar.png",
@@ -50,6 +51,7 @@ export const chatsFixture = [
     time: "09:15 AM",
     lastMessage: "Are we still on for today?",
     unreadCount: 3,
+    isSelected: false,
   },
   {
     avatar: "./avatar.png",
@@ -57,6 +59,7 @@ export const chatsFixture = [
     time: "Yesterday",
     lastMessage: "Got it, thanks!",
     unreadCount: 0,
+    isSelected: false,
   },
   {
     avatar: "./avatar.png",
@@ -64,6 +67,7 @@ export const chatsFixture = [
     time: "09:15 AM",
     lastMessage: "Are we still on for today?",
     unreadCount: 3,
+    isSelected: false,
   },
   {
     avatar: "./avatar.png",

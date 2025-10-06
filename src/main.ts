@@ -1,11 +1,22 @@
 import "./style.css";
-import Handlebars from "handlebars";
 import * as Components from "./components";
 import * as Pages from "./pages";
 import { chatsFixture } from "./fixtures/chats-fixture";
+import { compile, registerPartials } from "./templating/app";
 
 const pages = {
-  login: [Pages.LoginPage],
+  login: [
+    Pages.LoginPage,
+    {
+      input: {
+        label: "Password",
+        placeholder: "Enter your password",
+        error: "Invalid password",
+        name: "password",
+        value: "WrongPassword",
+      },
+    },
+  ],
   register: [Pages.RegisterPage],
   error: [Pages.ErrorPage, { code: "404/501", message: "Error message" }],
   chats: [Pages.ChatPage, { chats: chatsFixture }],
@@ -45,15 +56,14 @@ const pages = {
 };
 
 Object.entries(Components).forEach(([name, template]) => {
-  Handlebars.registerPartial(name, template);
+  registerPartials(name, template);
 });
 
 function navigate(page: string) {
   //@ts-ignore
   const [source, context] = pages[page];
   const container = document.getElementById("app")!;
-
-  const temlpatingFunction = Handlebars.compile(source);
+  const temlpatingFunction = compile(source);
   container.innerHTML = temlpatingFunction(context);
 }
 

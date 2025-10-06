@@ -3,7 +3,7 @@
         <form class="login-form">
         <h1 class="login-title">Sign In</h1>
             {{> Input label="Login" placeholder="Enter your login" name="login" }}
-            {{> Input label="Password" placeholder="Enter your password" error="Invalid password" name="password" }}
+            {{> Input ...=input }}
             <div class="login-form__actions">
                 {{> Button label="Sign in" variant="primary" }}
                 {{> Button label="Register" variant="secondary" }}

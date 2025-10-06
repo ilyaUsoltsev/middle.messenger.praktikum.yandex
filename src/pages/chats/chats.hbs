@@ -6,8 +6,8 @@
                 {{> Button label="My profile" variant="primary" }}
             </div>
             <div class="chats__sidebar-chats scrollbar-hide">
-            {{#each chats}}
-                {{> Chat }}
+            {{#each chats chat}}
+                {{> Chat ...=chat }}
             {{/each}}
             </div>
         </section>
@@ -25,11 +25,11 @@
                 </div>
             </div>
             <div class="chats__dialog-messages scrollbar-hide">
-                {{#each selectedChat.messages}}
-                    <div class="chats__dialog-date">{{date}}</div>
-                    {{#each messages}}
-                        <div class="message {{#if isOwn}}message--own{{/if}}">
-                        {{text}} @ {{time}}
+                {{#each selectedChat.messages sm}}
+                    <div class="chats__dialog-date">{{sm.date}}</div>
+                    {{#each sm.messages message}}
+                        <div class="message {{#if message.isOwn}}message--own{{/if}}">
+                        {{message.text}} @ {{message.time}}
                         </div>
                     {{/each}}
                 {{/each}}
@@ -48,7 +48,7 @@
         {{#if addUser}}
             {{#> Dialog title="Add user" }}
             {{> Input type="text" name="user_login" label="User login" }}
-            {{/ Dialog}}
+            {{/ Dialog }}
         {{/if}}
      </div>
 </main>
