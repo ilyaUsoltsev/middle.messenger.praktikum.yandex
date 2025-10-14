@@ -26,7 +26,7 @@ export default abstract class Block {
 
   constructor(
     tagName = 'div',
-    propsWithChildren: PropsAndChildren = { props: {}, children: {} }
+    propsWithChildren: PropsAndChildren['props'] = {}
   ) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
@@ -119,8 +119,8 @@ export default abstract class Block {
   }
 
   _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
-    const response = this.componentDidUpdate(oldProps, newProps);
-    if (!response) {
+    const renderUpdate = this.componentDidUpdate(oldProps, newProps);
+    if (!renderUpdate) {
       return;
     }
     this._render();
@@ -232,11 +232,8 @@ export default abstract class Block {
       throw new Error('No element to render');
     }
 
-    if (this._element.children.length === 0) {
-      this._element.appendChild(block);
-    } else {
-      this._element.replaceChildren(block);
-    }
+    this._element.innerHTML = '';
+    this._element.appendChild(block);
 
     this._addEvents();
   }

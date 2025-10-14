@@ -3,6 +3,8 @@ import Handlebars from 'handlebars';
 import * as Components from './components';
 import * as Pages from './pages';
 import { chatsFixture } from './fixtures/chats-fixture';
+import { ButtonComponent } from './components/button';
+import { ContainerComponent } from './components/container';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -57,7 +59,21 @@ function navigate(page: string) {
   container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
+// document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
+document.addEventListener('DOMContentLoaded', () => {
+  const button = new ButtonComponent({
+    label: 'Button',
+    color: 'primary',
+    onClick: () => {
+      alert('Button clicked');
+    },
+  });
+  const container = new ContainerComponent({
+    Body: button,
+  });
+  const app = document.getElementById('app');
+  app?.appendChild(container.element!);
+});
 
 document.addEventListener('click', (e) => {
   //@ts-expect-error not typed
