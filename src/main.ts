@@ -5,6 +5,7 @@ import * as Pages from './pages';
 import { chatsFixture } from './fixtures/chats-fixture';
 import { ButtonComponent } from './components/button';
 import { ContainerComponent } from './components/container';
+import ChatComponent from './components/chat/chat';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -68,9 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Button clicked');
     },
   });
-  const container = new ContainerComponent({
-    Body: button,
+  const chat = new ChatComponent({
+    avatar: 'https://placekitten.com/200/200',
+    name: 'Chat Name',
+    time: '12:34',
+    lastMessage: 'Last message preview goes here.',
+    unreadCount: 3,
+    isSelected: true,
   });
+  const container = new ContainerComponent({
+    Body: chat,
+  });
+
   const app = document.getElementById('app');
   app?.appendChild(container.element!);
 });
