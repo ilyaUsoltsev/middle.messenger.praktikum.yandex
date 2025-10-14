@@ -3,9 +3,7 @@ import Handlebars from 'handlebars';
 import * as Components from './components';
 import * as Pages from './pages';
 import { chatsFixture } from './fixtures/chats-fixture';
-import { ButtonComponent } from './components/button';
-import { ContainerComponent } from './components/container';
-import ChatComponent from './components/chat/chat';
+import ChatsComponent from './pages/chats/chats';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -62,27 +60,14 @@ function navigate(page: string) {
 
 // document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
 document.addEventListener('DOMContentLoaded', () => {
-  const button = new ButtonComponent({
-    label: 'Button',
-    variant: 'primary',
-    onClick: () => {
-      alert('Button clicked');
-    },
-  });
-  const chat = new ChatComponent({
-    avatar: 'https://placekitten.com/200/200',
-    name: 'Chat Name',
-    time: '12:34',
-    lastMessage: 'Last message preview goes here.',
-    unreadCount: 3,
-    isSelected: true,
-  });
-  const container = new ContainerComponent({
-    Body: chat,
+  const chats = new ChatsComponent({
+    chats: chatsFixture,
+    selectedChat: chatsFixture[0],
+    addUser: false,
   });
 
   const app = document.getElementById('app');
-  app?.appendChild(container.element!);
+  app?.appendChild(chats.element!);
 });
 
 document.addEventListener('click', (e) => {

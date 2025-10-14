@@ -64,7 +64,7 @@ export default abstract class Block {
     }
 
     if (typeof props.className === 'string') {
-      const classes = props.className.split(' ');
+      const classes = props.className.split(' ').filter(Boolean);
       this._element.classList.add(...classes);
     }
 
@@ -288,5 +288,10 @@ export default abstract class Block {
       throw new Error('No element to hide');
     }
     content.style.display = 'none';
+  }
+
+  getChild(key: string): Block | null {
+    const child = this.children[key];
+    return child && !Array.isArray(child) ? child : null;
   }
 }

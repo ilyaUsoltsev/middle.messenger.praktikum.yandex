@@ -8,7 +8,7 @@ interface DialogProps {
   onCancel: () => void;
 }
 
-export default class Dialog extends Block {
+export default class DialogComponent extends Block {
   constructor(props: DialogProps) {
     super('div', {
       ...props,

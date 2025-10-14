@@ -13,7 +13,7 @@ export default class ChatComponent extends Block {
   constructor(props: ChatProps) {
     super('div', {
       ...props,
-      className: `chat ${props.isSelected ? 'chat--unread' : ''}`,
+      className: `chat ${props.isSelected ? 'chat--selected' : ''}`,
     });
   }
 
