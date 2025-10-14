@@ -63,7 +63,7 @@ function navigate(page: string) {
 document.addEventListener('DOMContentLoaded', () => {
   const button = new ButtonComponent({
     label: 'Button',
-    color: 'primary',
+    variant: 'primary',
     onClick: () => {
       alert('Button clicked');
     },
