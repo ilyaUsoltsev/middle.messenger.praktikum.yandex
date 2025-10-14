@@ -1,13 +1,13 @@
-import "./style.css";
-import Handlebars from "handlebars";
-import * as Components from "./components";
-import * as Pages from "./pages";
-import { chatsFixture } from "./fixtures/chats-fixture";
+import './style.css';
+import Handlebars from 'handlebars';
+import * as Components from './components';
+import * as Pages from './pages';
+import { chatsFixture } from './fixtures/chats-fixture';
 
 const pages = {
   login: [Pages.LoginPage],
   register: [Pages.RegisterPage],
-  error: [Pages.ErrorPage, { code: "404/501", message: "Error message" }],
+  error: [Pages.ErrorPage, { code: '404/501', message: 'Error message' }],
   chats: [Pages.ChatPage, { chats: chatsFixture }],
   chatsSelected: [
     Pages.ChatPage,
@@ -28,17 +28,17 @@ const pages = {
     Pages.NavigatePage,
     {
       pages: [
-        "chats",
-        "error",
-        "login",
-        "register",
-        "navigation",
-        "chatsSelected",
-        "chatsAddUser",
-        "profile",
-        "profileUpdate",
-        "updateAvatar",
-        "password",
+        'chats',
+        'error',
+        'login',
+        'register',
+        'navigation',
+        'chatsSelected',
+        'chatsAddUser',
+        'profile',
+        'profileUpdate',
+        'updateAvatar',
+        'password',
       ],
     },
   ],
@@ -49,19 +49,19 @@ Object.entries(Components).forEach(([name, template]) => {
 });
 
 function navigate(page: string) {
-  //@ts-ignore
+  //@ts-expect-error not typed
   const [source, context] = pages[page];
-  const container = document.getElementById("app")!;
+  const container = document.getElementById('app')!;
 
   const temlpatingFunction = Handlebars.compile(source);
   container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener("DOMContentLoaded", () => navigate("navigation"));
+document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
 
-document.addEventListener("click", (e) => {
-  //@ts-ignore
-  const page = e.target.getAttribute("page");
+document.addEventListener('click', (e) => {
+  //@ts-expect-error not typed
+  const page = e.target.getAttribute('page');
   if (page) {
     navigate(page);
 

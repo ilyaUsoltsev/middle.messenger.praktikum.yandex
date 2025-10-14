@@ -8,17 +8,26 @@
   },
   "scripts": {
     "build": "tsc && vite build",
-    "start": "vite --port 3000"
+    "start": "vite --port 3000",
+    "lint": "eslint . --ext .ts --ext .tsx && stylelint '**/*.{css,scss}'"
   },
   "devDependencies": {
+    "@eslint/js": "^9.37.0",
     "@types/handlebars": "^4.0.40",
     "autoprefixer": "^10.4.21",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.1",
     "postcss": "^8.5.6",
     "postcss-nesting": "^13.0.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1",
     "typescript": "~5.8.3",
+    "typescript-eslint": "^8.46.1",
     "vite": "^7.1.7"
   },
   "dependencies": {
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.8",
+    "nanoid": "^5.1.6"
   }
 }
