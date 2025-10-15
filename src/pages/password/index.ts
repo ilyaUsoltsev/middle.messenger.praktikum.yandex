@@ -1,2 +1,2 @@
-import './password.css';
-export { default as PasswordPage } from './password';
+import "./password.css";
+export { default as PasswordPage } from "./password";

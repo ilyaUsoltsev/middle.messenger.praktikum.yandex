@@ -1,2 +1,2 @@
-import './input.css';
-export { default as InputComponent } from './input';
+import "./input.css";
+export { default as InputComponent } from "./input";

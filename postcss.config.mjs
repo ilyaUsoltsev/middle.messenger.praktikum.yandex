@@ -1,7 +1,7 @@
 // postcss.config.cjs
 export default {
   plugins: {
-    'postcss-nesting': {},
+    "postcss-nesting": {},
     autoprefixer: {},
   },
 };

@@ -1,5 +1,5 @@
-import { BackButtonComponent } from '../../components';
-import Block from '../../core/block';
+import { BackButtonComponent } from "../../components";
+import Block from "../../core/block";
 
 interface ErrorProps {
   code: string;
@@ -8,11 +8,11 @@ interface ErrorProps {
 
 export default class ErrorPage extends Block {
   constructor(props: ErrorProps) {
-    super('main', {
+    super("main", {
       ...props,
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log('Go to previous page');
+          console.log("Go to previous page");
         },
       }),
     });

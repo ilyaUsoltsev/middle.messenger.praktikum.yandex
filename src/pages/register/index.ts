@@ -1,2 +1,2 @@
-import './register.css';
-export { default as RegisterPage } from './register';
+import "./register.css";
+export { default as RegisterPage } from "./register";

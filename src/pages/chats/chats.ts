@@ -1,12 +1,7 @@
-import {
-  InputComponent,
-  ButtonComponent,
-  ChatComponent,
-  DialogComponent,
-} from '../../components';
-import Block from '../../core/block';
-import { validateInput } from '../../helpers/validation';
-import type { Chat } from './types';
+import { InputComponent, ButtonComponent, ChatComponent, DialogComponent } from "../../components";
+import Block from "../../core/block";
+import { validateInput } from "../../helpers/validation";
+import type { Chat } from "./types";
 
 interface ChatsProps {
   chats: Chat[];
@@ -16,23 +11,23 @@ interface ChatsProps {
 
 export default class ChatsPage extends Block {
   constructor(props: ChatsProps) {
-    super('main', {
+    super("main", {
       ...props,
-      messageText: '',
+      messageText: "",
       InputSearch: new InputComponent({
-        type: 'text',
-        name: 'search',
-        placeholder: 'Search chats',
+        type: "text",
+        name: "search",
+        placeholder: "Search chats",
         onChange: (e: Event) => {
           const target = e.target as HTMLInputElement;
-          console.log('Search input changed:', target.value);
+          console.log("Search input changed:", target.value);
         },
       }),
       ProfileButton: new ButtonComponent({
-        label: 'My profile',
-        variant: 'primary',
+        label: "My profile",
+        variant: "primary",
         onClick: () => {
-          console.log('Profile button clicked');
+          console.log("Profile button clicked");
         },
       }),
       ChatComponents: props.chats.map(
@@ -43,79 +38,75 @@ export default class ChatsPage extends Block {
             time: chat.time,
             lastMessage: chat.lastMessage,
             isSelected: chat.isSelected,
-          })
+          }),
       ),
       AddUserButton: new ButtonComponent({
-        label: ' + Add user',
-        variant: 'primary',
+        label: " + Add user",
+        variant: "primary",
         onClick: () => {
           this.setProps({ addUser: true });
         },
       }),
       RemoveUserButton: new ButtonComponent({
-        label: '- Remove user',
-        variant: 'warning',
+        label: "- Remove user",
+        variant: "warning",
         onClick: () => {
-          console.log('Remove user button clicked');
+          console.log("Remove user button clicked");
         },
       }),
       DeleteChatButton: new ButtonComponent({
-        label: 'X Delete chat',
-        variant: 'error',
+        label: "X Delete chat",
+        variant: "error",
         onClick: () => {
-          console.log('Delete chat button clicked');
+          console.log("Delete chat button clicked");
         },
       }),
       MessageInput: new InputComponent({
-        type: 'text',
-        name: 'message',
-        placeholder: 'Type a message',
+        type: "text",
+        name: "message",
+        placeholder: "Type a message",
         onChange: (e: Event) => {
           const target = e.target as HTMLInputElement;
           const value = target.value;
           this.setProps({ messageText: value });
-          const error = validateInput('message', value);
-          this.getChild('MessageInput')?.setProps({ error, value });
+          const error = validateInput("message", value);
+          this.getChild("MessageInput")?.setProps({ error, value });
         },
       }),
       SendMessageButton: new ButtonComponent({
-        label: 'Send',
-        variant: 'secondary',
+        label: "Send",
+        variant: "secondary",
         onClick: () => {
-          console.log('Sending message...', this.props.messageText);
-          const error = validateInput('message', this.props.messageText);
+          console.log("Sending message...", this.props.messageText);
+          const error = validateInput("message", this.props.messageText);
           if (error) {
-            console.log('Validation error:', error);
-            this.getChild('MessageInput')?.setProps({ error });
+            console.log("Validation error:", error);
+            this.getChild("MessageInput")?.setProps({ error });
             return;
           }
-          this.getChild('MessageInput')?.setProps({ value: '' });
+          this.getChild("MessageInput")?.setProps({ value: "" });
         },
       }),
       AddUserDialog: new DialogComponent({
-        title: 'Add user',
+        title: "Add user",
         Body: new InputComponent({
-          type: 'text',
-          name: 'user_login',
-          placeholder: 'User login',
+          type: "text",
+          name: "user_login",
+          placeholder: "User login",
           onChange: (e: Event) => {
             const target = e.target as HTMLInputElement;
-            console.log('User login input changed:', target.value);
+            console.log("User login input changed:", target.value);
           },
         }),
         onConfirm: () => {
-          console.log('Add user confirmed');
+          console.log("Add user confirmed");
           this.setProps({ addUser: false });
-          this.getChild('AddUserDialog')
-            ?.getChild('Body')
-            ?.setProps({ value: '' });
+          this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
         },
         onCancel: () => {
-          console.log('Add user cancelled');
+          console.log("Add user cancelled");
           this.setProps({ addUser: false });
-          this.getChild('AddUserDialog')
-            ?.getChild('Body')
-            ?.setProps({ value: '' });
+          this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
         },
       }),
     });

@@ -1,5 +1,5 @@
-import Block from '../../core/block';
-import { ButtonComponent } from '../button';
+import Block from "../../core/block";
+import { ButtonComponent } from "../button";
 
 interface DialogProps {
   title: string;
@@ -10,17 +10,17 @@ interface DialogProps {
 
 export default class DialogComponent extends Block {
   constructor(props: DialogProps) {
-    super('div', {
+    super("div", {
       ...props,
-      className: 'dialog-container',
+      className: "dialog-container",
       ConfirmButton: new ButtonComponent({
-        label: 'Confirm',
-        variant: 'primary',
+        label: "Confirm",
+        variant: "primary",
         onClick: props.onConfirm,
       }),
       CancelButton: new ButtonComponent({
-        label: 'Cancel',
-        variant: 'error',
+        label: "Cancel",
+        variant: "error",
         onClick: props.onCancel,
       }),
     });

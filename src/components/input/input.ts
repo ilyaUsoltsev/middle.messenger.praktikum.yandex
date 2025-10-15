@@ -1,5 +1,5 @@
-import Block from '../../core/block';
-import { noop } from '../../helpers/noop';
+import Block from "../../core/block";
+import { noop } from "../../helpers/noop";
 
 interface InputProps {
   type?: string;
@@ -15,7 +15,7 @@ interface InputProps {
 
 export default class InputComponent extends Block {
   constructor(props: InputProps) {
-    super('div', {
+    super("div", {
       ...props,
       className: `input`,
       events: {
