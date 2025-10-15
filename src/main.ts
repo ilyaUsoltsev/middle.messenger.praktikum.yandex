@@ -6,6 +6,7 @@ import { chatsFixture } from './fixtures/chats-fixture';
 import ChatsPage from './pages/chats/chats';
 import ErrorPage from './pages/error/error';
 import { LoginPage } from './pages/login/login';
+import NavigatePage from './pages/navigate/navigate';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -74,9 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const loginPage = new LoginPage();
+  const navigatePage = new NavigatePage({
+    pages: [
+      'chats',
+      'error',
+      'login',
+      'register',
+      'navigation',
+      'chatsSelected',
+      'chatsAddUser',
+      'profile',
+      'profileUpdate',
+      'updateAvatar',
+      'password',
+    ],
+  });
 
   const app = document.getElementById('app');
-  app?.appendChild(loginPage.element!);
+  app?.appendChild(navigatePage.element!);
 });
 
 document.addEventListener('click', (e) => {
