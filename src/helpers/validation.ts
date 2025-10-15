@@ -1,14 +1,8 @@
-/**
- * Validates user input based on the field name.
- * @param name The name of the input field.
- * @param value The value of the input field.
- * @returns An error message if validation fails, or null if it passes.
- */
+type Name = 'name' | 'login' | 'email' | 'password' | 'phone' | 'message';
 
-export const validateInput = (name: string, value: string): string | null => {
+export const validateInput = (name: Name, value: string): string | null => {
   switch (name) {
-    case 'first_name':
-    case 'second_name':
+    case 'name':
       if (!/^[A-ZА-Я][A-Za-zА-Яа-я-]*$/.test(value)) {
         return 'Invalid name format';
       }

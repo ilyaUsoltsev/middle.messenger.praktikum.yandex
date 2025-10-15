@@ -1,3 +1,4 @@
+import BackButtonComponent from '../../components/back-button/back-button';
 import { ButtonComponent } from '../../components/button';
 import InputComponent from '../../components/input/input';
 import Block from '../../core/block';
@@ -96,6 +97,11 @@ export class PasswordPage extends Block {
           console.log('Cancel button clicked');
         },
       }),
+      BackButton: new BackButtonComponent({
+        onClick: () => {
+          console.log('Go to previous page');
+        },
+      }),
     });
   }
 
@@ -113,6 +119,7 @@ export class PasswordPage extends Block {
                 </div>
             </div>
         </section>
+        {{{ BackButton }}}
         `;
   }
 }

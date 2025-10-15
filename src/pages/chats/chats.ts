@@ -7,7 +7,7 @@ import type { Chat } from './types';
 
 interface ChatsProps {
   chats: Chat[];
-  selectedChat: Chat | null;
+  selectedChat?: Chat | null;
   addUser: boolean;
 }
 

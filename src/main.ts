@@ -8,50 +8,9 @@ import ErrorPage from './pages/error/error';
 import { LoginPage } from './pages/login/login';
 import NavigatePage from './pages/navigate/navigate';
 import { PasswordPage } from './pages/password/password';
-
-const pages = {
-  login: [Pages.LoginPage],
-  register: [Pages.RegisterPage],
-  error: [Pages.ErrorPage, { code: '404/501', message: 'Error message' }],
-  chats: [Pages.ChatPage, { chats: chatsFixture }],
-  chatsSelected: [
-    Pages.ChatPage,
-    { chats: chatsFixture, selectedChat: chatsFixture[0] },
-  ],
-  chatsAddUser: [
-    Pages.ChatPage,
-    { chats: chatsFixture, selectedChat: chatsFixture[0], addUser: true },
-  ],
-  profile: [Pages.ProfilePage, { update: false, readOnly: true }],
-  profileUpdate: [Pages.ProfilePage, { update: true, readOnly: false }],
-  updateAvatar: [
-    Pages.ProfilePage,
-    { update: true, readOnly: false, updateAvatar: true },
-  ],
-  password: [Pages.PasswordPage],
-  navigation: [
-    Pages.NavigatePage,
-    {
-      pages: [
-        'chats',
-        'error',
-        'login',
-        'register',
-        'navigation',
-        'chatsSelected',
-        'chatsAddUser',
-        'profile',
-        'profileUpdate',
-        'updateAvatar',
-        'password',
-      ],
-    },
-  ],
-};
-
-Object.entries(Components).forEach(([name, template]) => {
-  Handlebars.registerPartial(name, template);
-});
+import { ProfilePage } from './pages/profile/profile';
+import { ProfileEditPage } from './pages/profile/profile-edit';
+import { RegisterPage } from './pages/register/register';
 
 function navigate(page: string) {
   //@ts-expect-error not typed
@@ -93,9 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const passwordPage = new PasswordPage();
+  const profilePage = new ProfilePage({
+    firstName: 'John',
+    secondName: 'Doe',
+    displayName: 'Johnny',
+    login: 'johndoe',
+    email: 'john.doe@example.com',
+    phone: '+1234567890',
+  });
+  const profileEditPage = new ProfileEditPage({
+    firstName: 'John',
+    secondName: 'Doe',
+    displayName: 'Johnny',
+    login: 'johndoe',
+    email: 'john.doe@example.com',
+    phone: '+1234567890',
+  });
+  const registerPage = new RegisterPage();
 
   const app = document.getElementById('app');
-  app?.appendChild(passwordPage.element!);
+  app?.appendChild(chats.element!);
 });
 
 document.addEventListener('click', (e) => {
