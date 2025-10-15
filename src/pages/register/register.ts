@@ -1,9 +1,8 @@
-import { ButtonComponent } from '../../components/button';
-import InputComponent from '../../components/input/input';
+import { InputComponent, ButtonComponent } from '../../components';
 import Block from '../../core/block';
 import { validateInput } from '../../helpers/validation';
 
-export class RegisterPage extends Block {
+export default class RegisterPage extends Block {
   constructor() {
     super('main', {
       firstName: '',

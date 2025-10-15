@@ -1,12 +1,14 @@
-import BackButtonComponent from '../../components/back-button/back-button';
-import { ButtonComponent } from '../../components/button';
-import DialogComponent from '../../components/dialog/dialog';
-import InputComponent from '../../components/input/input';
+import {
+  InputComponent,
+  ButtonComponent,
+  DialogComponent,
+  BackButtonComponent,
+} from '../../components';
 import Block from '../../core/block';
 import { validateInput } from '../../helpers/validation';
 import type { ProfilePageProps } from './types';
 
-export class ProfileEditPage extends Block {
+export default class ProfileEditPage extends Block {
   constructor(props: ProfilePageProps) {
     super('main', {
       updateAvatar: false,

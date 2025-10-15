@@ -1,10 +1,12 @@
-import BackButtonComponent from '../../components/back-button/back-button';
-import { ButtonComponent } from '../../components/button';
-import InputComponent from '../../components/input/input';
+import {
+  BackButtonComponent,
+  ButtonComponent,
+  InputComponent,
+} from '../../components';
 import Block from '../../core/block';
 import { validateInput } from '../../helpers/validation';
 
-export class PasswordPage extends Block {
+export default class PasswordPage extends Block {
   constructor() {
     super('main', {
       oldPassword: '',

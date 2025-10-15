@@ -1,10 +1,12 @@
-import BackButtonComponent from '../../components/back-button/back-button';
-import { ButtonComponent } from '../../components/button';
-import InputComponent from '../../components/input/input';
+import {
+  InputComponent,
+  ButtonComponent,
+  BackButtonComponent,
+} from '../../components';
 import Block from '../../core/block';
 import type { ProfilePageProps } from './types';
 
-export class ProfilePage extends Block {
+export default class ProfilePage extends Block {
   constructor(props: ProfilePageProps) {
     super('main', {
       firstName: props.firstName,

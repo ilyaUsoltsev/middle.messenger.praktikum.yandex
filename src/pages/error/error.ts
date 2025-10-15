@@ -1,4 +1,4 @@
-import BackButtonComponent from '../../components/back-button/back-button';
+import { BackButtonComponent } from '../../components';
 import Block from '../../core/block';
 
 interface ErrorProps {

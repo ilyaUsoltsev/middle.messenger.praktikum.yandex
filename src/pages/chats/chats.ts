@@ -1,8 +1,11 @@
-import { ButtonComponent } from '../../components/button';
-import ChatComponent from '../../components/chat/chat';
-import DialogComponent from '../../components/dialog/dialog';
-import InputComponent from '../../components/input/input';
+import {
+  InputComponent,
+  ButtonComponent,
+  ChatComponent,
+  DialogComponent,
+} from '../../components';
 import Block from '../../core/block';
+import { validateInput } from '../../helpers/validation';
 import type { Chat } from './types';
 
 interface ChatsProps {
@@ -69,7 +72,10 @@ export default class ChatsPage extends Block {
         placeholder: 'Type a message',
         onChange: (e: Event) => {
           const target = e.target as HTMLInputElement;
-          console.log('Message input changed:', target.value);
+          const value = target.value;
+          this.setProps({ messageText: value });
+          const error = validateInput('message', value);
+          this.getChild('MessageInput')?.setProps({ error, value });
         },
       }),
       SendMessageButton: new ButtonComponent({
@@ -77,6 +83,12 @@ export default class ChatsPage extends Block {
         variant: 'secondary',
         onClick: () => {
           console.log('Sending message...', this.props.messageText);
+          const error = validateInput('message', this.props.messageText);
+          if (error) {
+            console.log('Validation error:', error);
+            this.getChild('MessageInput')?.setProps({ error });
+            return;
+          }
           this.getChild('MessageInput')?.setProps({ value: '' });
         },
       }),
