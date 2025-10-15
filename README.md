@@ -33,3 +33,19 @@ npm run start
 npm run build
 
 ```
+
+## Format project with prettier
+
+```bash
+
+npm run format
+
+```
+
+## Check project with eslint and stylelint
+
+```bash
+
+npm run lint
+
+```
