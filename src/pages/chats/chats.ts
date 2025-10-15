@@ -77,7 +77,7 @@ export default class ChatsPage extends Block {
         variant: 'secondary',
         onClick: () => {
           console.log('Sending message...', this.props.messageText);
-          (this.children.MessageInput as Block).setProps({ value: '' });
+          this.getChild('MessageInput')?.setProps({ value: '' });
         },
       }),
       AddUserDialog: new DialogComponent({

@@ -1,10 +1,11 @@
 import Block from '../../core/block';
+import { noop } from '../../helpers/noop';
 
 interface InputProps {
-  type: string;
-  name: string;
-  placeholder: string;
-  onChange: (e: Event) => void;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  onChange?: (e: Event) => void;
   label?: string;
   value?: string;
   error?: string;
@@ -18,7 +19,7 @@ export default class InputComponent extends Block {
       ...props,
       className: `input`,
       events: {
-        change: props.onChange,
+        change: props.onChange ?? noop,
       },
     });
   }

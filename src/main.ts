@@ -5,6 +5,7 @@ import * as Pages from './pages';
 import { chatsFixture } from './fixtures/chats-fixture';
 import ChatsPage from './pages/chats/chats';
 import ErrorPage from './pages/error/error';
+import { LoginPage } from './pages/login/login';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -72,8 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
     message: 'Page not found',
   });
 
+  const loginPage = new LoginPage();
+
   const app = document.getElementById('app');
-  app?.appendChild(errorPage.element!);
+  app?.appendChild(loginPage.element!);
 });
 
 document.addEventListener('click', (e) => {
