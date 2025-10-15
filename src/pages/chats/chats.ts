@@ -11,11 +11,10 @@ interface ChatsProps {
   addUser: boolean;
 }
 
-export default class ChatsComponent extends Block {
+export default class ChatsPage extends Block {
   constructor(props: ChatsProps) {
     super('main', {
       ...props,
-      className: '',
       messageText: '',
       InputSearch: new InputComponent({
         type: 'text',

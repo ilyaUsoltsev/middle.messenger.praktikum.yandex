@@ -3,7 +3,8 @@ import Handlebars from 'handlebars';
 import * as Components from './components';
 import * as Pages from './pages';
 import { chatsFixture } from './fixtures/chats-fixture';
-import ChatsComponent from './pages/chats/chats';
+import ChatsPage from './pages/chats/chats';
+import ErrorPage from './pages/error/error';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -60,14 +61,19 @@ function navigate(page: string) {
 
 // document.addEventListener('DOMContentLoaded', () => navigate('navigation'));
 document.addEventListener('DOMContentLoaded', () => {
-  const chats = new ChatsComponent({
+  const chats = new ChatsPage({
     chats: chatsFixture,
     selectedChat: chatsFixture[0],
     addUser: false,
   });
 
+  const errorPage = new ErrorPage({
+    code: '404',
+    message: 'Page not found',
+  });
+
   const app = document.getElementById('app');
-  app?.appendChild(chats.element!);
+  app?.appendChild(errorPage.element!);
 });
 
 document.addEventListener('click', (e) => {
