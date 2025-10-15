@@ -1,0 +1,7 @@
+{
+  "plugins": ["prettier-plugin-handlebars"],
+  "proseWrap": "always",
+  "htmlWhitespaceSensitivity": "ignore",
+  "trailingComma": "all",
+  "printWidth": 100
+}
