@@ -1,2 +1,2 @@
-import './button.css';
-export { default as ButtonComponent } from './button';
+import "./button.css";
+export { default as ButtonComponent } from "./button";

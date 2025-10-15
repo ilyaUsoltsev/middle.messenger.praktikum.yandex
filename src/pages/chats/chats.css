@@ -113,7 +113,7 @@
 .message--own {
   align-self: flex-end;
   max-width: 60%;
-  border-radius: 8px 8px 0 8px;
+  border-radius: 8px 8px 0;
   color: var(--bg-color);
   padding: 8px;
   background-color: var(--primary-color);

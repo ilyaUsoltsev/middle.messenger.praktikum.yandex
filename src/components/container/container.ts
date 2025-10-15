@@ -1,4 +1,4 @@
-import Block from '../../core/block';
+import Block from "../../core/block";
 
 interface ContainerProps {
   Body: Block;
@@ -6,7 +6,7 @@ interface ContainerProps {
 
 export default class Container extends Block {
   constructor(props: ContainerProps) {
-    super('section', {
+    super("section", {
       ...props,
       className: `container-section`,
     });

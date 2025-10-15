@@ -1,14 +1,10 @@
-import {
-  InputComponent,
-  ButtonComponent,
-  BackButtonComponent,
-} from '../../components';
-import Block from '../../core/block';
-import type { ProfilePageProps } from './types';
+import { InputComponent, ButtonComponent, BackButtonComponent } from "../../components";
+import Block from "../../core/block";
+import type { ProfilePageProps } from "./types";
 
 export default class ProfilePage extends Block {
   constructor(props: ProfilePageProps) {
-    super('main', {
+    super("main", {
       firstName: props.firstName,
       secondName: props.secondName,
       displayName: props.displayName,
@@ -16,62 +12,62 @@ export default class ProfilePage extends Block {
       email: props.email,
       phone: props.phone,
       FirstNameInput: new InputComponent({
-        label: 'First name',
+        label: "First name",
         value: props.firstName,
         readOnly: true,
       }),
       SecondNameInput: new InputComponent({
-        label: 'Second name',
+        label: "Second name",
         value: props.secondName,
         readOnly: true,
       }),
       NicknameInput: new InputComponent({
-        label: 'Nickname',
+        label: "Nickname",
         value: props.displayName,
         readOnly: true,
       }),
       LoginInput: new InputComponent({
-        label: 'Login',
+        label: "Login",
         value: props.login,
         readOnly: true,
       }),
       EmailInput: new InputComponent({
-        label: 'Email',
+        label: "Email",
         value: props.email,
         readOnly: true,
       }),
       PhoneInput: new InputComponent({
-        label: 'Phone',
+        label: "Phone",
         value: props.phone,
         readOnly: true,
       }),
       ChangeProfileButton: new ButtonComponent({
-        label: 'Change profile',
-        variant: 'primary',
+        label: "Change profile",
+        variant: "primary",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log('Change profile clicked');
+          console.log("Change profile clicked");
         },
       }),
       UpdatePasswordButton: new ButtonComponent({
-        label: 'Update password',
-        variant: 'primary',
+        label: "Update password",
+        variant: "primary",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log('Navigate to password update page');
+          console.log("Navigate to password update page");
         },
       }),
       LogoutButton: new ButtonComponent({
-        label: 'Logout',
-        variant: 'error',
+        label: "Logout",
+        variant: "error",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log('Logout clicked');
+          console.log("Logout clicked");
         },
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log('Go to previous page');
+          console.log("Go to previous page");
         },
       }),
     });

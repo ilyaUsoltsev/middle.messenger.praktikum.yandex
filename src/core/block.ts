@@ -1,7 +1,7 @@
-import EventBus from './event-bus';
-import { nanoid } from 'nanoid';
-import Handlebars from 'handlebars';
-import type { BlockProps, Nullable } from './types';
+import EventBus from "./event-bus";
+import { nanoid } from "nanoid";
+import Handlebars from "handlebars";
+import type { BlockProps, Nullable } from "./types";
 
 type PropsAndChildren = {
   props: BlockProps;
@@ -10,10 +10,10 @@ type PropsAndChildren = {
 
 export default abstract class Block {
   static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
+    INIT: "init",
+    FLOW_CDM: "flow:component-did-mount",
+    FLOW_CDU: "flow:component-did-update",
+    FLOW_RENDER: "flow:render",
   } as const;
 
   _element: Nullable<HTMLElement> = null;
@@ -24,10 +24,7 @@ export default abstract class Block {
   children2?: Record<string, Block>;
   eventBus: () => EventBus;
 
-  constructor(
-    tagName = 'div',
-    propsWithChildren: PropsAndChildren['props'] = {}
-  ) {
+  constructor(tagName = "div", propsWithChildren: PropsAndChildren["props"] = {}) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
@@ -60,15 +57,15 @@ export default abstract class Block {
     this._element = this._createDocumentElement(tagName);
 
     if (!this._element) {
-      throw new Error('Error creating DOM element');
+      throw new Error("Error creating DOM element");
     }
 
-    if (typeof props.className === 'string') {
-      const classes = props.className.split(' ').filter(Boolean);
+    if (typeof props.className === "string") {
+      const classes = props.className.split(" ").filter(Boolean);
       this._element.classList.add(...classes);
     }
 
-    if (typeof props.attrs === 'object' && props.attrs !== null) {
+    if (typeof props.attrs === "object" && props.attrs !== null) {
       Object.entries(props.attrs).forEach(([attrName, attrValue]) => {
         this._element!.setAttribute(attrName, attrValue);
       });
@@ -80,11 +77,9 @@ export default abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  _getChildrenAndProps(
-    propsAndChildren: PropsAndChildren['props']
-  ): PropsAndChildren {
-    const children: PropsAndChildren['children'] = {};
-    const props: PropsAndChildren['props'] = {};
+  _getChildrenAndProps(propsAndChildren: PropsAndChildren["props"]): PropsAndChildren {
+    const children: PropsAndChildren["children"] = {};
+    const props: PropsAndChildren["props"] = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
@@ -147,7 +142,7 @@ export default abstract class Block {
 
     Object.keys(events).forEach((eventName) => {
       if (!this._element) {
-        throw new Error('No element to add event');
+        throw new Error("No element to add event");
       }
       this._element.addEventListener(eventName, events[eventName]);
     });
@@ -158,7 +153,7 @@ export default abstract class Block {
 
     Object.keys(events).forEach((eventName) => {
       if (!this._element) {
-        throw new Error('No element to remove event');
+        throw new Error("No element to remove event");
       }
 
       this._element.removeEventListener(eventName, events[eventName]);
@@ -173,17 +168,13 @@ export default abstract class Block {
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map(
-          (component) => `<div data-id="${component._id}"></div>`
-        );
+        propsAndStubs[key] = child.map((component) => `<div data-id="${component._id}"></div>`);
       } else {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
       }
     });
 
-    const fragment = this._createDocumentElement(
-      'template'
-    ) as HTMLTemplateElement;
+    const fragment = this._createDocumentElement("template") as HTMLTemplateElement;
 
     const template = Handlebars.compile(this.render());
     fragment.innerHTML = template(propsAndStubs);
@@ -191,12 +182,10 @@ export default abstract class Block {
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((component) => {
-          const stub = fragment.content.querySelector(
-            `[data-id="${component._id}"]`
-          );
+          const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
           const componentContent = component.getContent();
           if (!componentContent) {
-            throw new Error('No component content');
+            throw new Error("No component content");
           }
           stub?.replaceWith(componentContent);
         });
@@ -205,7 +194,7 @@ export default abstract class Block {
 
         const childContent = child.getContent();
         if (!childContent) {
-          throw new Error('No child content');
+          throw new Error("No child content");
         }
         stub?.replaceWith(childContent);
       }
@@ -229,17 +218,17 @@ export default abstract class Block {
     const block = this._compile();
 
     if (!this._element) {
-      throw new Error('No element to render');
+      throw new Error("No element to render");
     }
 
-    this._element.innerHTML = '';
+    this._element.innerHTML = "";
     this._element.appendChild(block);
 
     this._addEvents();
   }
 
   render() {
-    return '';
+    return "";
   }
 
   getContent() {
@@ -254,7 +243,7 @@ export default abstract class Block {
       get(target, prop) {
         const typedProp = prop as keyof BlockProps;
         const value = target[typedProp];
-        return typeof value === 'function' ? value.bind(target) : value;
+        return typeof value === "function" ? value.bind(target) : value;
       },
       set(target, prop, value) {
         const oldTarget = { ...target };
@@ -265,7 +254,7 @@ export default abstract class Block {
         return true;
       },
       deleteProperty() {
-        throw new Error('Нет доступа');
+        throw new Error("Нет доступа");
       },
     });
   }
@@ -277,17 +266,17 @@ export default abstract class Block {
   show() {
     const content = this.getContent();
     if (!content) {
-      throw new Error('No element to show');
+      throw new Error("No element to show");
     }
-    content.style.display = 'block';
+    content.style.display = "block";
   }
 
   hide() {
     const content = this.getContent();
     if (!content) {
-      throw new Error('No element to hide');
+      throw new Error("No element to hide");
     }
-    content.style.display = 'none';
+    content.style.display = "none";
   }
 
   getChild(key: string): Block | null {

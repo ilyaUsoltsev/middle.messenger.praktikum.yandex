@@ -1,4 +1,4 @@
-import Block from '../../core/block';
+import Block from "../../core/block";
 
 interface NavigateProps {
   pages: string[];
@@ -6,7 +6,7 @@ interface NavigateProps {
 
 export default class NavigatePage extends Block {
   constructor(props: NavigateProps) {
-    super('main', { ...props });
+    super("main", { ...props });
   }
 
   public render(): string {

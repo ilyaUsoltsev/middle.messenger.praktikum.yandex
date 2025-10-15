@@ -1,35 +1,35 @@
-type Name = 'name' | 'login' | 'email' | 'password' | 'phone' | 'message';
+type Name = "name" | "login" | "email" | "password" | "phone" | "message";
 
 export const validateInput = (name: Name, value: string): string | null => {
   switch (name) {
-    case 'name':
+    case "name":
       if (!/^[A-ZА-Я][A-Za-zА-Яа-я-]*$/.test(value)) {
-        return 'Invalid name format';
+        return "Invalid name format";
       }
       break;
-    case 'login':
+    case "login":
       if (!/^(?=.*[A-Za-z])[A-Za-z0-9_-]{3,20}$/.test(value)) {
-        return 'Invalid login format';
+        return "Invalid login format";
       }
       break;
-    case 'email':
+    case "email":
       if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)) {
-        return 'Invalid email format';
+        return "Invalid email format";
       }
       break;
-    case 'password':
+    case "password":
       if (!/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/.test(value)) {
-        return 'Invalid password format';
+        return "Invalid password format";
       }
       break;
-    case 'phone':
+    case "phone":
       if (!/^\+?\d{10,15}$/.test(value)) {
-        return '10-15 digits, may start with plus';
+        return "10-15 digits, may start with plus";
       }
       break;
-    case 'message':
+    case "message":
       if (!value.trim()) {
-        return 'Message cannot be empty';
+        return "Message cannot be empty";
       }
       break;
   }

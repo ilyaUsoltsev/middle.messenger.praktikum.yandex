@@ -1,4 +1,4 @@
-import Block from '../../core/block';
+import Block from "../../core/block";
 
 interface ChatProps {
   avatar: string;
@@ -11,9 +11,9 @@ interface ChatProps {
 
 export default class ChatComponent extends Block {
   constructor(props: ChatProps) {
-    super('div', {
+    super("div", {
       ...props,
-      className: `chat ${props.isSelected ? 'chat--selected' : ''}`,
+      className: `chat ${props.isSelected ? "chat--selected" : ""}`,
     });
   }
 
