@@ -7,6 +7,7 @@ import ChatsPage from './pages/chats/chats';
 import ErrorPage from './pages/error/error';
 import { LoginPage } from './pages/login/login';
 import NavigatePage from './pages/navigate/navigate';
+import { PasswordPage } from './pages/password/password';
 
 const pages = {
   login: [Pages.LoginPage],
@@ -91,8 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
   });
 
+  const passwordPage = new PasswordPage();
+
   const app = document.getElementById('app');
-  app?.appendChild(navigatePage.element!);
+  app?.appendChild(passwordPage.element!);
 });
 
 document.addEventListener('click', (e) => {
