@@ -1,4 +1,9 @@
-import { BackButtonComponent, FormComponent, PasswordFormComponent } from "../../components";
+import {
+  BackButtonComponent,
+  ButtonComponent,
+  FormComponent,
+  PasswordFormComponent,
+} from "../../components";
 import Block from "../../core/block";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
@@ -12,6 +17,7 @@ export default class PasswordPage extends Block {
       PasswordForm: new FormComponent({
         label: "Change Password",
         Body: new PasswordFormComponent(),
+        onSubmitButtonLabel: "Save",
         onSubmit: (e: Event) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -38,9 +44,13 @@ export default class PasswordPage extends Block {
           }
           console.log("Form submitted with data:", data);
         },
-        onCancel: () => {
-          console.log("Form cancelled");
-        },
+        AdditionalButtons: new ButtonComponent({
+          label: "Cancel",
+          variant: "secondary",
+          onClick: () => {
+            console.log("Cancel button clicked");
+          },
+        }),
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {

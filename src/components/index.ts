@@ -6,3 +6,5 @@ export { ContainerComponent } from "./container";
 export { BackButtonComponent } from "./back-button";
 export { FormComponent } from "./form";
 export { PasswordFormComponent } from "./password-form";
+export { LoginFormComponent } from "./login-form";
+export { RegisterFormComponent } from "./register-form";

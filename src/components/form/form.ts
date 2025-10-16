@@ -1,5 +1,4 @@
 import Block from "../../core/block";
-import { noop } from "../../helpers/noop";
 import { ButtonComponent } from "../button";
 
 interface FormProps {
@@ -7,7 +6,8 @@ interface FormProps {
   Body: Block;
   onSubmit: (event: Event) => void;
   error?: string;
-  onCancel?: (event: Event) => void;
+  AdditionalButtons?: Block | Block[];
+  onSubmitButtonLabel?: string;
 }
 
 export default class FormComponent extends Block {
@@ -19,22 +19,15 @@ export default class FormComponent extends Block {
         submit: props.onSubmit,
       },
       onSubmit: props.onSubmit,
-      onCancel: props.onCancel,
+      AdditionalButtons: props.AdditionalButtons,
       ButtonSubmit: new ButtonComponent({
-        label: "Submit",
+        label: props.onSubmitButtonLabel ?? "Submit",
         variant: "primary",
         onSubmit: props.onSubmit,
-      }),
-      ButtonCancel: new ButtonComponent({
-        label: "Cancel",
-        variant: "secondary",
-        onClick: props.onCancel ?? noop,
       }),
     });
   }
   public render(): string {
-    const withCancelButton = Boolean(this.props.onCancel);
-
     return `
       <h1>{{label}}</h1>
       {{#if error}}
@@ -43,9 +36,7 @@ export default class FormComponent extends Block {
         {{{Body}}}
         <div class="form-actions">
         {{{ButtonSubmit}}}
-          {{#if ${withCancelButton}}}
-            {{{ButtonCancel}}}
-          {{/if}}
+        {{{AdditionalButtons}}}
         </div>
     `;
   }
