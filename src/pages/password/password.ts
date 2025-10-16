@@ -1,5 +1,11 @@
-import { BackButtonComponent, ButtonComponent, InputComponent } from "../../components";
+import {
+  BackButtonComponent,
+  ButtonComponent,
+  FormComponent,
+  PasswordFormComponent,
+} from "../../components";
 import Block from "../../core/block";
+import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 
 export default class PasswordPage extends Block {
@@ -8,83 +14,44 @@ export default class PasswordPage extends Block {
       oldPassword: "",
       newPassword: "",
       confirmNewPassword: "",
-      OldPasswordInput: new InputComponent({
-        label: "Old password",
-        placeholder: "Enter your old password",
-        name: "oldPassword",
-        type: "password",
-        onChange: (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          const value = target.value;
-          this.setProps({ oldPassword: value });
-          const error = validateInput("password", value);
-          this.getChild("OldPasswordInput")?.setProps({ error, value });
-        },
-      }),
-      NewPasswordInput: new InputComponent({
-        label: "New password",
-        placeholder: "Enter your new password",
-        name: "newPassword",
-        type: "password",
-        onChange: (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          const value = target.value;
-          this.setProps({ newPassword: value });
-          const error = validateInput("password", value);
-          this.getChild("NewPasswordInput")?.setProps({ error, value });
-        },
-      }),
-      ConfirmPasswordInput: new InputComponent({
-        label: "Confirm password",
-        placeholder: "Confirm your new password",
-        name: "confirmNewPassword",
-        type: "password",
-        onChange: (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          const value = target.value;
-          this.setProps({ confirmNewPassword: value });
-          const error = validateInput("password", value);
-          this.getChild("ConfirmPasswordInput")?.setProps({ error, value });
-        },
-      }),
-      ChangePasswordButton: new ButtonComponent({
-        label: "Change password",
-        variant: "primary",
-        onClick: (e: Event) => {
+      PasswordForm: new FormComponent({
+        label: "Change Password",
+        Body: new PasswordFormComponent(),
+        onSubmitButtonLabel: "Save",
+        className: "border",
+        onSubmit: (e: Event) => {
           e.preventDefault();
-          const oldPasswordError = validateInput("password", this.props.oldPassword);
-          const newPasswordError = validateInput("password", this.props.newPassword);
-          const confirmPasswordError = validateInput("password", this.props.confirmNewPassword);
+          const data = getFormData(e);
+          const { oldPassword, newPassword, confirmNewPassword } = data;
+          const oldPwrdError = validateInput("password", oldPassword);
+          const newPwrdError = validateInput("password", newPassword);
+          const confirmPwrdError = validateInput("password", confirmNewPassword);
+          const hasErrors = oldPwrdError || newPwrdError || confirmPwrdError;
 
-          this.getChild("OldPasswordInput")?.setProps({
-            error: oldPasswordError,
-          });
-          this.getChild("NewPasswordInput")?.setProps({
-            error: newPasswordError,
-          });
-          this.getChild("ConfirmPasswordInput")?.setProps({
-            error: confirmPasswordError,
-          });
-
-          if (!oldPasswordError && !newPasswordError && !confirmPasswordError) {
-            if (this.props.newPassword !== this.props.confirmNewPassword) {
-              this.getChild("ConfirmPasswordInput")?.setProps({
-                error: "Passwords do not match",
-              });
-            }
-            console.log("Old Password:", this.props.oldPassword);
-            console.log("New Password:", this.props.newPassword);
-            console.log("Confirm Password:", this.props.confirmNewPassword);
+          if (hasErrors) {
+            this.getChild("PasswordForm")?.setProps({
+              error: "Check inputs format",
+            });
+            return;
+          } else {
+            this.getChild("PasswordForm")?.setProps({ error: "" });
           }
+
+          if (newPassword !== confirmNewPassword) {
+            this.getChild("PasswordForm")?.setProps({
+              error: "New password and confirmation do not match",
+            });
+            return;
+          }
+          console.log("Form submitted with data:", data);
         },
-      }),
-      CancelButton: new ButtonComponent({
-        label: "Cancel",
-        variant: "error",
-        onClick: (e: Event) => {
-          e.preventDefault();
-          console.log("Cancel button clicked");
-        },
+        AdditionalButtons: new ButtonComponent({
+          label: "Cancel",
+          variant: "secondary",
+          onClick: () => {
+            console.log("Cancel button clicked");
+          },
+        }),
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
@@ -96,17 +63,8 @@ export default class PasswordPage extends Block {
 
   render() {
     return `
-        <section class="container-section">
-            <div class="password-container">
-                <h1>Change password</h1>
-                {{{ OldPasswordInput }}}
-                {{{ NewPasswordInput }}}
-                {{{ ConfirmPasswordInput }}}
-                <div class="password-form__actions">
-                    {{{ ChangePasswordButton }}}
-                    {{{ CancelButton }}}
-                </div>
-            </div>
+        <section class="centered">
+            {{{ PasswordForm }}}
         </section>
         {{{ BackButton }}}
         `;

@@ -1,0 +1,17 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 400px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  gap: 4px;
+}
+
+.form-error {
+  color: var(--error-color);
+}

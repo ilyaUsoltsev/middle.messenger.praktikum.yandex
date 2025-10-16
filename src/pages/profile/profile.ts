@@ -5,12 +5,6 @@ import type { ProfilePageProps } from "./types";
 export default class ProfilePage extends Block {
   constructor(props: ProfilePageProps) {
     super("main", {
-      firstName: props.firstName,
-      secondName: props.secondName,
-      displayName: props.displayName,
-      login: props.login,
-      email: props.email,
-      phone: props.phone,
       FirstNameInput: new InputComponent({
         label: "First name",
         value: props.firstName,
@@ -75,8 +69,8 @@ export default class ProfilePage extends Block {
 
   render() {
     return `
-        <section class="container-section">
-            <div class="profile-container">
+        <section class="centered">
+            <div class="profile-container border">
                 <h1>My profile</h1>
                 <div class="profile-avatar">
                     <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>

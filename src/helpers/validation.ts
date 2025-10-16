@@ -1,6 +1,6 @@
-type Name = "name" | "login" | "email" | "password" | "phone" | "message";
+export type ValidationName = "name" | "login" | "email" | "password" | "phone" | "message";
 
-export const validateInput = (name: Name, value: string): string | null => {
+export const validateInput = (name: ValidationName, value: string): string | null => {
   switch (name) {
     case "name":
       if (!/^[A-ZА-Я][A-Za-zА-Яа-я-]*$/.test(value)) {

@@ -42,14 +42,14 @@ export default abstract class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus: EventBus) {
+  private _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _createResources() {
+  private _createResources() {
     if (!this._meta) {
       return;
     }
@@ -77,7 +77,7 @@ export default abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  _getChildrenAndProps(propsAndChildren: PropsAndChildren["props"]): PropsAndChildren {
+  private _getChildrenAndProps(propsAndChildren: PropsAndChildren["props"]): PropsAndChildren {
     const children: PropsAndChildren["children"] = {};
     const props: PropsAndChildren["props"] = {};
 
@@ -103,7 +103,7 @@ export default abstract class Block {
     return { children, props };
   }
 
-  _componentDidMount() {
+  private _componentDidMount() {
     this.componentDidMount();
   }
 
@@ -113,7 +113,7 @@ export default abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
     const renderUpdate = this.componentDidUpdate(oldProps, newProps);
     if (!renderUpdate) {
       return;
@@ -137,7 +137,7 @@ export default abstract class Block {
     return this._element;
   }
 
-  _addEvents() {
+  private _addEvents() {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
@@ -148,7 +148,7 @@ export default abstract class Block {
     });
   }
 
-  _removeEvents() {
+  private _removeEvents() {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
@@ -160,7 +160,7 @@ export default abstract class Block {
     });
   }
 
-  _compile() {
+  private _compile() {
     const propsAndStubs: Record<string, unknown> = {
       ...this.props,
       children2: this.children2 || {},
@@ -213,7 +213,7 @@ export default abstract class Block {
     return fragment.content;
   }
 
-  _render() {
+  private _render() {
     this._removeEvents();
     const block = this._compile();
 
@@ -235,7 +235,7 @@ export default abstract class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: BlockProps) {
+  private _makePropsProxy(props: BlockProps) {
     const eventBus = this.eventBus();
     const emitBind = eventBus.emit.bind(eventBus);
 
@@ -259,7 +259,7 @@ export default abstract class Block {
     });
   }
 
-  _createDocumentElement(tagName: string) {
+  private _createDocumentElement(tagName: string) {
     return document.createElement(tagName);
   }
 
