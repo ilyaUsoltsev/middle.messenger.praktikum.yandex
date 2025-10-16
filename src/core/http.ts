@@ -18,7 +18,7 @@ export default class HttpClient {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: RequestOptions, timeout = 5000) => {
+  private request = (url: string, options: RequestOptions, timeout = 5000) => {
     const { method, data, headers } = options;
 
     return new Promise((resolve, reject) => {
