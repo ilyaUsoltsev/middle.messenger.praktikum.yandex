@@ -10,6 +10,7 @@ export default class RegisterPage extends Block {
         label: "Register",
         Body: new RegisterFormComponent(),
         onSubmitButtonLabel: "Send",
+        className: "border",
         onSubmit: (e: Event) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -61,7 +62,7 @@ export default class RegisterPage extends Block {
 
   render() {
     return `
-        <section class="container-section">
+        <section class="centered">
             <div class="register-container">
                 {{{ RegisterForm }}}
                 <div class="register-form__secondary-actions">

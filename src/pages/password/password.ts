@@ -18,6 +18,7 @@ export default class PasswordPage extends Block {
         label: "Change Password",
         Body: new PasswordFormComponent(),
         onSubmitButtonLabel: "Save",
+        className: "border",
         onSubmit: (e: Event) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -62,7 +63,7 @@ export default class PasswordPage extends Block {
 
   render() {
     return `
-        <section class="container-section">
+        <section class="centered">
             {{{ PasswordForm }}}
         </section>
         {{{ BackButton }}}

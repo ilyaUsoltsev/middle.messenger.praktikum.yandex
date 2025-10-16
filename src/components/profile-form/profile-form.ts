@@ -1,15 +1,24 @@
-import { InputComponent } from "../../components";
 import Block from "../../core/block";
 import { getInputValueAndError } from "../../helpers/get-input-value-and-error";
+import { InputComponent } from "../input";
 
-export default class RegisterFormComponent extends Block {
-  constructor() {
+interface ProfileFormProps {
+  firstName: string;
+  secondName: string;
+  displayName: string;
+  login: string;
+  email: string;
+  phone: string;
+}
+
+export default class ProfileFormComponent extends Block {
+  constructor(props: ProfileFormProps) {
     super("div", {
       className: "inputs-container",
       FirstNameInput: new InputComponent({
         label: "First name",
-        placeholder: "Enter your first name",
         name: "first_name",
+        value: props.firstName,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "name");
           this.getChild("FirstNameInput")?.setProps({ error, value });
@@ -17,58 +26,47 @@ export default class RegisterFormComponent extends Block {
       }),
       SecondNameInput: new InputComponent({
         label: "Second name",
-        placeholder: "Enter your last name",
         name: "second_name",
+        value: props.secondName,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "name");
           this.getChild("SecondNameInput")?.setProps({ error, value });
         },
       }),
+      NicknameInput: new InputComponent({
+        label: "Nickname",
+        name: "display_name",
+        value: props.displayName,
+        onChange: (e: Event) => {
+          const { value, error } = getInputValueAndError(e, "name");
+          this.getChild("NicknameInput")?.setProps({ error, value });
+        },
+      }),
       LoginInput: new InputComponent({
         label: "Login",
-        placeholder: "Enter your login",
         name: "login",
+        value: props.login,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "login");
           this.getChild("LoginInput")?.setProps({ error, value });
         },
       }),
-      PhoneInput: new InputComponent({
-        label: "Phone",
-        placeholder: "Enter your phone",
-        name: "phone",
-        onChange: (e: Event) => {
-          const { value, error } = getInputValueAndError(e, "phone");
-          this.getChild("PhoneInput")?.setProps({ error, value });
-        },
-      }),
       EmailInput: new InputComponent({
         label: "Email",
-        placeholder: "Enter your email",
         name: "email",
+        value: props.email,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "email");
           this.getChild("EmailInput")?.setProps({ error, value });
         },
       }),
-      PasswordInput: new InputComponent({
-        label: "Password",
-        placeholder: "Enter your password",
-        name: "password",
-        type: "password",
+      PhoneInput: new InputComponent({
+        label: "Phone",
+        name: "phone",
+        value: props.phone,
         onChange: (e: Event) => {
-          const { value, error } = getInputValueAndError(e, "password");
-          this.getChild("PasswordInput")?.setProps({ error, value });
-        },
-      }),
-      ConfirmPasswordInput: new InputComponent({
-        label: "Confirm password",
-        placeholder: "Confirm your password",
-        name: "confirm_password",
-        type: "password",
-        onChange: (e: Event) => {
-          const { value, error } = getInputValueAndError(e, "password");
-          this.getChild("ConfirmPasswordInput")?.setProps({ error, value });
+          const { value, error } = getInputValueAndError(e, "phone");
+          this.getChild("PhoneInput")?.setProps({ error, value });
         },
       }),
     });
@@ -78,11 +76,10 @@ export default class RegisterFormComponent extends Block {
     return `
             {{{ FirstNameInput }}}
             {{{ SecondNameInput }}}
+            {{{ NicknameInput }}}
             {{{ LoginInput }}}
-            {{{ PhoneInput }}}
             {{{ EmailInput }}}
-            {{{ PasswordInput }}}
-            {{{ ConfirmPasswordInput }}}
+            {{{ PhoneInput }}}
         `;
   }
 }

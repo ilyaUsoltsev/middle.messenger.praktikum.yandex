@@ -5,6 +5,7 @@ import { getInputValueAndError } from "../../helpers/get-input-value-and-error";
 export default class LoginFormComponent extends Block {
   constructor() {
     super("div", {
+      className: "inputs-container",
       LoginInput: new InputComponent({
         label: "Login",
         placeholder: "Enter your login",

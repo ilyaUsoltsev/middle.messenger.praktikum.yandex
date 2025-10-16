@@ -10,6 +10,7 @@ export default class LoginPage extends Block {
         label: "Sign In",
         Body: new LoginFormComponent(),
         onSubmitButtonLabel: "Login",
+        className: "border",
         onSubmit: (e: Event) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -43,7 +44,7 @@ export default class LoginPage extends Block {
 
   render() {
     return `
-        <section class="container-section">
+        <section class="centered">
             <div class="login-container">
                 {{{ LoginForm }}}
                 <div class="login-form__secondary-actions">

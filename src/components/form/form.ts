@@ -2,19 +2,20 @@ import Block from "../../core/block";
 import { ButtonComponent } from "../button";
 
 interface FormProps {
-  label: string;
   Body: Block;
   onSubmit: (event: Event) => void;
+  label?: string;
   error?: string;
   AdditionalButtons?: Block | Block[];
   onSubmitButtonLabel?: string;
+  className?: string;
 }
 
 export default class FormComponent extends Block {
   constructor(props: FormProps) {
     super("form", {
       ...props,
-      className: `form-container`,
+      className: `form-container ${props.className ?? ""}`,
       events: {
         submit: props.onSubmit,
       },
@@ -29,7 +30,9 @@ export default class FormComponent extends Block {
   }
   public render(): string {
     return `
-      <h1>{{label}}</h1>
+      {{#if label}}
+        <h1>{{label}}</h1>
+      {{/if}}
       {{#if error}}
         <p class="form-error">{{error}}</p>
       {{/if}}

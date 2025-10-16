@@ -5,6 +5,7 @@ import { getInputValueAndError } from "../../helpers/get-input-value-and-error";
 export default class PasswordFormComponent extends Block {
   constructor() {
     super("div", {
+      className: "inputs-container",
       OldPasswordInput: new InputComponent({
         label: "Old password",
         placeholder: "Enter your old password",
