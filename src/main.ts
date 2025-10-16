@@ -2,6 +2,7 @@ import "./style.css";
 import * as Pages from "./pages";
 import { chatsFixture } from "./fixtures/chats-fixture";
 import type Block from "./core/block";
+import HttpClient from "./core/http";
 
 const pages: Record<string, Block> = {
   chats: new Pages.ChatPage({
@@ -67,3 +68,11 @@ document.addEventListener("click", (e: Event) => {
     e.stopImmediatePropagation();
   }
 });
+
+const http = new HttpClient();
+http
+  .delete("https://jsonplaceholder.typicode.com/posts/1", {
+    data: { one: 123 },
+    headers: { header: "HEADER" },
+  })
+  .then(console.log);
