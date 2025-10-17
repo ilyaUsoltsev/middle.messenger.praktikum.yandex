@@ -1,9 +1,10 @@
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { ButtonComponent } from "../button";
 
-interface FormProps {
+interface FormProps extends BlockProps {
   Body: Block;
-  onSubmit: (event: Event) => void;
+  onSubmit: (event: SubmitEvent) => void;
   label?: string;
   error?: string;
   AdditionalButtons?: Block | Block[];
@@ -11,7 +12,7 @@ interface FormProps {
   className?: string;
 }
 
-export default class FormComponent extends Block {
+export default class FormComponent extends Block<FormProps> {
   constructor(props: FormProps) {
     super("form", {
       ...props,
@@ -33,14 +34,14 @@ export default class FormComponent extends Block {
       {{#if label}}
         <h1>{{label}}</h1>
       {{/if}}
+      {{{Body}}}
       {{#if error}}
         <p class="form-error">{{error}}</p>
       {{/if}}
-        {{{Body}}}
-        <div class="form-actions">
-        {{{ButtonSubmit}}}
-        {{{AdditionalButtons}}}
-        </div>
+      <div class="form-actions">
+      {{{ButtonSubmit}}}
+      {{{AdditionalButtons}}}
+      </div>
     `;
   }
 }

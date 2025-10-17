@@ -1,6 +1,7 @@
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 
-interface ChatProps {
+interface ChatProps extends BlockProps {
   avatar: string;
   name: string;
   time: string;
@@ -9,7 +10,7 @@ interface ChatProps {
   isSelected?: boolean;
 }
 
-export default class ChatComponent extends Block {
+export default class ChatComponent extends Block<ChatProps> {
   constructor(props: ChatProps) {
     super("div", {
       ...props,

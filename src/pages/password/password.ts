@@ -5,10 +5,17 @@ import {
   PasswordFormComponent,
 } from "../../components";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 
-export default class PasswordPage extends Block {
+interface PasswordPageState extends BlockProps {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export default class PasswordPage extends Block<PasswordPageState> {
   constructor() {
     super("main", {
       oldPassword: "",
@@ -19,7 +26,7 @@ export default class PasswordPage extends Block {
         Body: new PasswordFormComponent(),
         onSubmitButtonLabel: "Save",
         className: "border",
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { oldPassword, newPassword, confirmNewPassword } = data;

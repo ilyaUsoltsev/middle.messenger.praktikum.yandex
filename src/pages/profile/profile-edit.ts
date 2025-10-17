@@ -7,18 +7,23 @@ import {
 } from "../../components";
 import { ProfileFormComponent } from "../../components/profile-form";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import type { ProfilePageProps } from "./types";
 
-export default class ProfileEditPage extends Block {
+interface ProfileEditState extends BlockProps {
+  updateAvatar: boolean;
+}
+
+export default class ProfileEditPage extends Block<ProfileEditState> {
   constructor(props: ProfilePageProps) {
     super("main", {
       updateAvatar: false,
       ProfileForm: new FormComponent({
         onSubmitButtonLabel: "Save",
         Body: new ProfileFormComponent({ ...props }),
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { first_name, second_name, display_name, login, email, phone } = data;
