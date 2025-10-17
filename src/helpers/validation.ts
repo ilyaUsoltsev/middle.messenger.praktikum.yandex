@@ -18,7 +18,7 @@ export const validateInput = (name: ValidationName, value: string): string | nul
       }
       break;
     case "password":
-      if (!/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/.test(value)) {
+      if (!/^(?=.*[A-Z])(?=.*\d).{8,40}$/.test(value)) {
         return "Invalid password format";
       }
       break;

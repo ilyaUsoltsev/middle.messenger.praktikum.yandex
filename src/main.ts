@@ -60,8 +60,12 @@ function navigate(page: string) {
 
 document.addEventListener("DOMContentLoaded", () => navigate("navigation"));
 
-document.addEventListener("click", (e: Event) => {
-  const page = (e.target as HTMLElement).getAttribute("page");
+document.addEventListener("click", (e: MouseEvent) => {
+  if (e.target instanceof HTMLElement === false) {
+    throw Error("Event target is not HTMLElement");
+  }
+
+  const page = e.target.getAttribute("page");
   if (page) {
     navigate(page);
     e.preventDefault();

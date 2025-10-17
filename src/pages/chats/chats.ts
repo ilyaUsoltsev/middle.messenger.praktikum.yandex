@@ -1,6 +1,14 @@
-import { InputComponent, ButtonComponent, ChatComponent, DialogComponent } from "../../components";
+import {
+  InputComponent,
+  ButtonComponent,
+  ChatComponent,
+  DialogComponent,
+  FormComponent,
+  MessageFormComponent,
+} from "../../components";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
+import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import type { Chat } from "./types";
 
@@ -64,6 +72,24 @@ export default class ChatsPage extends Block<ChatsProps & ChatsState> {
         variant: "error",
         onClick: () => {
           console.log("Delete chat button clicked");
+        },
+      }),
+      MessageForm: new FormComponent({
+        className: "chats__dialog-input",
+        onSubmitButtonLabel: "Send",
+        Body: new MessageFormComponent(),
+        onSubmit: (e: Event) => {
+          e.preventDefault();
+          const formData = getFormData(e);
+          const { message } = formData;
+          const error = validateInput("message", message);
+          if (error) {
+            this.getChild("MessageForm")?.setProps({ error });
+            return;
+          } else {
+            this.getChild("MessageForm")?.setProps({ error: "" });
+          }
+          console.log("Submitting formData:", formData);
         },
       }),
       MessageInput: new InputComponent({
@@ -154,10 +180,7 @@ export default class ChatsPage extends Block<ChatsProps & ChatsState> {
                     {{/each}}
                 {{/each}}
             </div>
-            <div class="chats__dialog-input">
-                {{{ MessageInput }}}
-                {{{ SendMessageButton }}}
-            </div>
+            {{{ MessageForm }}}
             </section>
         {{else}}
             <section class="chats__dialog-empty">

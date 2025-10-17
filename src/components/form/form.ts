@@ -34,14 +34,14 @@ export default class FormComponent extends Block<FormProps> {
       {{#if label}}
         <h1>{{label}}</h1>
       {{/if}}
+      {{{Body}}}
       {{#if error}}
         <p class="form-error">{{error}}</p>
       {{/if}}
-        {{{Body}}}
-        <div class="form-actions">
-        {{{ButtonSubmit}}}
-        {{{AdditionalButtons}}}
-        </div>
+      <div class="form-actions">
+      {{{ButtonSubmit}}}
+      {{{AdditionalButtons}}}
+      </div>
     `;
   }
 }
