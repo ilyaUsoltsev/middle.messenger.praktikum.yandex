@@ -4,7 +4,7 @@ import { ButtonComponent } from "../button";
 
 interface FormProps extends BlockProps {
   Body: Block;
-  onSubmit: (event: Event) => void;
+  onSubmit: (event: SubmitEvent) => void;
   label?: string;
   error?: string;
   AdditionalButtons?: Block | Block[];

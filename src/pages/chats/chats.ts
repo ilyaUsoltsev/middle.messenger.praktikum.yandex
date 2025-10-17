@@ -78,7 +78,7 @@ export default class ChatsPage extends Block<ChatsProps & ChatsState> {
         className: "chats__dialog-input",
         onSubmitButtonLabel: "Send",
         Body: new MessageFormComponent(),
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const formData = getFormData(e);
           const { message } = formData;

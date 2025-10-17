@@ -23,7 +23,7 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
       ProfileForm: new FormComponent({
         onSubmitButtonLabel: "Save",
         Body: new ProfileFormComponent({ ...props }),
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { first_name, second_name, display_name, login, email, phone } = data;

@@ -26,7 +26,7 @@ export default class PasswordPage extends Block<PasswordPageState> {
         Body: new PasswordFormComponent(),
         onSubmitButtonLabel: "Save",
         className: "border",
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { oldPassword, newPassword, confirmNewPassword } = data;

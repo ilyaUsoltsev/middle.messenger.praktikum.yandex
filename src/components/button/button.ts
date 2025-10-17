@@ -6,7 +6,7 @@ interface ButtonProps extends BlockProps {
   label: string;
   variant: "primary" | "secondary" | "error" | "warning";
   onClick?: (event: Event) => void;
-  onSubmit?: (event: Event) => void;
+  onSubmit?: (event: SubmitEvent) => void;
 }
 
 export default class Button extends Block<ButtonProps> {

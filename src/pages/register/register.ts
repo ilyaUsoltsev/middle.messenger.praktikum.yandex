@@ -11,7 +11,7 @@ export default class RegisterPage extends Block {
         Body: new RegisterFormComponent(),
         onSubmitButtonLabel: "Send",
         className: "border",
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { first_name, second_name, login, phone, email, password, confirm_password } = data;

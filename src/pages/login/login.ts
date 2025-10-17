@@ -11,7 +11,7 @@ export default class LoginPage extends Block {
         Body: new LoginFormComponent(),
         onSubmitButtonLabel: "Login",
         className: "border",
-        onSubmit: (e: Event) => {
+        onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { login, password } = data;
