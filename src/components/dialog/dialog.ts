@@ -1,14 +1,15 @@
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { ButtonComponent } from "../button";
 
-interface DialogProps {
+interface DialogProps extends BlockProps {
   title: string;
   Body: Block;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export default class DialogComponent extends Block {
+export default class DialogComponent extends Block<DialogProps> {
   constructor(props: DialogProps) {
     super("div", {
       ...props,

@@ -1,15 +1,15 @@
 import Block from "../../core/block";
 import { noop } from "../../helpers/noop";
+import type { BlockProps } from "../../core/types";
 
-interface ButtonProps {
+interface ButtonProps extends BlockProps {
   label: string;
   variant: "primary" | "secondary" | "error" | "warning";
   onClick?: (event: Event) => void;
   onSubmit?: (event: Event) => void;
-  attrs?: Record<string, string>;
 }
 
-export default class Button extends Block {
+export default class Button extends Block<ButtonProps> {
   constructor(props: ButtonProps) {
     super("button", {
       ...props,
@@ -24,6 +24,7 @@ export default class Button extends Block {
       },
     });
   }
+
   public render(): string {
     return `
       {{label}}

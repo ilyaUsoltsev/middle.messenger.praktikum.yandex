@@ -3,12 +3,12 @@ import { nanoid } from "nanoid";
 import Handlebars from "handlebars";
 import type { BlockProps, Nullable } from "./types";
 
-type PropsAndChildren = {
-  props: BlockProps;
-  children: Record<string, Block | Block[]>;
+type PropsAndChildren<P extends BlockProps = BlockProps> = {
+  props: P;
+  children: Record<string, Block<BlockProps> | Block<BlockProps>[]>;
 };
 
-export default abstract class Block {
+export default abstract class Block<P extends BlockProps = BlockProps> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -17,14 +17,14 @@ export default abstract class Block {
   } as const;
 
   _element: Nullable<HTMLElement> = null;
-  _meta: Nullable<{ tagName: string; props: BlockProps }> = null;
+  _meta: Nullable<{ tagName: string; props: P }> = null;
   _id = nanoid(7);
-  props: BlockProps;
-  children: Record<string, Block | Block[]> = {};
-  children2?: Record<string, Block>;
+  props: P;
+  children: Record<string, Block<BlockProps> | Block<BlockProps>[]> = {};
+  children2?: Record<string, Block<BlockProps>>;
   eventBus: () => EventBus;
 
-  constructor(tagName = "div", propsWithChildren: PropsAndChildren["props"] = {}) {
+  constructor(tagName = "div", propsWithChildren: Record<string, unknown>) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
@@ -77,9 +77,9 @@ export default abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  private _getChildrenAndProps(propsAndChildren: PropsAndChildren["props"]): PropsAndChildren {
-    const children: PropsAndChildren["children"] = {};
-    const props: PropsAndChildren["props"] = {};
+  private _getChildrenAndProps(propsAndChildren: Record<string, unknown>): PropsAndChildren<P> {
+    const children: PropsAndChildren<P>["children"] = {};
+    const props: Record<string, unknown> = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
@@ -100,7 +100,7 @@ export default abstract class Block {
       }
     });
 
-    return { children, props };
+    return { children, props: props as P };
   }
 
   private _componentDidMount() {
@@ -113,7 +113,7 @@ export default abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  private _componentDidUpdate(oldProps: P, newProps: P) {
     const renderUpdate = this.componentDidUpdate(oldProps, newProps);
     if (!renderUpdate) {
       return;
@@ -121,11 +121,11 @@ export default abstract class Block {
     this._render();
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  componentDidUpdate(oldProps: P, newProps: P) {
     return oldProps !== newProps;
   }
 
-  setProps = (nextProps: BlockProps) => {
+  setProps = (nextProps: Record<string, unknown>) => {
     if (!nextProps) {
       return;
     }
@@ -235,19 +235,19 @@ export default abstract class Block {
     return this.element;
   }
 
-  private _makePropsProxy(props: BlockProps) {
+  private _makePropsProxy(props: P) {
     const eventBus = this.eventBus();
     const emitBind = eventBus.emit.bind(eventBus);
 
     return new Proxy(props, {
       get(target, prop) {
-        const typedProp = prop as keyof BlockProps;
+        const typedProp = prop as keyof P;
         const value = target[typedProp];
         return typeof value === "function" ? value.bind(target) : value;
       },
       set(target, prop, value) {
         const oldTarget = { ...target };
-        const typedProp = prop as keyof BlockProps;
+        const typedProp = prop as keyof P;
         target[typedProp] = value;
 
         emitBind(Block.EVENTS.FLOW_CDU, oldTarget, target);
@@ -279,7 +279,7 @@ export default abstract class Block {
     content.style.display = "none";
   }
 
-  getChild(key: string): Block | null {
+  getChild(key: string): Block<BlockProps> | null {
     const child = this.children[key];
     return child && !Array.isArray(child) ? child : null;
   }

@@ -1,15 +1,20 @@
 import { InputComponent, ButtonComponent, ChatComponent, DialogComponent } from "../../components";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { validateInput } from "../../helpers/validation";
 import type { Chat } from "./types";
 
-interface ChatsProps {
+interface ChatsProps extends BlockProps {
   chats: Chat[];
   selectedChat?: Chat | null;
   addUser: boolean;
 }
 
-export default class ChatsPage extends Block {
+interface ChatsState {
+  messageText: string;
+}
+
+export default class ChatsPage extends Block<ChatsProps & ChatsState> {
   constructor(props: ChatsProps) {
     super("main", {
       ...props,

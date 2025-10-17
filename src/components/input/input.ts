@@ -1,7 +1,8 @@
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 import { noop } from "../../helpers/noop";
 
-interface InputProps {
+interface InputProps extends BlockProps {
   type?: string;
   name?: string;
   placeholder?: string;
@@ -13,7 +14,7 @@ interface InputProps {
   disabled?: boolean;
 }
 
-export default class InputComponent extends Block {
+export default class InputComponent extends Block<InputProps> {
   constructor(props: InputProps) {
     super("div", {
       ...props,
