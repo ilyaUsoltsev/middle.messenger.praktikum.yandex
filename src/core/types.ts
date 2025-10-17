@@ -1,4 +1,5 @@
 import type { METHODS } from "./constants";
+export type METHOD = (typeof METHODS)[keyof typeof METHODS];
 
 export type Nullable<T> = T | null;
 
@@ -10,11 +11,9 @@ export type BlockProps = {
 
 export type RequestMethod = (typeof METHODS)[keyof typeof METHODS];
 
-export interface RequestOptions {
+export interface RequestOptions<T> {
   method: RequestMethod;
-  // data record value can be of any type
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: Record<string, any>;
+  data?: Record<string, T>;
   headers?: Record<string, string>;
   timeout?: number;
 }

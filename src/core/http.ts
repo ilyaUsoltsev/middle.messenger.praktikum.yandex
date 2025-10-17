@@ -1,38 +1,42 @@
 import { METHODS } from "./constants";
-import type { RequestOptions } from "./types";
+import type { METHOD, RequestOptions } from "./types";
 
-export default class HttpClient {
-  get = (url: string, options: Omit<RequestOptions, "method">) => {
-    return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
-  };
+export default class HttpClient<T extends string | number | boolean> {
+  get = this.createMethod(METHODS.GET);
 
-  post = (url: string, options: Omit<RequestOptions, "method">) => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
-  };
+  post = this.createMethod(METHODS.POST);
 
-  put = (url: string, options: Omit<RequestOptions, "method">) => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
-  };
+  put = this.createMethod(METHODS.PUT);
 
-  delete = (url: string, options: Omit<RequestOptions, "method">) => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
-  };
+  delete = this.createMethod(METHODS.DELETE);
 
-  private request = (url: string, options: RequestOptions, timeout = 5000) => {
-    const { method, data, headers } = options;
+  private createMethod(method: METHOD) {
+    return (url: string, options: Omit<RequestOptions<T>, "method">) => {
+      return this.request(url, { ...options, method });
+    };
+  }
+
+  private createQueryString(data: Record<string, T>): string {
+    const query = Object.entries(data)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join("&");
+    return query ? `?${query}` : "";
+  }
+
+  private request = (url: string, options: RequestOptions<T>) => {
+    const { method, data, headers, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {
-      const timerID = setTimeout(reject, timeout);
       let query: string = url;
+
       if (method === METHODS.GET && data) {
-        query += "?";
-        for (const key in data) {
-          query += `${key}=${data[key]}&`;
-        }
-        query = query.slice(0, query.length - 1);
+        query += this.createQueryString(data);
       }
+
       const xhr = new XMLHttpRequest();
+      xhr.timeout = timeout;
       xhr.open(method, query);
+
       if (headers) {
         for (const key in headers) {
           xhr.setRequestHeader(key, headers[key]);
@@ -40,7 +44,6 @@ export default class HttpClient {
       }
 
       xhr.onload = function () {
-        clearTimeout(timerID);
         resolve(xhr);
       };
 
