@@ -1,10 +1,11 @@
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 
-interface NavigateProps {
+interface NavigateProps extends BlockProps {
   pages: string[];
 }
 
-export default class NavigatePage extends Block {
+export default class NavigatePage extends Block<NavigateProps> {
   constructor(props: NavigateProps) {
     super("main", { ...props });
   }

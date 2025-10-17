@@ -1,12 +1,13 @@
 import { BackButtonComponent } from "../../components";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
 
-interface ErrorProps {
+interface ErrorProps extends BlockProps {
   code: string;
   message: string;
 }
 
-export default class ErrorPage extends Block {
+export default class ErrorPage extends Block<ErrorProps> {
   constructor(props: ErrorProps) {
     super("main", {
       ...props,

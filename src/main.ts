@@ -71,8 +71,8 @@ document.addEventListener("click", (e: Event) => {
 
 const http = new HttpClient();
 http
-  .delete("https://jsonplaceholder.typicode.com/posts/1", {
-    data: { one: 123 },
+  .get("https://jsonplaceholder.typicode.com/posts/1", {
+    data: { one: 123, two: "test" },
     headers: { header: "HEADER" },
   })
   .then(console.log);

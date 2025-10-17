@@ -2,7 +2,7 @@ import { InputComponent, ButtonComponent, BackButtonComponent } from "../../comp
 import Block from "../../core/block";
 import type { ProfilePageProps } from "./types";
 
-export default class ProfilePage extends Block {
+export default class ProfilePage extends Block<ProfilePageProps> {
   constructor(props: ProfilePageProps) {
     super("main", {
       FirstNameInput: new InputComponent({

@@ -3,7 +3,7 @@ export type ValidationName = "name" | "login" | "email" | "password" | "phone" |
 export const validateInput = (name: ValidationName, value: string): string | null => {
   switch (name) {
     case "name":
-      if (!/^[A-ZА-Я][A-Za-zА-Яа-я-]*$/.test(value)) {
+      if (!/^[A-ZА-ЯЁ][A-Za-zА-ЯЁа-яё-]*$/.test(value)) {
         return "Invalid name format";
       }
       break;
