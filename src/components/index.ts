@@ -1,6 +1,10 @@
-export { Button } from "./button";
-export { Input } from "./input";
-export { Chat } from "./chat";
-export { Dialog } from "./dialog";
-export { Container } from "./container";
-export { BackButton } from "./back-button";
+export { ButtonComponent } from "./button";
+export { InputComponent } from "./input";
+export { ChatComponent } from "./chat";
+export { DialogComponent } from "./dialog";
+export { BackButtonComponent } from "./back-button";
+export { FormComponent } from "./form";
+export { PasswordFormComponent } from "./password-form";
+export { LoginFormComponent } from "./login-form";
+export { RegisterFormComponent } from "./register-form";
+export { MessageFormComponent } from "./message-form";

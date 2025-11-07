@@ -1,71 +1,82 @@
 import "./style.css";
-import Handlebars from "handlebars";
-import * as Components from "./components";
 import * as Pages from "./pages";
 import { chatsFixture } from "./fixtures/chats-fixture";
+import type Block from "./core/block";
+import HttpClient from "./core/http";
 
-const pages = {
-  login: [Pages.LoginPage],
-  register: [Pages.RegisterPage],
-  error: [Pages.ErrorPage, { code: "404/501", message: "Error message" }],
-  chats: [Pages.ChatPage, { chats: chatsFixture }],
-  chatsSelected: [
-    Pages.ChatPage,
-    { chats: chatsFixture, selectedChat: chatsFixture[0] },
-  ],
-  chatsAddUser: [
-    Pages.ChatPage,
-    { chats: chatsFixture, selectedChat: chatsFixture[0], addUser: true },
-  ],
-  profile: [Pages.ProfilePage, { update: false, readOnly: true }],
-  profileUpdate: [Pages.ProfilePage, { update: true, readOnly: false }],
-  updateAvatar: [
-    Pages.ProfilePage,
-    { update: true, readOnly: false, updateAvatar: true },
-  ],
-  password: [Pages.PasswordPage],
-  navigation: [
-    Pages.NavigatePage,
-    {
-      pages: [
-        "chats",
-        "error",
-        "login",
-        "register",
-        "navigation",
-        "chatsSelected",
-        "chatsAddUser",
-        "profile",
-        "profileUpdate",
-        "updateAvatar",
-        "password",
-      ],
-    },
-  ],
+const pages: Record<string, Block> = {
+  chats: new Pages.ChatPage({
+    chats: chatsFixture,
+    selectedChat: null,
+    addUser: false,
+  }),
+  chatsSelected: new Pages.ChatPage({
+    chats: chatsFixture,
+    selectedChat: chatsFixture[0],
+    addUser: false,
+  }),
+  error: new Pages.ErrorPage({ code: "404", message: "Page not found" }),
+  login: new Pages.LoginPage(),
+  register: new Pages.RegisterPage(),
+  navigation: new Pages.NavigatePage({
+    pages: [
+      "chats",
+      "error",
+      "login",
+      "register",
+      "navigation",
+      "chatsSelected",
+      "profile",
+      "profileUpdate",
+      "password",
+    ],
+  }),
+  password: new Pages.PasswordPage(),
+  profile: new Pages.ProfilePage({
+    firstName: "John",
+    secondName: "Doe",
+    displayName: "Johnny",
+    login: "johndoe",
+    email: "john.doe@example.com",
+    phone: "+1234567890",
+  }),
+  profileUpdate: new Pages.ProfileEditPage({
+    firstName: "John",
+    secondName: "Doe",
+    displayName: "Johnny",
+    login: "johndoe",
+    email: "john.doe@example.com",
+    phone: "+1234567890",
+  }),
 };
 
-Object.entries(Components).forEach(([name, template]) => {
-  Handlebars.registerPartial(name, template);
-});
-
 function navigate(page: string) {
-  //@ts-ignore
-  const [source, context] = pages[page];
-  const container = document.getElementById("app")!;
+  const PageComponent = pages[page];
 
-  const temlpatingFunction = Handlebars.compile(source);
-  container.innerHTML = temlpatingFunction(context);
+  const app = document.getElementById("app");
+  app!.innerHTML = "";
+  app?.appendChild(PageComponent.element!);
 }
 
 document.addEventListener("DOMContentLoaded", () => navigate("navigation"));
 
-document.addEventListener("click", (e) => {
-  //@ts-ignore
+document.addEventListener("click", (e: MouseEvent) => {
+  if (e.target instanceof HTMLElement === false) {
+    throw Error("Event target is not HTMLElement");
+  }
+
   const page = e.target.getAttribute("page");
   if (page) {
     navigate(page);
-
     e.preventDefault();
     e.stopImmediatePropagation();
   }
 });
+
+const http = new HttpClient();
+http
+  .get("https://jsonplaceholder.typicode.com/posts/1", {
+    data: { one: 123, two: "test" },
+    headers: { header: "HEADER" },
+  })
+  .then(console.log);
