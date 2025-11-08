@@ -1,8 +1,10 @@
 import { InputComponent, ButtonComponent, BackButtonComponent } from "../../components";
 import Block from "../../core/block";
+import { connect } from "../../helpers/connect";
+import type { AppState } from "../../types";
 import type { ProfilePageProps } from "./types";
 
-export default class ProfilePage extends Block<ProfilePageProps> {
+class ProfilePage extends Block<ProfilePageProps> {
   constructor(props: ProfilePageProps) {
     super("main", {
       FirstNameInput: new InputComponent({
@@ -92,3 +94,14 @@ export default class ProfilePage extends Block<ProfilePageProps> {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  firstName: state.user.firstName,
+  secondName: state.user.secondName,
+  displayName: state.user.displayName,
+  login: state.user.login,
+  email: state.user.email,
+  phone: state.user.phone,
+});
+
+export default connect(mapStateToProps)(ProfilePage);

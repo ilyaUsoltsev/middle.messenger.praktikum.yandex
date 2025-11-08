@@ -8,8 +8,10 @@ import {
 } from "../../components";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
+import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
 interface ChatsProps extends BlockProps {
@@ -22,7 +24,7 @@ interface ChatsState {
   messageText: string;
 }
 
-export default class ChatsPage extends Block<ChatsProps & ChatsState> {
+class ChatsPage extends Block<ChatsProps & ChatsState> {
   constructor(props: ChatsProps) {
     super("main", {
       ...props,
@@ -195,3 +197,10 @@ export default class ChatsPage extends Block<ChatsProps & ChatsState> {
     `;
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  chats: state.chats || [],
+  selectedChat: state.chats?.find((chat) => chat.id === state.selectedChat) || null,
+});
+
+export default connect(mapStateToProps)(ChatsPage);

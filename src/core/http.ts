@@ -36,7 +36,7 @@ export default class HttpClient<T extends string | number | boolean> {
       const xhr = new XMLHttpRequest();
       xhr.timeout = timeout;
       xhr.open(method, query);
-
+      xhr.withCredentials = true;
       if (headers) {
         for (const key in headers) {
           xhr.setRequestHeader(key, headers[key]);

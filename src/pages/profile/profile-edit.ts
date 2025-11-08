@@ -8,15 +8,17 @@ import {
 import { ProfileFormComponent } from "../../components/profile-form";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
+import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import type { AppState } from "../../types";
 import type { ProfilePageProps } from "./types";
 
 interface ProfileEditState extends BlockProps {
   updateAvatar: boolean;
 }
 
-export default class ProfileEditPage extends Block<ProfileEditState> {
+class ProfileEditPage extends Block<ProfileEditState> {
   constructor(props: ProfilePageProps) {
     super("main", {
       updateAvatar: false,
@@ -106,3 +108,16 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  return {
+    firstName: state.user.firstName || "",
+    secondName: state.user.secondName || "",
+    displayName: state.user.displayName || "",
+    login: state.user.login || "",
+    email: state.user.email || "",
+    phone: state.user.phone || "",
+  };
+};
+
+export default connect(mapStateToProps)(ProfileEditPage);
