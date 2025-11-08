@@ -29,4 +29,6 @@ export interface AppState {
       timestamp: string;
     }>
   >[];
+  loginError?: string;
+  registerError?: string;
 }

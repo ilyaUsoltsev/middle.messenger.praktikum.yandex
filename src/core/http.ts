@@ -10,9 +10,13 @@ export default class HttpClient<T extends string | number | boolean> {
 
   delete = this.createMethod(METHODS.DELETE);
 
+  constructor(private baseUrl: string) {
+    this.baseUrl = `https://ya-praktikum.tech/api/v2${baseUrl}`;
+  }
+
   private createMethod(method: METHOD) {
-    return (url: string, options: Omit<RequestOptions<T>, "method">) => {
-      return this.request(url, { ...options, method });
+    return <U>(url: string, options?: Omit<RequestOptions<T>, "method">) => {
+      return this.request(url, { ...options, method }) as Promise<U>;
     };
   }
 
@@ -27,7 +31,7 @@ export default class HttpClient<T extends string | number | boolean> {
     const { method, data, headers, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {
-      let query: string = url;
+      let query: string = `${this.baseUrl}${url}`;
 
       if (method === METHODS.GET && data) {
         query += this.createQueryString(data);

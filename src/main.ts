@@ -1,6 +1,5 @@
 import "./style.css";
 import * as Pages from "./pages";
-import HttpClient from "./core/http";
 import { Store, StoreEvents } from "./core/store";
 import { APP_ROOT_ELEMENT, ROUTER } from "./constants";
 import Router from "./core/router";
@@ -51,14 +50,6 @@ import type { AppState } from "./types";
 //     phone: "+1234567890",
 //   }),
 // };
-
-const http = new HttpClient();
-http
-  .get("https://jsonplaceholder.typicode.com/posts/1", {
-    data: { one: 123, two: "test" },
-    headers: { header: "HEADER" },
-  })
-  .then(console.log);
 
 window.store = new Store({
   isLoading: false,

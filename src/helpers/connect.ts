@@ -18,8 +18,8 @@ export function connect(mapStateToProps: (state: AppState) => Record<string, unk
         let state = mapStateToProps(store.getState());
 
         const [props = {}] = args;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        super({ ...props, ...state } as any);
+
+        super({ ...props, ...state });
 
         this.onChangeStoreCallback = () => {
           // при обновлении получаем новое состояние

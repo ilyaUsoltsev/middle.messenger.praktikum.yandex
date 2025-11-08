@@ -16,7 +16,7 @@ function render(query: string, block: Block<BlockProps>): void {
   if (!content) {
     throw new Error("Block content is null");
   }
-  root.innerHTML = "";
+  // root.innerHTML = "";
   root.appendChild(content);
 }
 
