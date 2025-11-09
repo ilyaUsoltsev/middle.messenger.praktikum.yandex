@@ -35,3 +35,17 @@ export const getChats = async () => {
 export const setSelectedChatId = (chatId: number) => {
   window.store.set({ selectedChatId: chatId });
 };
+
+export const deleteChat = async (chatId: number) => {
+  window.store.set({ isLoading: true });
+  try {
+    await chatsApi.deleteChat(chatId);
+    const chats = window.store.getState().chats || [];
+    const updatedChats = chats.filter((chat) => chat.id !== chatId);
+    window.store.set({ chats: updatedChats, selectedChatId: null });
+  } catch (responseError) {
+    window.store.set({ error: error.reason });
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};

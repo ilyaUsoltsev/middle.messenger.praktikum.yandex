@@ -12,7 +12,7 @@ import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
-import { createChat, getChats, setSelectedChatId } from "../../services/chats.service";
+import { createChat, deleteChat, getChats, setSelectedChatId } from "../../services/chats.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
@@ -87,7 +87,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         label: "X Delete chat",
         variant: "error",
         onClick: () => {
-          console.log("Delete chat button clicked");
+          const confirmed = window.confirm("Are you sure you want to delete this chat?");
+          if (confirmed) {
+            deleteChat(this.props.selectedChatId!);
+          }
         },
       }),
       MessageForm: new FormComponent({

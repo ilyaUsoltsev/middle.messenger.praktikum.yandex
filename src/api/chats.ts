@@ -16,4 +16,8 @@ export default class ChatsApi {
   async getChats(options?: GetChatsOptions) {
     return JSON.parse((await httpClient.get("", { data: options })).response) as GetChatsResponse;
   }
+
+  async deleteChat(chatId: number) {
+    return JSON.parse((await httpClient.delete("", { data: { chatId } })).response);
+  }
 }
