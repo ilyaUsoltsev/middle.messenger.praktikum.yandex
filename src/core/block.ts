@@ -37,7 +37,6 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
     };
 
     this.props = this._makePropsProxy(props);
-    console.log(this.props);
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
   }
@@ -245,13 +244,11 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
         return typeof value === "function" ? value.bind(target) : value;
       },
       set(target, prop, value) {
-        console.log("setting props", value);
         const oldTarget = { ...target };
         const typedProp = prop as keyof P;
         target[typedProp] = value;
 
         emitBind(Block.EVENTS.FLOW_CDU, oldTarget, target);
-        console.log("Props changed:", prop, "=>", value);
         return true;
       },
       deleteProperty() {
@@ -270,7 +267,6 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
       throw new Error("No element to show");
     }
     content.style.display = "block";
-    console.log("show");
   }
 
   hide() {
