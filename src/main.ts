@@ -4,52 +4,9 @@ import { Store, StoreEvents } from "./core/store";
 import { APP_ROOT_ELEMENT, ROUTER } from "./constants";
 import Router from "./core/router";
 import type { AppState } from "./types";
+import { registerHandlebarsHelpers } from "./core/handlebars";
 
-// const pages: Record<string, Block> = {
-//   chats: new Pages.ChatPage({
-//     chats: chatsFixture,
-//     selectedChat: null,
-//     addUser: false,
-//   }),
-//   chatsSelected: new Pages.ChatPage({
-//     chats: chatsFixture,
-//     selectedChat: chatsFixture[0],
-//     addUser: false,
-//   }),
-//   error: new Pages.ErrorPage({ code: "404", message: "Page not found" }),
-//   login: new Pages.LoginPage(),
-//   register: new Pages.RegisterPage(),
-//   navigation: new Pages.NavigatePage({
-//     pages: [
-//       "chats",
-//       "error",
-//       "login",
-//       "register",
-//       "navigation",
-//       "chatsSelected",
-//       "profile",
-//       "profileUpdate",
-//       "password",
-//     ],
-//   }),
-//   password: new Pages.PasswordPage(),
-//   profile: new Pages.ProfilePage({
-//     firstName: "John",
-//     secondName: "Doe",
-//     displayName: "Johnny",
-//     login: "johndoe",
-//     email: "john.doe@example.com",
-//     phone: "+1234567890",
-//   }),
-//   profileUpdate: new Pages.ProfileEditPage({
-//     firstName: "John",
-//     secondName: "Doe",
-//     displayName: "Johnny",
-//     login: "johndoe",
-//     email: "john.doe@example.com",
-//     phone: "+1234567890",
-//   }),
-// };
+registerHandlebarsHelpers();
 
 window.store = new Store({
   isLoading: false,
