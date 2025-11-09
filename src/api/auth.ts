@@ -5,18 +5,18 @@ const authApi = new HttpClient("/auth");
 
 export default class AuthApi {
   async register(data: CreateUser): Promise<SignUpResponse> {
-    return authApi.post<SignUpResponse>("/signup", { data });
+    return JSON.parse((await authApi.post("/signup", { data })).response) as SignUpResponse;
   }
 
   async login(data: LoginRequestData): Promise<void> {
-    return authApi.post("/signin", { data });
+    return (await authApi.post("/signin", { data })).response;
   }
 
   async me(): Promise<UserDTO> {
-    return authApi.get("/user");
+    return JSON.parse((await authApi.get("/user")).response) as UserDTO;
   }
 
   async logout(): Promise<void> {
-    return authApi.post("/logout");
+    return (await authApi.post("/logout")).response;
   }
 }
