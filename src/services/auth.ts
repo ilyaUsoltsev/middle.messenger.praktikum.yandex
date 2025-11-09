@@ -20,7 +20,6 @@ export const registerUser = async (registerData: CreateUser) => {
 export const loginUser = async (loginData: LoginRequestData) => {
   window.store.set({ isLoading: true });
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   try {
     await authApi.login(loginData);
     window.router.go(ROUTER.chats);
