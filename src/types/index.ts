@@ -31,4 +31,5 @@ export interface AppState {
   >[];
   loginError?: string;
   registerError?: string;
+  selectedChatId: number | null;
 }

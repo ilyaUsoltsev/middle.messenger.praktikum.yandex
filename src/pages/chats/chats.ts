@@ -12,13 +12,14 @@ import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
-import { createChat, getChats } from "../../services/chats.service";
+import { createChat, getChats, setSelectedChatId } from "../../services/chats.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
 interface ChatsProps extends BlockProps {
   chats: Chat[];
   selectedChat?: Chat | null;
+  selectedChatId: number | null;
   addUser: boolean;
   addNewChat: boolean;
 }
@@ -56,16 +57,18 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           this.setProps({ addNewChat: true });
         },
       }),
-      ChatComponents: props.chats.map(
-        (chat) =>
-          new ChatComponent({
-            avatar: chat.avatar,
-            name: chat.name,
-            time: chat.time,
-            lastMessage: chat.lastMessage,
-            isSelected: chat.isSelected,
-          }),
-      ),
+      ChatComponents: new ChatComponent({
+        chats: props.chats,
+        selectedChatId: props.selectedChatId,
+        onClick: (event: Event) => {
+          const target = event.target as HTMLElement;
+          const chatElement = target.closest(".chat") as HTMLElement;
+          if (chatElement) {
+            const chatId = chatElement.dataset.chatid;
+            setSelectedChatId(Number(chatId));
+          }
+        },
+      }),
       AddUserButton: new ButtonComponent({
         label: " + Add user",
         variant: "primary",
@@ -207,18 +210,16 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     // Update ChatComponents when chats change
     if (oldProps.chats !== newProps.chats) {
       console.log("Updating ChatComponents due to chats change", oldProps.chats, newProps.chats);
-      this.setProps({
-        ChatComponents: newProps.chats.map(
-          (chat) =>
-            new ChatComponent({
-              avatar: chat.avatar,
-              name: chat.name,
-              time: chat.time,
-              lastMessage: chat.lastMessage,
-              isSelected: chat.isSelected,
-            }),
-        ),
-      });
+      this.getChild("ChatComponents")?.setProps({ chats: newProps.chats });
+    }
+
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      console.log(
+        "Updating selectedChatId due to change",
+        oldProps.selectedChatId,
+        newProps.selectedChatId,
+      );
+      this.getChild("ChatComponents")?.setProps({ selectedChatId: newProps.selectedChatId });
     }
 
     return true;
@@ -238,11 +239,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                 {{{ ProfileButton }}}
                 {{{ NewChatButton }}}
             </div>
-            <div class="chats__sidebar-chats scrollbar-hide">
-            {{#each ChatComponents}}
-                {{{ this }}}
-            {{/each}}
-            </div>
+            {{{ ChatComponents }}}
         </section>
         {{#if selectedChat}}
             <section class="chats__dialog">
@@ -287,10 +284,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
 }
 
 const mapStateToProps = (state: AppState) => {
-  console.log(state, "Mapping state to ChatsPage props");
   return {
     chats: state.chats || [],
-    selectedChat: state.chats?.find((chat) => chat.id === state.selectedChat) || null,
+    selectedChat: state.chats?.find((chat) => chat.id === state.selectedChatId) || null,
+    selectedChatId: state.selectedChatId,
   };
 };
 

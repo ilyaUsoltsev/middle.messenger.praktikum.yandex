@@ -1,12 +1,22 @@
 import EventBus from "./event-bus";
 import { nanoid } from "nanoid";
-import Handlebars from "handlebars";
+import Handlebars, { type HelperOptions } from "handlebars";
 import type { BlockProps, Nullable } from "./types";
 
 type PropsAndChildren<P extends BlockProps = BlockProps> = {
   props: P;
   children: Record<string, Block<BlockProps> | Block<BlockProps>[]>;
 };
+
+Handlebars.registerHelper(
+  "if_eq",
+  function (this: unknown, a: unknown, b: unknown, options: HelperOptions) {
+    if (a === b) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  },
+);
 
 export default abstract class Block<P extends BlockProps = BlockProps> {
   static EVENTS = {

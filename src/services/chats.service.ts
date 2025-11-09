@@ -24,9 +24,14 @@ export const getChats = async () => {
     const chats = await chatsApi.getChats();
     window.store.set({ chats });
   } catch (responseError) {
-    const error = await (responseError as Response).json();
+    const error = await (responseError as Response);
+    console.log(error, "error in getChats");
     window.store.set({ error: error.reason });
   } finally {
     window.store.set({ isLoading: false });
   }
+};
+
+export const setSelectedChatId = (chatId: number) => {
+  window.store.set({ selectedChatId: chatId });
 };

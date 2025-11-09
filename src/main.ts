@@ -55,7 +55,7 @@ window.store = new Store({
   isLoading: false,
   user: {},
   chats: [],
-  selectedChat: 1,
+  selectedChatId: null,
   messages: [],
   error: { code: "", message: "" },
 });
