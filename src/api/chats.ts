@@ -1,5 +1,6 @@
 import HttpClient from "../core/http";
 import type {
+  ChatUser,
   CreateChatRequest,
   CreateChatResponse,
   GetChatsOptions,
@@ -19,5 +20,13 @@ export default class ChatsApi {
 
   async deleteChat(chatId: number) {
     return JSON.parse((await httpClient.delete("", { data: { chatId } })).response);
+  }
+
+  async addUserToChat(chatId: number, userId: number) {
+    return await httpClient.put("/users", { data: { chatId, users: [userId] } });
+  }
+
+  async getChatUsers(chatId: number) {
+    return JSON.parse((await httpClient.get(`/${chatId}/users`)).response) as ChatUser[];
   }
 }

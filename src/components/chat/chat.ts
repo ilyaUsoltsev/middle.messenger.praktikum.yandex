@@ -21,9 +21,6 @@ export default class ChatComponent extends Block<ChatProps> {
   }
 
   public render(): string {
-    // add chat--selected class if chat is selected
-    console.log(this.props.selectedChatId, "selectedChatId in ChatComponent");
-    console.log(this.props.chats, "chats in ChatComponent");
     return `
           {{#each chats}}
             <div class="chat {{id}} {{#if_eq ../selectedChatId id}}chat--selected{{/if_eq}}" data-chatid="{{id}}">

@@ -15,19 +15,22 @@ export default class HttpClient<T extends string | number | boolean> {
   }
 
   private createMethod(method: METHOD) {
-    return (url: string, options?: Omit<RequestOptions<T>, "method">) => {
+    return (url: string, options?: Omit<RequestOptions<T | Array<unknown>>, "method">) => {
       return this.request(url, { ...options, method });
     };
   }
 
-  private createQueryString(data: Record<string, T>): string {
+  private createQueryString(data: Record<string, T | Array<unknown>>): string {
     const query = Object.entries(data)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value.toString())}`)
       .join("&");
     return query ? `?${query}` : "";
   }
 
-  private request(url: string, options: RequestOptions<T>): Promise<XMLHttpRequest> {
+  private request(
+    url: string,
+    options: RequestOptions<T | Array<unknown>>,
+  ): Promise<XMLHttpRequest> {
     const { method, data, headers, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {

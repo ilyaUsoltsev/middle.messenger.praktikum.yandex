@@ -5,7 +5,8 @@ export type ValidationName =
   | "password"
   | "phone"
   | "message"
-  | "chat_title";
+  | "chat_title"
+  | "user_login";
 
 export const validateInput = (name: ValidationName, value: string): string | null => {
   switch (name) {
@@ -35,13 +36,10 @@ export const validateInput = (name: ValidationName, value: string): string | nul
       }
       break;
     case "message":
-      if (!value.trim()) {
-        return "Message cannot be empty";
-      }
-      break;
     case "chat_title":
+    case "user_login":
       if (!value.trim()) {
-        return "Chat title cannot be empty";
+        return "Cannot be empty";
       }
       break;
   }

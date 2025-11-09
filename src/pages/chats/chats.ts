@@ -1,3 +1,4 @@
+import type { SearchUserResponse } from "../../api/user.types";
 import {
   InputComponent,
   ButtonComponent,
@@ -12,7 +13,14 @@ import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
-import { createChat, deleteChat, getChats, setSelectedChatId } from "../../services/chats.service";
+import {
+  addUserToChat,
+  createChat,
+  deleteChat,
+  getChats,
+  getChatUsers,
+  setSelectedChatId,
+} from "../../services/chats.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
@@ -22,6 +30,7 @@ interface ChatsProps extends BlockProps {
   selectedChatId: number | null;
   addUser: boolean;
   addNewChat: boolean;
+  selectedChatUsers: SearchUserResponse;
 }
 
 interface ChatsState {
@@ -139,25 +148,47 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
       }),
       AddUserDialog: new DialogComponent({
         title: "Add user",
-        Body: new InputComponent({
-          type: "text",
-          name: "user_login",
-          placeholder: "User login",
-          onChange: (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            console.log("User login input changed:", target.value);
+        Body: new FormComponent({
+          onSubmitButtonLabel: "Add user",
+          Body: new InputComponent({
+            type: "text",
+            name: "user_login",
+            placeholder: "User login",
+            onChange: (e: Event) => {
+              const target = e.target as HTMLInputElement;
+              console.log("User login input changed:", target.value);
+            },
+          }),
+          onSubmit: (e: SubmitEvent) => {
+            e.preventDefault();
+            const data = getFormData(e);
+            const { user_login } = data;
+            const error = validateInput("user_login", user_login);
+            if (error) {
+              this.getChild("AddUserDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error });
+              return;
+            } else {
+              this.getChild("AddUserDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error: "" });
+            }
+            addUserToChat(this.props.selectedChatId!, user_login);
+            this.setProps({ addUser: false });
           },
+          AdditionalButtons: new ButtonComponent({
+            label: "Cancel",
+            variant: "error",
+            onClick: () => {
+              console.log("Add user cancelled via button");
+              this.setProps({ addUser: false });
+              this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
+            },
+          }),
         }),
-        onConfirm: () => {
-          console.log("Add user confirmed");
-          this.setProps({ addUser: false });
-          this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
-        },
-        onCancel: () => {
-          console.log("Add user cancelled");
-          this.setProps({ addUser: false });
-          this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
-        },
       }),
       NewChatDialog: new DialogComponent({
         title: "New chat",
@@ -212,17 +243,23 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
   ): boolean {
     // Update ChatComponents when chats change
     if (oldProps.chats !== newProps.chats) {
-      console.log("Updating ChatComponents due to chats change", oldProps.chats, newProps.chats);
       this.getChild("ChatComponents")?.setProps({ chats: newProps.chats });
     }
 
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      console.log(
-        "Updating selectedChatId due to change",
-        oldProps.selectedChatId,
-        newProps.selectedChatId,
-      );
-      this.getChild("ChatComponents")?.setProps({ selectedChatId: newProps.selectedChatId });
+      if (newProps.selectedChatId !== null) {
+        const chatUsers = getChatUsers(newProps.selectedChatId);
+        this.getChild("ChatComponents")?.setProps({
+          selectedChatId: newProps.selectedChatId,
+          selectedChatUsers: chatUsers,
+        });
+      } else {
+        this.getChild("ChatComponents")?.setProps({ selectedChatId: newProps.selectedChatId });
+      }
+    }
+
+    if (oldProps.selectedChatUsers !== newProps.selectedChatUsers) {
+      this.setProps({ selectedChatUsers: newProps.selectedChatUsers });
     }
 
     return true;
@@ -256,7 +293,12 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                     {{{ RemoveUserButton }}}
                     {{{ DeleteChatButton }}}
                 </div>
-            </div>
+                </div>
+                <div>
+                  {{#each selectedChatUsers}}
+                    <div>{{login}}</div>
+                  {{/each}}
+                </div>
             <div class="chats__dialog-messages scrollbar-hide">
                 {{#each selectedChat.messages}}
                     <div class="chats__dialog-date">{{date}}</div>
@@ -291,6 +333,7 @@ const mapStateToProps = (state: AppState) => {
     chats: state.chats || [],
     selectedChat: state.chats?.find((chat) => chat.id === state.selectedChatId) || null,
     selectedChatId: state.selectedChatId,
+    selectedChatUsers: state.selectedChatUsers,
   };
 };
 

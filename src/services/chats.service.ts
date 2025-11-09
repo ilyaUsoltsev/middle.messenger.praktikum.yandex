@@ -1,4 +1,5 @@
 import ChatsApi from "../api/chats";
+import { searchUserByLogin } from "./user.service";
 
 const chatsApi = new ChatsApi();
 
@@ -44,6 +45,34 @@ export const deleteChat = async (chatId: number) => {
     const updatedChats = chats.filter((chat) => chat.id !== chatId);
     window.store.set({ chats: updatedChats, selectedChatId: null });
   } catch (responseError) {
+    window.store.set({ error: error.reason });
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};
+
+export const addUserToChat = async (chatId: number, userLogin: string) => {
+  window.store.set({ isLoading: true });
+  try {
+    const foundUsers = await searchUserByLogin(userLogin);
+    await chatsApi.addUserToChat(chatId, foundUsers[0].id);
+    const chatUsers = await chatsApi.getChatUsers(chatId);
+    window.store.set({ selectedChatUsers: chatUsers });
+  } catch (responseError) {
+    console.log(responseError, "error in addUserToChat");
+    // window.store.set({ error: error.reason });
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};
+
+export const getChatUsers = async (chatId: number) => {
+  window.store.set({ isLoading: true });
+  try {
+    const chatUsers = await chatsApi.getChatUsers(chatId);
+    window.store.set({ selectedChatUsers: chatUsers });
+  } catch (responseError) {
+    const error = await (responseError as Response).json();
     window.store.set({ error: error.reason });
   } finally {
     window.store.set({ isLoading: false });

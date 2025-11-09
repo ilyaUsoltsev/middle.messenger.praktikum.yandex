@@ -1,3 +1,5 @@
+import type { ChatUser } from "../api/chats.types";
+
 export interface AppState {
   user: {
     id?: number;
@@ -32,4 +34,5 @@ export interface AppState {
   loginError?: string;
   registerError?: string;
   selectedChatId: number | null;
+  selectedChatUsers?: ChatUser[];
 }
