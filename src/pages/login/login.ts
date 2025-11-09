@@ -15,7 +15,7 @@ interface LoginPageProps extends BlockProps {
 }
 
 class LoginPage extends Block<LoginPageProps> {
-  constructor(public props: LoginPageProps) {
+  constructor(props: LoginPageProps) {
     super("main", {
       ...props,
       LoginForm: new FormComponent({

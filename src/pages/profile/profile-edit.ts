@@ -21,6 +21,7 @@ interface ProfileEditState extends BlockProps {
 class ProfileEditPage extends Block<ProfileEditState> {
   constructor(props: ProfilePageProps) {
     super("main", {
+      ...props,
       updateAvatar: false,
       ProfileForm: new FormComponent({
         onSubmitButtonLabel: "Save",

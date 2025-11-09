@@ -129,7 +129,7 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
     if (!nextProps) {
       return;
     }
-    Object.assign(this._makePropsProxy(this.props), nextProps);
+    Object.assign(this.props, nextProps);
   };
 
   get element() {
