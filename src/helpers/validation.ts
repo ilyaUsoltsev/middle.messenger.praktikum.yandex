@@ -1,4 +1,11 @@
-export type ValidationName = "name" | "login" | "email" | "password" | "phone" | "message";
+export type ValidationName =
+  | "name"
+  | "login"
+  | "email"
+  | "password"
+  | "phone"
+  | "message"
+  | "chat_title";
 
 export const validateInput = (name: ValidationName, value: string): string | null => {
   switch (name) {
@@ -30,6 +37,11 @@ export const validateInput = (name: ValidationName, value: string): string | nul
     case "message":
       if (!value.trim()) {
         return "Message cannot be empty";
+      }
+      break;
+    case "chat_title":
+      if (!value.trim()) {
+        return "Chat title cannot be empty";
       }
       break;
   }

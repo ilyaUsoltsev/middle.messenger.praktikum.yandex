@@ -1,5 +1,5 @@
 import AuthApi from "../api/auth";
-import type { CreateUser, LoginRequestData } from "../api/types";
+import type { CreateUser, LoginRequestData } from "../api/auth.types";
 import { ROUTER } from "../constants";
 
 const authApi = new AuthApi();

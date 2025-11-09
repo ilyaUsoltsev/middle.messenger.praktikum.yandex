@@ -15,8 +15,8 @@ export default class HttpClient<T extends string | number | boolean> {
   }
 
   private createMethod(method: METHOD) {
-    return <U>(url: string, options?: Omit<RequestOptions<T>, "method">) => {
-      return this.request(url, { ...options, method }) as Promise<U>;
+    return (url: string, options?: Omit<RequestOptions<T>, "method">) => {
+      return this.request(url, { ...options, method });
     };
   }
 
@@ -27,7 +27,7 @@ export default class HttpClient<T extends string | number | boolean> {
     return query ? `?${query}` : "";
   }
 
-  private request(url: string, options: RequestOptions<T>) {
+  private request(url: string, options: RequestOptions<T>): Promise<XMLHttpRequest> {
     const { method, data, headers, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {
@@ -48,7 +48,11 @@ export default class HttpClient<T extends string | number | boolean> {
       }
 
       xhr.onload = function () {
-        resolve(xhr);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr);
+        } else {
+          reject(xhr);
+        }
       };
 
       xhr.onabort = reject;

@@ -1,5 +1,5 @@
 import HttpClient from "../core/http";
-import type { CreateUser, LoginRequestData, SignUpResponse, UserDTO } from "./types";
+import type { CreateUser, LoginRequestData, SignUpResponse, UserDTO } from "./auth.types";
 
 const authApi = new HttpClient("/auth");
 

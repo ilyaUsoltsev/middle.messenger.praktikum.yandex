@@ -1,4 +1,4 @@
-import type { CreateUser } from "../../api/types";
+import type { CreateUser } from "../../api/auth.types";
 import { ButtonComponent, FormComponent, RegisterFormComponent } from "../../components";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
@@ -6,7 +6,7 @@ import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
-import { registerUser } from "../../services/auth";
+import { registerUser } from "../../services/auth.service";
 import type { AppState } from "../../types";
 
 interface RegisterPageProps extends BlockProps {

@@ -74,6 +74,7 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
   init() {
     this._createResources();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.componentDidMount();
   }
 
   private _getChildrenAndProps(propsAndChildren: Record<string, unknown>): PropsAndChildren<P> {

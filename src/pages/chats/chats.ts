@@ -11,6 +11,8 @@ import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import { withRouter } from "../../helpers/with-router";
+import { createChat, getChats } from "../../services/chats.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
@@ -18,6 +20,7 @@ interface ChatsProps extends BlockProps {
   chats: Chat[];
   selectedChat?: Chat | null;
   addUser: boolean;
+  addNewChat: boolean;
 }
 
 interface ChatsState {
@@ -43,6 +46,14 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         variant: "primary",
         onClick: () => {
           console.log("Profile button clicked");
+        },
+      }),
+      NewChatButton: new ButtonComponent({
+        label: "New chat",
+        variant: "secondary",
+        onClick: () => {
+          console.log("New chat button clicked");
+          this.setProps({ addNewChat: true });
         },
       }),
       ChatComponents: props.chats.map(
@@ -142,7 +153,80 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           this.getChild("AddUserDialog")?.getChild("Body")?.setProps({ value: "" });
         },
       }),
+      NewChatDialog: new DialogComponent({
+        title: "New chat",
+        Body: new FormComponent({
+          onSubmitButtonLabel: "Create",
+          Body: new InputComponent({
+            type: "text",
+            name: "chat_title",
+            placeholder: "Chat title",
+            onChange: (e: Event) => {
+              const target = e.target as HTMLInputElement;
+              console.log("Chat title input changed:", target.value);
+            },
+          }),
+          onSubmit: (e: SubmitEvent) => {
+            e.preventDefault();
+            const data = getFormData(e);
+            const { chat_title } = data;
+            const error = validateInput("chat_title", chat_title);
+            if (error) {
+              this.getChild("NewChatDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error });
+              return;
+            } else {
+              this.getChild("NewChatDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error: "" });
+            }
+            createChat(chat_title);
+            this.setProps({ addNewChat: false });
+          },
+          AdditionalButtons: new ButtonComponent({
+            label: "Cancel",
+            variant: "error",
+            onClick: () => {
+              console.log("Create chat cancelled via button");
+              this.setProps({ addNewChat: false });
+              this.getChild("NewChatDialog")?.getChild("Body")?.setProps({ value: "" });
+            },
+          }),
+        }),
+      }),
     });
+  }
+
+  componentDidUpdate(
+    oldProps: ChatsProps & ChatsState,
+    newProps: ChatsProps & ChatsState,
+  ): boolean {
+    // Update ChatComponents when chats change
+    if (oldProps.chats !== newProps.chats) {
+      console.log("Updating ChatComponents due to chats change", oldProps.chats, newProps.chats);
+      this.setProps({
+        ChatComponents: newProps.chats.map(
+          (chat) =>
+            new ChatComponent({
+              avatar: chat.avatar,
+              name: chat.name,
+              time: chat.time,
+              lastMessage: chat.lastMessage,
+              isSelected: chat.isSelected,
+            }),
+        ),
+      });
+    }
+
+    return true;
+  }
+
+  componentDidMount(): void {
+    const existingChats = getChats();
+    console.log("Fetched chats on mount:", existingChats);
   }
 
   public render(): string {
@@ -152,6 +236,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
             <div class="chats__sidebar-header">
                 {{{ InputSearch }}}
                 {{{ ProfileButton }}}
+                {{{ NewChatButton }}}
             </div>
             <div class="chats__sidebar-chats scrollbar-hide">
             {{#each ChatComponents}}
@@ -193,14 +278,20 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         {{#if addUser}}
             {{{ AddUserDialog }}}
         {{/if}}
+        {{#if addNewChat}}
+            {{{ NewChatDialog }}}
+        {{/if}}
      </div>
     `;
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
-  chats: state.chats || [],
-  selectedChat: state.chats?.find((chat) => chat.id === state.selectedChat) || null,
-});
+const mapStateToProps = (state: AppState) => {
+  console.log(state, "Mapping state to ChatsPage props");
+  return {
+    chats: state.chats || [],
+    selectedChat: state.chats?.find((chat) => chat.id === state.selectedChat) || null,
+  };
+};
 
-export default connect(mapStateToProps)(ChatsPage);
+export default connect(mapStateToProps)(withRouter(ChatsPage));
