@@ -5,6 +5,7 @@ import { APP_ROOT_ELEMENT, ROUTER } from "./constants";
 import Router from "./core/router";
 import type { AppState } from "./types";
 import { registerHandlebarsHelpers } from "./core/handlebars";
+import { checkLoginUser } from "./services/auth.service";
 
 registerHandlebarsHelpers();
 
@@ -15,6 +16,7 @@ window.store = new Store({
   selectedChatId: null,
   messages: [],
   error: { code: "", message: "" },
+  chatToken: undefined,
 });
 
 window.store.on(StoreEvents.Updated, (prevState: AppState, newState: AppState) => {
@@ -35,3 +37,13 @@ window.router
   .use(ROUTER.error, Pages.ErrorPage)
   .use("*", Pages.ErrorPage)
   .start();
+
+const checkLogin = async () => {
+  try {
+    await checkLoginUser();
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+  }
+};
+
+checkLogin();

@@ -18,6 +18,7 @@ import {
   createChat,
   deleteChat,
   getChats,
+  getChatToken,
   getChatUsers,
   setSelectedChatId,
 } from "../../services/chats.service";
@@ -31,6 +32,7 @@ interface ChatsProps extends BlockProps {
   addUser: boolean;
   addNewChat: boolean;
   selectedChatUsers: SearchUserResponse;
+  chatToken?: string;
 }
 
 interface ChatsState {
@@ -248,26 +250,57 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
 
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       if (newProps.selectedChatId !== null) {
-        const chatUsers = getChatUsers(newProps.selectedChatId);
-        this.getChild("ChatComponents")?.setProps({
-          selectedChatId: newProps.selectedChatId,
-          selectedChatUsers: chatUsers,
-        });
-      } else {
-        this.getChild("ChatComponents")?.setProps({ selectedChatId: newProps.selectedChatId });
+        getChatUsers(newProps.selectedChatId);
+        getChatToken(newProps.selectedChatId);
       }
+      this.getChild("ChatComponents")?.setProps({ selectedChatId: newProps.selectedChatId });
     }
 
     if (oldProps.selectedChatUsers !== newProps.selectedChatUsers) {
       this.setProps({ selectedChatUsers: newProps.selectedChatUsers });
     }
 
+    if (oldProps.chatToken !== newProps.chatToken) {
+      const socket = new WebSocket(
+        `wss://ya-praktikum.tech/ws/chats/${window.store.getState().user.id}/${newProps.selectedChatId}/${newProps.chatToken}`,
+      );
+
+      socket.addEventListener("open", () => {
+        console.log("Соединение установлено");
+
+        setInterval(() => {
+          socket.send(
+            JSON.stringify({
+              type: "ping",
+            }),
+          );
+        }, 10000);
+      });
+
+      socket.addEventListener("close", (event) => {
+        if (event.wasClean) {
+          console.log("Соединение закрыто чисто");
+        } else {
+          console.log("Обрыв соединения");
+        }
+
+        console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+      });
+
+      socket.addEventListener("message", (event) => {
+        console.log("Получены данные", event.data);
+      });
+
+      socket.addEventListener("error", (event) => {
+        console.log("Ошибка", event.message);
+      });
+    }
+
     return true;
   }
 
   componentDidMount(): void {
-    const existingChats = getChats();
-    console.log("Fetched chats on mount:", existingChats);
+    getChats();
   }
 
   public render(): string {
@@ -334,6 +367,7 @@ const mapStateToProps = (state: AppState) => {
     selectedChat: state.chats?.find((chat) => chat.id === state.selectedChatId) || null,
     selectedChatId: state.selectedChatId,
     selectedChatUsers: state.selectedChatUsers,
+    chatToken: state.chatToken,
   };
 };
 

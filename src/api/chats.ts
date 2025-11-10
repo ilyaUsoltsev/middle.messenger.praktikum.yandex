@@ -29,4 +29,8 @@ export default class ChatsApi {
   async getChatUsers(chatId: number) {
     return JSON.parse((await httpClient.get(`/${chatId}/users`)).response) as ChatUser[];
   }
+
+  async getChatToken(chatId: number) {
+    return JSON.parse((await httpClient.post(`/token/${chatId}`)).response) as { token: string };
+  }
 }

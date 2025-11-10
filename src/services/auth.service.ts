@@ -38,8 +38,8 @@ export const checkLoginUser = async () => {
     window.router.go(ROUTER.chats);
     window.store.set({ user });
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ loginError: error.reason });
+    const error = await responseError;
+    window.store.set({ loginError: "checkLoginUser error" });
   } finally {
     window.store.set({ isLoading: false });
   }

@@ -78,3 +78,14 @@ export const getChatUsers = async (chatId: number) => {
     window.store.set({ isLoading: false });
   }
 };
+
+export const getChatToken = async (chatId: number) => {
+  try {
+    const response = await chatsApi.getChatToken(chatId);
+    window.store.set({ chatToken: response.token });
+    return response;
+  } catch (error) {
+    console.error("Error fetching chat token:", error);
+    throw error;
+  }
+};
