@@ -26,11 +26,12 @@ export interface AppState {
     number,
     Array<{
       id: number;
-      userId: number;
+      user_id: number;
       content: string;
-      timestamp: string;
+      time: string;
+      type: string;
     }>
-  >[];
+  >;
   loginError?: string;
   registerError?: string;
   selectedChatId: number | null;

@@ -22,6 +22,7 @@ import {
   getChatUsers,
   setSelectedChatId,
 } from "../../services/chats.service";
+import webSocketService from "../../services/websocket.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
@@ -119,33 +120,16 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           } else {
             this.getChild("MessageForm")?.setProps({ error: "" });
           }
-          console.log("Submitting formData:", formData);
-        },
-      }),
-      MessageInput: new InputComponent({
-        type: "text",
-        name: "message",
-        placeholder: "Type a message",
-        onChange: (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          const value = target.value;
-          this.setProps({ messageText: value });
-          const error = validateInput("message", value);
-          this.getChild("MessageInput")?.setProps({ error, value });
-        },
-      }),
-      SendMessageButton: new ButtonComponent({
-        label: "Send",
-        variant: "secondary",
-        onClick: () => {
-          console.log("Sending message...", this.props.messageText);
-          const error = validateInput("message", this.props.messageText);
-          if (error) {
-            console.log("Validation error:", error);
-            this.getChild("MessageInput")?.setProps({ error });
-            return;
+
+          if (webSocketService.isConnected()) {
+            webSocketService.sendMessage(message);
+            this.getChild("MessageForm")
+              ?.getChild("Body")
+              ?.getChild("MessageInput")
+              ?.setProps({ value: "" });
+          } else {
+            console.error("WebSocket is not connected");
           }
-          this.getChild("MessageInput")?.setProps({ value: "" });
         },
       }),
       AddUserDialog: new DialogComponent({
@@ -249,6 +233,9 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     }
 
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      // Disconnect from previous chat
+      webSocketService.disconnect();
+
       if (newProps.selectedChatId !== null) {
         getChatUsers(newProps.selectedChatId);
         getChatToken(newProps.selectedChatId);
@@ -260,40 +247,11 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
       this.setProps({ selectedChatUsers: newProps.selectedChatUsers });
     }
 
-    if (oldProps.chatToken !== newProps.chatToken) {
-      const socket = new WebSocket(
-        `wss://ya-praktikum.tech/ws/chats/${window.store.getState().user.id}/${newProps.selectedChatId}/${newProps.chatToken}`,
-      );
-
-      socket.addEventListener("open", () => {
-        console.log("Соединение установлено");
-
-        setInterval(() => {
-          socket.send(
-            JSON.stringify({
-              type: "ping",
-            }),
-          );
-        }, 10000);
-      });
-
-      socket.addEventListener("close", (event) => {
-        if (event.wasClean) {
-          console.log("Соединение закрыто чисто");
-        } else {
-          console.log("Обрыв соединения");
-        }
-
-        console.log(`Код: ${event.code} | Причина: ${event.reason}`);
-      });
-
-      socket.addEventListener("message", (event) => {
-        console.log("Получены данные", event.data);
-      });
-
-      socket.addEventListener("error", (event) => {
-        console.log("Ошибка", event.message);
-      });
+    if (oldProps.chatToken !== newProps.chatToken && newProps.chatToken) {
+      const userId = window.store.getState().user.id;
+      if (userId && newProps.selectedChatId) {
+        webSocketService.connect(userId, newProps.selectedChatId, newProps.chatToken);
+      }
     }
 
     return true;
@@ -301,6 +259,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
 
   componentDidMount(): void {
     getChats();
+  }
+
+  componentWillUnmount(): void {
+    webSocketService.disconnect();
   }
 
   public render(): string {
@@ -333,13 +295,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                   {{/each}}
                 </div>
             <div class="chats__dialog-messages scrollbar-hide">
-                {{#each selectedChat.messages}}
-                    <div class="chats__dialog-date">{{date}}</div>
                     {{#each messages}}
-                        <div class="message {{#if isOwn}}message--own{{/if}}">
-                        {{text}} @ {{time}}
+                        <div class="message {{#if_eq user_id ../user.id}}message--own{{/if_eq}}">
+                        {{content}} @ {{time}}
                         </div>
-                    {{/each}}
                 {{/each}}
             </div>
             {{{ MessageForm }}}
@@ -368,6 +327,8 @@ const mapStateToProps = (state: AppState) => {
     selectedChatId: state.selectedChatId,
     selectedChatUsers: state.selectedChatUsers,
     chatToken: state.chatToken,
+    messages: state.selectedChatId ? state?.messages?.[state.selectedChatId] || [] : [],
+    user: state.user,
   };
 };
 

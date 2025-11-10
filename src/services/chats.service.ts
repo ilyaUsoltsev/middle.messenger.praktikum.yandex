@@ -25,9 +25,7 @@ export const getChats = async () => {
     const chats = await chatsApi.getChats();
     window.store.set({ chats });
   } catch (responseError) {
-    const error = await (responseError as Response);
-    console.log(error, "error in getChats");
-    window.store.set({ error: error.reason });
+    console.log(responseError, "error in getChats");
   } finally {
     window.store.set({ isLoading: false });
   }
@@ -45,7 +43,7 @@ export const deleteChat = async (chatId: number) => {
     const updatedChats = chats.filter((chat) => chat.id !== chatId);
     window.store.set({ chats: updatedChats, selectedChatId: null });
   } catch (responseError) {
-    window.store.set({ error: error.reason });
+    console.error("Error deleting chat:", responseError);
   } finally {
     window.store.set({ isLoading: false });
   }
