@@ -1,6 +1,7 @@
 import { InputComponent, ButtonComponent, BackButtonComponent } from "../../components";
 import Block from "../../core/block";
 import { connect } from "../../helpers/connect";
+import { withRouter } from "../../helpers/with-router";
 import type { AppState } from "../../types";
 import type { ProfilePageProps } from "./types";
 
@@ -63,7 +64,7 @@ class ProfilePage extends Block<ProfilePageProps> {
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log("Go to previous page");
+          window.router.back();
         },
       }),
     });
@@ -104,4 +105,4 @@ const mapStateToProps = (state: AppState) => ({
   phone: state.user.phone,
 });
 
-export default connect(mapStateToProps)(ProfilePage);
+export default connect(mapStateToProps)(withRouter(ProfilePage));

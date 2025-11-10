@@ -58,7 +58,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         label: "My profile",
         variant: "primary",
         onClick: () => {
-          console.log("Profile button clicked");
+          window.router.go("/profile");
         },
       }),
       NewChatButton: new ButtonComponent({
@@ -295,11 +295,11 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                   {{/each}}
                 </div>
             <div class="chats__dialog-messages scrollbar-hide">
-                    {{#each messages}}
-                        <div class="message {{#if_eq user_id ../user.id}}message--own{{/if_eq}}">
-                        {{content}} @ {{time}}
-                        </div>
-                {{/each}}
+              {{#each messages}}
+                  <div class="message {{#if_eq user_id ../user.id}}message--own{{/if_eq}}">
+                  {{content}} @ {{time}}
+                  </div>
+              {{/each}}
             </div>
             {{{ MessageForm }}}
             </section>
