@@ -11,7 +11,8 @@
     "start": "vite build && vite preview --port 3000",
     "dev": "vite",
     "lint": "eslint . --ext .ts --ext .tsx && stylelint '**/*.{css,scss}'",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "generate-swagger-types": "npx swagger-typescript-api generate --path src/swagger/swagger.json --output src/api"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
