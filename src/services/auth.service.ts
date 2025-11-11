@@ -44,3 +44,17 @@ export const checkLoginUser = async () => {
     window.store.set({ isLoading: false });
   }
 };
+
+export const logoutUser = async () => {
+  window.store.set({ isLoading: true });
+  try {
+    await authApi.logout();
+    window.store.set({ user: {} });
+    window.router.go(ROUTER.login);
+  } catch (responseError) {
+    const error = await (responseError as Response).json();
+    window.store.set({ loginError: error.reason });
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};

@@ -2,6 +2,7 @@ import { InputComponent, ButtonComponent, BackButtonComponent } from "../../comp
 import Block from "../../core/block";
 import { connect } from "../../helpers/connect";
 import { withRouter } from "../../helpers/with-router";
+import { logoutUser } from "../../services/auth.service";
 import type { AppState } from "../../types";
 import type { ProfilePageProps } from "./types";
 
@@ -59,7 +60,7 @@ class ProfilePage extends Block<ProfilePageProps> {
         variant: "error",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log("Logout clicked");
+          logoutUser();
         },
       }),
       BackButton: new BackButtonComponent({
