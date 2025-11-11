@@ -1,5 +1,6 @@
 import type { LoginRequestData } from "../../api/auth.types";
 import { ButtonComponent, FormComponent, LoginFormComponent } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
@@ -49,7 +50,7 @@ class LoginPage extends Block<LoginPageProps> {
           variant: "secondary",
           onClick: (e: Event) => {
             e.preventDefault();
-            window.router.go("/register");
+            window.router.go(ROUTER.register);
           },
         }),
       }),

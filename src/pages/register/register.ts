@@ -1,5 +1,6 @@
 import type { CreateUser } from "../../api/auth.types";
 import { ButtonComponent, FormComponent, RegisterFormComponent } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
@@ -66,7 +67,7 @@ class RegisterPage extends Block<RegisterPageProps> {
           label: "Sign in",
           variant: "secondary",
           onClick: () => {
-            window.router.go("/login");
+            window.router.go(ROUTER.login);
           },
         }),
       }),

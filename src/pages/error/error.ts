@@ -1,4 +1,5 @@
 import { BackButtonComponent } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
 import type Router from "../../core/router";
 import type { BlockProps } from "../../core/types";
@@ -19,7 +20,7 @@ class ErrorPage extends Block<ErrorProps> {
       BackButton: new BackButtonComponent({
         onClick: () => {
           console.log("Go to previous page");
-          this.props.router.go("/chats");
+          this.props.router.go(ROUTER.chats);
         },
       }),
     });

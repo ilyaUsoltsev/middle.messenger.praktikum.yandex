@@ -7,6 +7,7 @@ import {
   FormComponent,
   MessageFormComponent,
 } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
@@ -67,7 +68,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         label: "My profile",
         variant: "primary",
         onClick: () => {
-          window.router.go("/profile");
+          window.router.go(ROUTER.profile);
         },
       }),
       NewChatButton: new ButtonComponent({
