@@ -26,6 +26,14 @@ import webSocketService from "../../services/websocket.service";
 import type { AppState } from "../../types";
 import type { Chat } from "./types";
 
+interface Message {
+  id: number;
+  time: string;
+  user_id: number;
+  content: string;
+  type: string;
+}
+
 interface ChatsProps extends BlockProps {
   chats: Chat[];
   selectedChat?: Chat | null;
@@ -34,6 +42,7 @@ interface ChatsProps extends BlockProps {
   addNewChat: boolean;
   selectedChatUsers: SearchUserResponse;
   chatToken?: string;
+  messages?: Message[];
 }
 
 interface ChatsState {
@@ -254,6 +263,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
       }
     }
 
+    if (oldProps.messages?.length !== newProps.messages?.length) {
+      setTimeout(() => this.scrollToBottom(), 0);
+    }
+
     return true;
   }
 
@@ -263,6 +276,13 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
 
   componentWillUnmount(): void {
     webSocketService.disconnect();
+  }
+
+  private scrollToBottom(): void {
+    const messagesContainer = this.getContent()?.querySelector(".chats__dialog-messages");
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
   }
 
   public render(): string {

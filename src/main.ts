@@ -14,7 +14,7 @@ window.store = new Store({
   user: {},
   chats: [],
   selectedChatId: null,
-  messages: [],
+  messages: {},
   error: { code: "", message: "" },
   chatToken: undefined,
 });

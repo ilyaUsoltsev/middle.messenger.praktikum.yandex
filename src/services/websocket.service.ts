@@ -126,7 +126,7 @@ class WebSocketService {
       // Store messages in the store
       const messages = window.store.getState().messages || {};
       if (this.chatId !== null) {
-        messages[this.chatId] = data;
+        messages[this.chatId] = data.reverse();
         window.store.set({ messages });
       }
     } else if ("content" in data) {
