@@ -12,6 +12,7 @@ import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
+import { protectedRoute } from "../../helpers/protected";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
 import {
@@ -353,4 +354,4 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(ChatsPage));
+export default connect(mapStateToProps)(withRouter(protectedRoute(ChatsPage)));
