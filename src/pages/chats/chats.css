@@ -44,6 +44,17 @@
   border-left: 1px solid var(--primary-color);
 }
 
+.chats__dialog-users {
+  padding: 8px;
+  border-bottom: 1px solid var(--primary-color);
+  display: flex;
+  gap: 8px;
+}
+
+.chats__dialog-users--username {
+  color: var(--secondary-color);
+}
+
 .chats__dialog-actions {
   display: flex;
   align-items: center;

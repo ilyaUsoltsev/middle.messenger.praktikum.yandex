@@ -9,10 +9,7 @@ export function protectedRoute<T extends BlockProps>(Component: new (props: T) =
     }
 
     componentDidMount() {
-      super.componentDidMount?.();
-
       const user = window.store.getState().user;
-
       if (!user || !user.id) {
         window.router.go(ROUTER.login);
       }

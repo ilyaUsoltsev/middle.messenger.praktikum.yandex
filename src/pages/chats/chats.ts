@@ -12,7 +12,6 @@ import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
-import { protectedRoute } from "../../helpers/protected";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
 import {
@@ -311,9 +310,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                     {{{ DeleteChatButton }}}
                 </div>
                 </div>
-                <div>
+                <div class="chats__dialog-users">
+                 <span>Users in chat:</span>
                   {{#each selectedChatUsers}}
-                    <div>{{login}}</div>
+                   <span class="chats__dialog-users--username">{{login}}</span>
                   {{/each}}
                 </div>
             <div class="chats__dialog-messages scrollbar-hide">
@@ -354,4 +354,4 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(protectedRoute(ChatsPage)));
+export default connect(mapStateToProps)(withRouter(ChatsPage));
