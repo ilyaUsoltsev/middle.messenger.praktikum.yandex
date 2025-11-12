@@ -8,6 +8,6 @@ export enum ROUTER {
   profile = "/settings",
   profileUpdate = "/settings/update",
   password = "/password",
-  chats = "/chats",
+  messages = "/messenger",
   error = "/error",
 }
