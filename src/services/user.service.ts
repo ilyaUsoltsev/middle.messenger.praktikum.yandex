@@ -1,6 +1,7 @@
 import UserApi from "../api/user";
 import type { UpdateUserProfileRequest, ChangePasswordRequest } from "../api/user.types";
 import { ROUTER } from "../constants";
+import { extractError } from "../helpers/extract-error";
 
 const userApi = new UserApi();
 
@@ -21,9 +22,8 @@ export const updateUserProfile = async (profileData: UpdateUserProfileRequest) =
     window.store.set({ user });
     window.router.go(ROUTER.profile);
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ profileError: error.reason });
-    throw error;
+    window.store.set({ profileError: extractError(responseError) });
+    throw responseError;
   } finally {
     window.store.set({ isLoading: false });
   }
@@ -37,9 +37,8 @@ export const updateUserAvatar = async (file: File) => {
     const user = await userApi.updateAvatar(formData);
     window.store.set({ user });
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ profileError: error.reason });
-    throw error;
+    window.store.set({ profileError: extractError(responseError) });
+    throw responseError;
   } finally {
     window.store.set({ isLoading: false });
   }
@@ -51,9 +50,8 @@ export const changeUserPassword = async (passwordData: ChangePasswordRequest) =>
     await userApi.changePassword(passwordData);
     window.router.go(ROUTER.profile);
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ profileError: error.reason });
-    throw error;
+    window.store.set({ profileError: extractError(responseError) });
+    throw responseError;
   } finally {
     window.store.set({ isLoading: false });
   }

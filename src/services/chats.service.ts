@@ -1,5 +1,6 @@
 import ChatsApi from "../api/chats";
 import { searchUserByLogin } from "./user.service";
+import { extractErrorObject } from "../helpers/extract-error";
 
 const chatsApi = new ChatsApi();
 
@@ -12,8 +13,7 @@ export const createChat = async (title: string) => {
     console.log(responseGetLastChat, "responseGetLastChat");
     window.store.set({ chats: [responseGetLastChat[0], ...chats] });
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ error: error.reason });
+    window.store.set({ error: extractErrorObject(responseError) });
   } finally {
     window.store.set({ isLoading: false });
   }
@@ -70,8 +70,7 @@ export const getChatUsers = async (chatId: number) => {
     const chatUsers = await chatsApi.getChatUsers(chatId);
     window.store.set({ selectedChatUsers: chatUsers });
   } catch (responseError) {
-    const error = await (responseError as Response).json();
-    window.store.set({ error: error.reason });
+    window.store.set({ error: extractErrorObject(responseError) });
   } finally {
     window.store.set({ isLoading: false });
   }
