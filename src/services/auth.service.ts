@@ -10,7 +10,8 @@ export const registerUser = async (registerData: CreateUser) => {
     await authApi.register(registerData);
     window.router.go(ROUTER.login);
   } catch (responseError) {
-    const error = await (responseError as Response).json();
+    const xhr = responseError as XMLHttpRequest;
+    const error = xhr.response ? JSON.parse(xhr.response) : { reason: "Unknown error" };
     window.store.set({ loginError: error.reason });
   } finally {
     window.store.set({ isLoading: false });
@@ -24,7 +25,8 @@ export const loginUser = async (loginData: LoginRequestData) => {
     await authApi.login(loginData);
     window.router.go(ROUTER.messages);
   } catch (responseError) {
-    const error = await (responseError as Response).json();
+    const xhr = responseError as XMLHttpRequest;
+    const error = xhr.response ? JSON.parse(xhr.response) : { reason: "Unknown error" };
     window.store.set({ loginError: error.reason });
   } finally {
     window.store.set({ isLoading: false });
@@ -38,8 +40,9 @@ export const checkLoginUser = async () => {
     window.router.go(ROUTER.messages);
     window.store.set({ user });
   } catch (responseError) {
-    console.error("checkLoginUser error:", responseError);
-    window.store.set({ loginError: "checkLoginUser error" });
+    const xhr = responseError as XMLHttpRequest;
+    const error = xhr.response ? JSON.parse(xhr.response) : { reason: "Unknown error" };
+    window.store.set({ loginError: error.reason });
   } finally {
     window.store.set({ isLoading: false });
   }
@@ -52,7 +55,8 @@ export const logoutUser = async () => {
     window.store.set({ user: {} });
     window.router.go(ROUTER.login);
   } catch (responseError) {
-    const error = await (responseError as Response).json();
+    const xhr = responseError as XMLHttpRequest;
+    const error = xhr.response ? JSON.parse(xhr.response) : { reason: "Unknown error" };
     window.store.set({ loginError: error.reason });
   } finally {
     window.store.set({ isLoading: false });
