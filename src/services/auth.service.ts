@@ -22,7 +22,7 @@ export const loginUser = async (loginData: LoginRequestData) => {
 
   try {
     await authApi.login(loginData);
-    window.router.go(ROUTER.chats);
+    window.router.go(ROUTER.messages);
   } catch (responseError) {
     const error = await (responseError as Response).json();
     window.store.set({ loginError: error.reason });
@@ -35,7 +35,7 @@ export const checkLoginUser = async () => {
   window.store.set({ isLoading: true });
   try {
     const user = await authApi.me();
-    window.router.go(ROUTER.chats);
+    window.router.go(ROUTER.messages);
     window.store.set({ user });
   } catch (responseError) {
     console.error("checkLoginUser error:", responseError);

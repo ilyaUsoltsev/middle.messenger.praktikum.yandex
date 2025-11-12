@@ -8,6 +8,7 @@ import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import { changeUserPassword } from "../../services/user.service";
 
 interface PasswordPageState extends BlockProps {
   oldPassword: string;
@@ -26,7 +27,7 @@ export default class PasswordPage extends Block<PasswordPageState> {
         Body: new PasswordFormComponent(),
         onSubmitButtonLabel: "Save",
         className: "border",
-        onSubmit: (e: SubmitEvent) => {
+        onSubmit: async (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { oldPassword, newPassword, confirmNewPassword } = data;
@@ -50,19 +51,30 @@ export default class PasswordPage extends Block<PasswordPageState> {
             });
             return;
           }
-          console.log("Form submitted with data:", data);
+
+          try {
+            await changeUserPassword({
+              oldPassword,
+              newPassword,
+            });
+          } catch (error) {
+            console.error("Failed to change password:", error);
+            this.getChild("PasswordForm")?.setProps({
+              error: "Failed to change password. Please check your old password and try again.",
+            });
+          }
         },
         AdditionalButtons: new ButtonComponent({
           label: "Cancel",
           variant: "secondary",
           onClick: () => {
-            console.log("Cancel button clicked");
+            window.router.back();
           },
         }),
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log("Go to previous page");
+          window.router.back();
         },
       }),
     });

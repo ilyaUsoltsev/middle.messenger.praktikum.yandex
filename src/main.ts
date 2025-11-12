@@ -29,7 +29,7 @@ window.router
   .use(ROUTER.main, Pages.ChatPage)
   .use(ROUTER.login, Pages.LoginPage)
   .use(ROUTER.register, Pages.RegisterPage)
-  .use(ROUTER.chats, Pages.ChatPage)
+  .use(ROUTER.messages, Pages.ChatPage)
   .use(ROUTER.profile, Pages.ProfilePage)
   .use(ROUTER.profileUpdate, Pages.ProfileEditPage)
   .use(ROUTER.password, Pages.PasswordPage)

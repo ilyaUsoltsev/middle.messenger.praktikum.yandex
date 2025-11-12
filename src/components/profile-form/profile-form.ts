@@ -3,9 +3,9 @@ import { getInputValueAndError } from "../../helpers/get-input-value-and-error";
 import { InputComponent } from "../input";
 
 interface ProfileFormProps {
-  firstName: string;
-  secondName: string;
-  displayName: string;
+  first_name: string;
+  second_name: string;
+  display_name: string;
   login: string;
   email: string;
   phone: string;
@@ -18,7 +18,7 @@ export default class ProfileFormComponent extends Block {
       FirstNameInput: new InputComponent({
         label: "First name",
         name: "first_name",
-        value: props.firstName,
+        value: props.first_name,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "name");
           this.getChild("FirstNameInput")?.setProps({ error, value });
@@ -27,7 +27,7 @@ export default class ProfileFormComponent extends Block {
       SecondNameInput: new InputComponent({
         label: "Second name",
         name: "second_name",
-        value: props.secondName,
+        value: props.second_name,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "name");
           this.getChild("SecondNameInput")?.setProps({ error, value });
@@ -36,7 +36,7 @@ export default class ProfileFormComponent extends Block {
       NicknameInput: new InputComponent({
         label: "Nickname",
         name: "display_name",
-        value: props.displayName,
+        value: props.display_name,
         onChange: (e: Event) => {
           const { value, error } = getInputValueAndError(e, "name");
           this.getChild("NicknameInput")?.setProps({ error, value });

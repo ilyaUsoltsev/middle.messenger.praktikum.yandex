@@ -20,7 +20,7 @@ class ErrorPage extends Block<ErrorProps> {
       BackButton: new BackButtonComponent({
         onClick: () => {
           console.log("Go to previous page");
-          this.props.router.go(ROUTER.chats);
+          this.props.router.go(ROUTER.messages);
         },
       }),
     });

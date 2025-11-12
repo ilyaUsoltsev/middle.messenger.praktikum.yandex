@@ -5,11 +5,12 @@ export interface AppState {
     id?: number;
     email?: string;
     name?: string;
-    displayName?: string;
-    firstName?: string;
-    secondName?: string;
+    display_name?: string;
+    first_name?: string;
+    second_name?: string;
     login?: string;
     phone?: string;
+    avatar?: string;
   };
   chats?: Array<{
     id: number;
@@ -34,6 +35,7 @@ export interface AppState {
   >;
   loginError?: string;
   registerError?: string;
+  profileError?: string;
   selectedChatId: number | null;
   selectedChatUsers?: ChatUser[];
   chatToken?: string;

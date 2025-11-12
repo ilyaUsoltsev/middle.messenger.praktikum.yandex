@@ -36,7 +36,7 @@ export default class HttpClient<T extends string | number | boolean> {
     return new Promise((resolve, reject) => {
       let query: string = `${this.baseUrl}${url}`;
 
-      if (method === METHODS.GET && data) {
+      if (method === METHODS.GET && data && !(data instanceof FormData)) {
         query += this.createQueryString(data);
       }
 
@@ -65,9 +65,13 @@ export default class HttpClient<T extends string | number | boolean> {
       if (method === METHODS.GET) {
         xhr.send();
       } else {
-        xhr.setRequestHeader("Content-Type", "application/json");
-        const payload = JSON.stringify(data ?? {});
-        xhr.send(payload);
+        if (data instanceof FormData) {
+          xhr.send(data);
+        } else {
+          xhr.setRequestHeader("Content-Type", "application/json");
+          const payload = JSON.stringify(data ?? {});
+          xhr.send(payload);
+        }
       }
     });
   }

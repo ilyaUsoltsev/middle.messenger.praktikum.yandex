@@ -13,7 +13,7 @@ export type RequestMethod = (typeof METHODS)[keyof typeof METHODS];
 
 export interface RequestOptions<T> {
   method: RequestMethod;
-  data?: Record<string, T>;
+  data?: Record<string, T> | FormData;
   headers?: Record<string, string>;
   timeout?: number;
 }
