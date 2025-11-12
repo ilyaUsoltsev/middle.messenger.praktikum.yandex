@@ -42,7 +42,6 @@ class LoginPage extends Block<LoginPageProps> {
             this.getChild("LoginForm")?.setProps({ error: "" });
           }
 
-          console.log("Form submitted with data:", data);
           loginUser(data as LoginRequestData);
         },
         AdditionalButtons: new ButtonComponent({
