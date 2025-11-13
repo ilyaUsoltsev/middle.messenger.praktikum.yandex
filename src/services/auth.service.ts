@@ -34,8 +34,13 @@ export const checkLoginUser = async () => {
   window.store.set({ isLoading: true });
   try {
     const user = await authApi.me();
-    window.router.go(ROUTER.messages);
     window.store.set({ user });
+
+    // Only redirect to messages if user is on login/register pages
+    const currentPath = window.location.pathname;
+    if (currentPath === ROUTER.login || currentPath === ROUTER.register || currentPath === ROUTER.main) {
+      window.router.go(ROUTER.messages);
+    }
   } catch (responseError) {
     window.store.set({ loginError: extractError(responseError) });
   } finally {
