@@ -321,10 +321,6 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     getChats();
   }
 
-  componentWillUnmount(): void {
-    webSocketService.disconnect();
-  }
-
   private scrollToBottom(): void {
     const messagesContainer = this.getContent()?.querySelector(".chats__dialog-messages");
     if (messagesContainer) {
