@@ -26,6 +26,10 @@ export default class ChatsApi {
     return await httpClient.put("/users", { data: { chatId, users: [userId] } });
   }
 
+  async removeUserFromChat(chatId: number, userId: number) {
+    return await httpClient.delete("/users", { data: { chatId, users: [userId] } });
+  }
+
   async getChatUsers(chatId: number) {
     return JSON.parse((await httpClient.get(`/${chatId}/users`)).response) as ChatUser[];
   }

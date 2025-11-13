@@ -12,7 +12,6 @@ import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
-import isEqual from "../../helpers/is-equal";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
 import {
@@ -22,6 +21,7 @@ import {
   getChats,
   getChatToken,
   getChatUsers,
+  removeUserFromChat,
   setSelectedChatId,
 } from "../../services/chats.service";
 import webSocketService from "../../services/websocket.service";
@@ -41,6 +41,7 @@ interface ChatsProps extends BlockProps {
   selectedChat?: Chat | null;
   selectedChatId: number | null;
   addUser: boolean;
+  removeUser: boolean;
   addNewChat: boolean;
   selectedChatUsers: SearchUserResponse;
   chatToken?: string;
@@ -103,7 +104,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         label: "- Remove user",
         variant: "warning",
         onClick: () => {
-          console.log("Remove user button clicked");
+          this.setProps({ removeUser: true });
         },
       }),
       DeleteChatButton: new ButtonComponent({
@@ -187,6 +188,50 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           }),
         }),
       }),
+      RemoveUserDialog: new DialogComponent({
+        title: "Remove user",
+        Body: new FormComponent({
+          onSubmitButtonLabel: "Remove user",
+          Body: new InputComponent({
+            type: "text",
+            name: "user_login",
+            placeholder: "User login",
+            onChange: (e: Event) => {
+              const target = e.target as HTMLInputElement;
+              console.log("User login input changed:", target.value);
+            },
+          }),
+          onSubmit: (e: SubmitEvent) => {
+            e.preventDefault();
+            const data = getFormData(e);
+            const { user_login } = data;
+            const error = validateInput("user_login", user_login);
+            if (error) {
+              this.getChild("RemoveUserDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error });
+              return;
+            } else {
+              this.getChild("RemoveUserDialog")
+                ?.getChild("Body")
+                ?.getChild("Body")
+                ?.setProps({ error: "" });
+            }
+            removeUserFromChat(this.props.selectedChatId!, user_login);
+            this.setProps({ removeUser: false });
+          },
+          AdditionalButtons: new ButtonComponent({
+            label: "Cancel",
+            variant: "error",
+            onClick: () => {
+              console.log("Remove user cancelled via button");
+              this.setProps({ removeUser: false });
+              this.getChild("RemoveUserDialog")?.getChild("Body")?.setProps({ value: "" });
+            },
+          }),
+        }),
+      }),
       NewChatDialog: new DialogComponent({
         title: "New chat",
         Body: new FormComponent({
@@ -239,7 +284,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     newProps: ChatsProps & ChatsState,
   ): boolean {
     // Update ChatComponents when chats change
-    if (isEqual(oldProps.chats, newProps.chats) === false) {
+    if (oldProps.chats !== newProps.chats) {
       this.getChild("ChatComponents")?.setProps({ chats: newProps.chats });
     }
 
@@ -276,6 +321,10 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     getChats();
   }
 
+  componentWillUnmount(): void {
+    webSocketService.disconnect();
+  }
+
   private scrollToBottom(): void {
     const messagesContainer = this.getContent()?.querySelector(".chats__dialog-messages");
     if (messagesContainer) {
@@ -298,8 +347,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
             <section class="chats__dialog">
             <div class="chats__dialog-header">
                 <div class="chats__dialog-user-info">
-                    <img class="chats__dialog-avatar" src="{{selectedChat.avatar}}" alt="avatar" />
-                    <span class="chats__dialog-name">{{selectedChat.name}}</span>
+                    <span class="chats__dialog-name">{{selectedChatName}}</span>
                 </div>
                 <div class="chats__dialog-actions">
                     {{{ AddUserButton }}}
@@ -331,6 +379,9 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         {{#if addUser}}
             {{{ AddUserDialog }}}
         {{/if}}
+        {{#if removeUser}}
+            {{{ RemoveUserDialog }}}
+        {{/if}}
         {{#if addNewChat}}
             {{{ NewChatDialog }}}
         {{/if}}
@@ -345,6 +396,7 @@ const mapStateToProps = (state: AppState) => {
     selectedChat: state.chats?.find((chat) => chat.id === state.selectedChatId) || null,
     selectedChatId: state.selectedChatId,
     selectedChatUsers: state.selectedChatUsers,
+    selectedChatName: state.chats?.find((chat) => chat.id === state.selectedChatId)?.title || "",
     chatToken: state.chatToken,
     messages: state.selectedChatId ? state?.messages?.[state.selectedChatId] || [] : [],
     user: state.user,

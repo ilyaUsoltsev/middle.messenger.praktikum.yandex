@@ -64,6 +64,20 @@ export const addUserToChat = async (chatId: number, userLogin: string) => {
   }
 };
 
+export const removeUserFromChat = async (chatId: number, userLogin: string) => {
+  window.store.set({ isLoading: true });
+  try {
+    const foundUsers = await searchUserByLogin(userLogin);
+    await chatsApi.removeUserFromChat(chatId, foundUsers[0].id);
+    const chatUsers = await chatsApi.getChatUsers(chatId);
+    window.store.set({ selectedChatUsers: chatUsers });
+  } catch (responseError) {
+    console.log(responseError, "error in removeUserFromChat");
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};
+
 export const getChatUsers = async (chatId: number) => {
   window.store.set({ isLoading: true });
   try {
