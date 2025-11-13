@@ -37,11 +37,6 @@ export function connect(mapStateToProps: (state: AppState) => Record<string, unk
         // подписываемся на событие
         store.on(StoreEvents.Updated, this.onChangeStoreCallback);
       }
-
-      //   componentWillUnmount() {
-      //     super.componentWillUnmount();
-      //     window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
-      //   }
     };
   };
 }

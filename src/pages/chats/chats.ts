@@ -12,6 +12,7 @@ import Block from "../../core/block";
 import type { BlockProps } from "../../core/types";
 import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
+import isEqual from "../../helpers/is-equal";
 import { validateInput } from "../../helpers/validation";
 import { withRouter } from "../../helpers/with-router";
 import {
@@ -238,7 +239,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     newProps: ChatsProps & ChatsState,
   ): boolean {
     // Update ChatComponents when chats change
-    if (oldProps.chats !== newProps.chats) {
+    if (isEqual(oldProps.chats, newProps.chats) === false) {
       this.getChild("ChatComponents")?.setProps({ chats: newProps.chats });
     }
 
@@ -273,10 +274,6 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
 
   componentDidMount(): void {
     getChats();
-  }
-
-  componentWillUnmount(): void {
-    webSocketService.disconnect();
   }
 
   private scrollToBottom(): void {
