@@ -7,23 +7,28 @@ import {
 } from "../../components";
 import { ProfileFormComponent } from "../../components/profile-form";
 import Block from "../../core/block";
-import type { BlockProps } from "../../core/types";
+import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import { withRouter } from "../../helpers/with-router";
+import { updateUserProfile, updateUserAvatar } from "../../services/user.service";
+import type { AppState } from "../../types";
 import type { ProfilePageProps } from "./types";
 
-interface ProfileEditState extends BlockProps {
+interface ProfileEditState extends ProfilePageProps {
   updateAvatar: boolean;
+  avatar: string;
 }
 
-export default class ProfileEditPage extends Block<ProfileEditState> {
+class ProfileEditPage extends Block<ProfileEditState> {
   constructor(props: ProfilePageProps) {
     super("main", {
+      ...props,
       updateAvatar: false,
       ProfileForm: new FormComponent({
         onSubmitButtonLabel: "Save",
         Body: new ProfileFormComponent({ ...props }),
-        onSubmit: (e: SubmitEvent) => {
+        onSubmit: async (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
           const { first_name, second_name, display_name, login, email, phone } = data;
@@ -44,13 +49,27 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
             this.getChild("ProfileForm")?.setProps({ error: "" });
           }
 
-          console.log("Form submitted with data:", data);
+          try {
+            await updateUserProfile({
+              first_name,
+              second_name,
+              display_name,
+              login,
+              email,
+              phone,
+            });
+          } catch (error) {
+            console.error("Failed to update profile:", error);
+            this.getChild("ProfileForm")?.setProps({
+              error: "Failed to update profile. Please try again.",
+            });
+          }
         },
         AdditionalButtons: new ButtonComponent({
           label: "Cancel",
           variant: "error",
           onClick: () => {
-            console.log("Cancel button clicked");
+            window.router.back();
           },
         }),
       }),
@@ -59,7 +78,6 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
         variant: "secondary",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log("Change avatar clicked");
           this.setProps({ updateAvatar: true });
         },
       }),
@@ -69,19 +87,34 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
           type: "file",
           name: "avatar",
           label: "Choose avatar",
+          accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp",
         }),
-        onConfirm: () => {
-          console.log("Avatar changed");
-          this.setProps({ updateAvatar: false });
+        onConfirm: async () => {
+          const input = this.getChild("UpdateAvatarDialog")
+            ?.getChild("Body")
+            ?.getContent()
+            ?.querySelector('input[type="file"]') as HTMLInputElement;
+          const file = input?.files?.[0];
+
+          if (!file) {
+            console.error("No file selected");
+            return;
+          }
+
+          try {
+            await updateUserAvatar(file);
+            this.setProps({ updateAvatar: false });
+          } catch (error) {
+            console.error("Failed to update avatar:", error);
+          }
         },
         onCancel: () => {
-          console.log("Avatar change canceled");
           this.setProps({ updateAvatar: false });
         },
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log("Go to previous page");
+          window.router.back();
         },
       }),
     });
@@ -93,7 +126,7 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
           <div class="border">
           <h1>Edit Profile</h1>
             <div class="profile-avatar">
-                <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>
+                <img src={{avatar}} alt="User Avatar" class="profile-avatar__image"/>
                 {{{ ChangeAvatarButton }}}
             </div>
             {{{ ProfileForm }}}
@@ -106,3 +139,19 @@ export default class ProfileEditPage extends Block<ProfileEditState> {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  return {
+    first_name: state.user.first_name || "",
+    second_name: state.user.second_name || "",
+    display_name: state.user.display_name || "",
+    login: state.user.login || "",
+    email: state.user.email || "",
+    phone: state.user.phone || "",
+    avatar: state.user.avatar
+      ? `https://ya-praktikum.tech/api/v2/resources${state.user.avatar}`
+      : "",
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(ProfileEditPage));

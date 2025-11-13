@@ -1,82 +1,49 @@
 import "./style.css";
 import * as Pages from "./pages";
-import { chatsFixture } from "./fixtures/chats-fixture";
-import type Block from "./core/block";
-import HttpClient from "./core/http";
+import { Store, StoreEvents } from "./core/store";
+import { APP_ROOT_ELEMENT, ROUTER } from "./constants";
+import Router from "./core/router";
+import type { AppState } from "./types";
+import { registerHandlebarsHelpers } from "./core/handlebars";
+import { checkLoginUser } from "./services/auth.service";
 
-const pages: Record<string, Block> = {
-  chats: new Pages.ChatPage({
-    chats: chatsFixture,
-    selectedChat: null,
-    addUser: false,
-  }),
-  chatsSelected: new Pages.ChatPage({
-    chats: chatsFixture,
-    selectedChat: chatsFixture[0],
-    addUser: false,
-  }),
-  error: new Pages.ErrorPage({ code: "404", message: "Page not found" }),
-  login: new Pages.LoginPage(),
-  register: new Pages.RegisterPage(),
-  navigation: new Pages.NavigatePage({
-    pages: [
-      "chats",
-      "error",
-      "login",
-      "register",
-      "navigation",
-      "chatsSelected",
-      "profile",
-      "profileUpdate",
-      "password",
-    ],
-  }),
-  password: new Pages.PasswordPage(),
-  profile: new Pages.ProfilePage({
-    firstName: "John",
-    secondName: "Doe",
-    displayName: "Johnny",
-    login: "johndoe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-  }),
-  profileUpdate: new Pages.ProfileEditPage({
-    firstName: "John",
-    secondName: "Doe",
-    displayName: "Johnny",
-    login: "johndoe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-  }),
-};
+registerHandlebarsHelpers();
 
-function navigate(page: string) {
-  const PageComponent = pages[page];
-
-  const app = document.getElementById("app");
-  app!.innerHTML = "";
-  app?.appendChild(PageComponent.element!);
-}
-
-document.addEventListener("DOMContentLoaded", () => navigate("navigation"));
-
-document.addEventListener("click", (e: MouseEvent) => {
-  if (e.target instanceof HTMLElement === false) {
-    throw Error("Event target is not HTMLElement");
-  }
-
-  const page = e.target.getAttribute("page");
-  if (page) {
-    navigate(page);
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
+window.store = new Store({
+  isLoading: false,
+  user: {},
+  chats: [],
+  selectedChatId: null,
+  messages: {},
+  error: { code: "", message: "" },
+  chatToken: undefined,
 });
 
-const http = new HttpClient();
-http
-  .get("https://jsonplaceholder.typicode.com/posts/1", {
-    data: { one: 123, two: "test" },
-    headers: { header: "HEADER" },
-  })
-  .then(console.log);
+window.store.on(StoreEvents.Updated, (prevState: AppState, newState: AppState) => {
+  console.log("prevState", prevState);
+  console.log("newState", newState);
+});
+
+window.router = new Router(APP_ROOT_ELEMENT);
+window.router
+  .use(ROUTER.main, Pages.ChatPage)
+  .use(ROUTER.login, Pages.LoginPage)
+  .use(ROUTER.register, Pages.RegisterPage)
+  .use(ROUTER.messages, Pages.ChatPage)
+  .use(ROUTER.profile, Pages.ProfilePage)
+  .use(ROUTER.profileUpdate, Pages.ProfileEditPage)
+  .use(ROUTER.password, Pages.PasswordPage)
+  .use(ROUTER.notFound, Pages.ErrorPage)
+  .use(ROUTER.error, Pages.ErrorPage)
+  .use("*", Pages.ErrorPage)
+  .start();
+
+const checkLogin = async () => {
+  try {
+    await checkLoginUser();
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+  }
+};
+
+checkLogin();

@@ -37,7 +37,6 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
     };
 
     this.props = this._makePropsProxy(props);
-
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
   }
@@ -75,6 +74,7 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
   init() {
     this._createResources();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.componentDidMount();
   }
 
   private _getChildrenAndProps(propsAndChildren: Record<string, unknown>): PropsAndChildren<P> {
@@ -129,7 +129,6 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
     if (!nextProps) {
       return;
     }
-
     Object.assign(this.props, nextProps);
   };
 
