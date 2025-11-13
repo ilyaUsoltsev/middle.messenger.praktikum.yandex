@@ -25,17 +25,21 @@ export default class ChatComponent extends Block<ChatProps> {
           {{#each chats}}
             <div class="chat {{id}} {{#if_eq ../selectedChatId id}}chat--selected{{/if_eq}}" data-chatid="{{id}}">
                 <div class="chat__avatar">
-                  <img class="chat__image" src="{{avatar}}" alt="avatar" />
+                {{#if last_message.user.avatar}}
+                  <img class="chat__image" src="{{get_avatar_url last_message.user.avatar}}" alt="avatar" />
+                {{/if}}
                 </div>
                 <div class="chat__info">
                     <div class="chat__top">
-                        <span class="chat__name">{{title}}</span>
-                        <span class="chat__time">{{time}}</span>
+                        <div class="chat__name">{{title}}</div>
+                        {{#if last_message.time}}
+                        <div class="chat__time">{{format_time last_message.time}}</div>
+                        {{/if}}
                     </div>
                     <div class="chat__bottom">
-                        <span class="chat__last-message">{{lastMessage}}</span>
-                        {{#if unreadCount}}
-                            <div class="chat__unread-count">{{unreadCount}}</div>
+                        <span class="chat__last-message">{{last_message.content}}</span>
+                        {{#if unread_count}}
+                            <div class="chat__unread-count">{{unread_count}}</div>
                         {{/if}}
                     </div>
                 </div>
