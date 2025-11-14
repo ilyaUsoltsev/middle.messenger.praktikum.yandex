@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../constants";
 import { METHODS } from "./constants";
 import type { METHOD, RequestOptions } from "./types";
 
@@ -11,7 +12,7 @@ export default class HttpClient<T extends string | number | boolean> {
   delete = this.createMethod(METHODS.DELETE);
 
   constructor(private baseUrl: string) {
-    this.baseUrl = `https://ya-praktikum.tech/api/v2${baseUrl}`;
+    this.baseUrl = `${API_BASE_URL}${baseUrl}`;
   }
 
   private createMethod(method: METHOD) {

@@ -37,4 +37,9 @@ export default class ChatsApi {
   async getChatToken(chatId: number) {
     return JSON.parse((await httpClient.post(`/token/${chatId}`)).response) as { token: string };
   }
+
+  async updateChatAvatar(chatId: number, formData: FormData) {
+    formData.append("chatId", chatId.toString());
+    return JSON.parse((await httpClient.put("/avatar", { data: formData })).response);
+  }
 }
