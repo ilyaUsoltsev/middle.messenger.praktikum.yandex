@@ -126,7 +126,7 @@ class ProfileEditPage extends Block<ProfileEditState> {
           <div class="border">
           <h1>Edit Profile</h1>
             <div class="profile-avatar">
-                <img src={{avatar}} alt="User Avatar" class="profile-avatar__image"/>
+                <img src={{get_avatar_url avatar}} alt="User Avatar" class="profile-avatar__image"/>
                 {{{ ChangeAvatarButton }}}
             </div>
             {{{ ProfileForm }}}
@@ -148,9 +148,7 @@ const mapStateToProps = (state: AppState) => {
     login: state.user.login || "",
     email: state.user.email || "",
     phone: state.user.phone || "",
-    avatar: state.user.avatar
-      ? `https://ya-praktikum.tech/api/v2/resources${state.user.avatar}`
-      : "",
+    avatar: state.user.avatar || "",
   };
 };
 

@@ -1,5 +1,6 @@
 import Handlebars from "handlebars";
 import type { HelperOptions } from "handlebars";
+import { API_BASE_URL } from "../constants";
 
 export const registerHandlebarsHelpers = () => {
   Handlebars.registerHelper(
@@ -16,7 +17,7 @@ export const registerHandlebarsHelpers = () => {
     if (!avatarPath) {
       return "";
     }
-    return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
+    return `${API_BASE_URL}/resources${avatarPath}`;
   });
 
   // format time 2025-11-10T19:41:40+00:00 to HH:MM

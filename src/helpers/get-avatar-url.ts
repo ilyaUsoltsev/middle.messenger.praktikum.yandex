@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../constants";
+
 export const getAvatarUrl = (avatarPath?: string) => {
-  return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
+  return `${API_BASE_URL}/resources${avatarPath}`;
 };

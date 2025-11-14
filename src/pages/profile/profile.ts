@@ -84,14 +84,26 @@ class ProfilePage extends Block<ProfilePageProps> {
   }
 
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
-    if (oldProps !== newProps) {
-      this.getChild("ProfileForm")?.setProps({ avatar: newProps.avatar });
-      this.getChild("ProfileForm")?.setProps({ first_name: newProps.first_name });
-      this.getChild("ProfileForm")?.setProps({ second_name: newProps.second_name });
-      this.getChild("ProfileForm")?.setProps({ display_name: newProps.display_name });
-      this.getChild("ProfileForm")?.setProps({ login: newProps.login });
-      this.getChild("ProfileForm")?.setProps({ email: newProps.email });
-      this.getChild("ProfileForm")?.setProps({ phone: newProps.phone });
+    if (oldProps.avatar !== newProps.avatar) {
+      this.setProps({ avatar: newProps.avatar });
+    }
+    if (oldProps.first_name !== newProps.first_name) {
+      this.getChild("FirstNameInput")?.setProps({ value: newProps.first_name });
+    }
+    if (oldProps.second_name !== newProps.second_name) {
+      this.getChild("SecondNameInput")?.setProps({ value: newProps.second_name });
+    }
+    if (oldProps.display_name !== newProps.display_name) {
+      this.getChild("NicknameInput")?.setProps({ value: newProps.display_name });
+    }
+    if (oldProps.login !== newProps.login) {
+      this.getChild("LoginInput")?.setProps({ value: newProps.login });
+    }
+    if (oldProps.email !== newProps.email) {
+      this.getChild("EmailInput")?.setProps({ value: newProps.email });
+    }
+    if (oldProps.phone !== newProps.phone) {
+      this.getChild("PhoneInput")?.setProps({ value: newProps.phone });
     }
 
     return true;
