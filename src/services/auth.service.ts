@@ -38,11 +38,16 @@ export const checkLoginUser = async () => {
 
     // Only redirect to messages if user is on login/register pages
     const currentPath = window.location.pathname;
-    if (currentPath === ROUTER.login || currentPath === ROUTER.register || currentPath === ROUTER.main) {
+    if (
+      currentPath === ROUTER.login ||
+      currentPath === ROUTER.register ||
+      currentPath === ROUTER.main
+    ) {
       window.router.go(ROUTER.messages);
     }
   } catch (responseError) {
     window.store.set({ loginError: extractError(responseError) });
+    window.router.go(ROUTER.login);
   } finally {
     window.store.set({ isLoading: false });
   }
