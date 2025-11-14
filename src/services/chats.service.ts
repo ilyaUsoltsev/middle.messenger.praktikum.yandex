@@ -100,3 +100,19 @@ export const getChatToken = async (chatId: number) => {
     throw error;
   }
 };
+
+export const updateChatAvatar = async (chatId: number, file: File) => {
+  window.store.set({ isLoading: true });
+  try {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    await chatsApi.updateChatAvatar(chatId, formData);
+    await getChats();
+  } catch (responseError) {
+    console.error("Error updating chat avatar:", responseError);
+    window.store.set({ error: extractErrorObject(responseError) });
+    throw responseError;
+  } finally {
+    window.store.set({ isLoading: false });
+  }
+};

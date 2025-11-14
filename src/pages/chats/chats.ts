@@ -23,6 +23,7 @@ import {
   getChatUsers,
   removeUserFromChat,
   setSelectedChatId,
+  updateChatAvatar,
 } from "../../services/chats.service";
 import webSocketService from "../../services/websocket.service";
 import type { AppState } from "../../types";
@@ -43,6 +44,7 @@ interface ChatsProps extends BlockProps {
   addUser: boolean;
   removeUser: boolean;
   addNewChat: boolean;
+  updateChatAvatar: boolean;
   selectedChatUsers: SearchUserResponse;
   chatToken?: string;
   messages?: Message[];
@@ -57,6 +59,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
     super("main", {
       ...props,
       messageText: "",
+      updateChatAvatar: false,
       InputSearch: new InputComponent({
         type: "text",
         name: "search",
@@ -115,6 +118,13 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           if (confirmed) {
             deleteChat(this.props.selectedChatId!);
           }
+        },
+      }),
+      ChangeChatAvatarButton: new ButtonComponent({
+        label: "Change avatar",
+        variant: "secondary",
+        onClick: () => {
+          this.setProps({ updateChatAvatar: true });
         },
       }),
       MessageForm: new FormComponent({
@@ -276,6 +286,42 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
           }),
         }),
       }),
+      UpdateAvatarChatDialog: new DialogComponent({
+        title: "Change chat avatar",
+        Body: new InputComponent({
+          type: "file",
+          name: "avatar",
+          label: "Choose avatar",
+          accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp",
+        }),
+        onConfirm: async () => {
+          const input = this.getChild("UpdateAvatarChatDialog")
+            ?.getChild("Body")
+            ?.getContent()
+            ?.querySelector('input[type="file"]') as HTMLInputElement;
+          const file = input?.files?.[0];
+
+          if (!file) {
+            console.error("No file selected");
+            return;
+          }
+
+          if (!this.props.selectedChatId) {
+            console.error("No chat selected");
+            return;
+          }
+
+          try {
+            await updateChatAvatar(this.props.selectedChatId, file);
+            this.setProps({ updateChatAvatar: false });
+          } catch (error) {
+            console.error("Failed to update chat avatar:", error);
+          }
+        },
+        onCancel: () => {
+          this.setProps({ updateChatAvatar: false });
+        },
+      }),
     });
   }
 
@@ -349,6 +395,7 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
                     {{{ AddUserButton }}}
                     {{{ RemoveUserButton }}}
                     {{{ DeleteChatButton }}}
+                    {{{ ChangeChatAvatarButton }}}
                 </div>
                 </div>
                 <div class="chats__dialog-users">
@@ -380,6 +427,9 @@ class ChatsPage extends Block<ChatsProps & ChatsState> {
         {{/if}}
         {{#if addNewChat}}
             {{{ NewChatDialog }}}
+        {{/if}}
+        {{#if updateChatAvatar}}
+            {{{ UpdateAvatarChatDialog }}}
         {{/if}}
      </div>
     `;
