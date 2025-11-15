@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../constants";
 import { METHODS } from "./constants";
 import type { METHOD, RequestOptions } from "./types";
 
@@ -10,33 +11,40 @@ export default class HttpClient<T extends string | number | boolean> {
 
   delete = this.createMethod(METHODS.DELETE);
 
+  constructor(private baseUrl: string) {
+    this.baseUrl = `${API_BASE_URL}${baseUrl}`;
+  }
+
   private createMethod(method: METHOD) {
-    return (url: string, options: Omit<RequestOptions<T>, "method">) => {
+    return (url: string, options?: Omit<RequestOptions<T | Array<unknown>>, "method">) => {
       return this.request(url, { ...options, method });
     };
   }
 
-  private createQueryString(data: Record<string, T>): string {
+  private createQueryString(data: Record<string, T | Array<unknown>>): string {
     const query = Object.entries(data)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value.toString())}`)
       .join("&");
     return query ? `?${query}` : "";
   }
 
-  private request(url: string, options: RequestOptions<T>) {
+  private request(
+    url: string,
+    options: RequestOptions<T | Array<unknown>>,
+  ): Promise<XMLHttpRequest> {
     const { method, data, headers, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {
-      let query: string = url;
+      let query: string = `${this.baseUrl}${url}`;
 
-      if (method === METHODS.GET && data) {
+      if (method === METHODS.GET && data && !(data instanceof FormData)) {
         query += this.createQueryString(data);
       }
 
       const xhr = new XMLHttpRequest();
       xhr.timeout = timeout;
       xhr.open(method, query);
-
+      xhr.withCredentials = true;
       if (headers) {
         for (const key in headers) {
           xhr.setRequestHeader(key, headers[key]);
@@ -44,7 +52,11 @@ export default class HttpClient<T extends string | number | boolean> {
       }
 
       xhr.onload = function () {
-        resolve(xhr);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr);
+        } else {
+          reject(xhr);
+        }
       };
 
       xhr.onabort = reject;
@@ -54,9 +66,13 @@ export default class HttpClient<T extends string | number | boolean> {
       if (method === METHODS.GET) {
         xhr.send();
       } else {
-        xhr.setRequestHeader("Content-Type", "application/json");
-        const payload = JSON.stringify(data ?? {});
-        xhr.send(payload);
+        if (data instanceof FormData) {
+          xhr.send(data);
+        } else {
+          xhr.setRequestHeader("Content-Type", "application/json");
+          const payload = JSON.stringify(data ?? {});
+          xhr.send(payload);
+        }
       }
     });
   }

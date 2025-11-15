@@ -1,16 +1,29 @@
+import type { CreateUser } from "../../api/auth.types";
 import { ButtonComponent, FormComponent, RegisterFormComponent } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
+import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import { withRouter } from "../../helpers/with-router";
+import { registerUser } from "../../services/auth.service";
+import type { AppState } from "../../types";
 
-export default class RegisterPage extends Block {
-  constructor() {
+interface RegisterPageProps extends BlockProps {
+  isLoading?: boolean;
+  registerError?: string;
+}
+
+class RegisterPage extends Block<RegisterPageProps> {
+  constructor(public props: RegisterPageProps) {
     super("main", {
       RegisterForm: new FormComponent({
         label: "Register",
         Body: new RegisterFormComponent(),
         onSubmitButtonLabel: "Send",
         className: "border",
+        isLoading: props.isLoading,
         onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -48,12 +61,13 @@ export default class RegisterPage extends Block {
           }
 
           console.log("Form submitted with data:", data);
+          registerUser(data as CreateUser);
         },
         AdditionalButtons: new ButtonComponent({
           label: "Sign in",
           variant: "secondary",
           onClick: () => {
-            console.log("Navigate to sign in page");
+            window.router.go(ROUTER.login);
           },
         }),
       }),
@@ -73,3 +87,10 @@ export default class RegisterPage extends Block {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.isLoading,
+  registerError: state.registerError,
+});
+
+export default connect(mapStateToProps)(withRouter(RegisterPage));

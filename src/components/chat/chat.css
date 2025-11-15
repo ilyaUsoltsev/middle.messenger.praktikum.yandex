@@ -32,9 +32,15 @@
 
 .chat__top {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 4px;
+}
+
+.chat__time {
+  color: var(--secondary-color);
+  font-size: var(--font-size-sm);
+
 }
 
 .chat__bottom {

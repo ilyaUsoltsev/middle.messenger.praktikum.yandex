@@ -10,6 +10,18 @@ Vanilla TS messenger frontend application.
 
 [Netlify](https://ilya-messenger.netlify.app/)
 
+## Available Routes
+
+- `/` - Main page
+- `/login` - Login page
+- `/sign-up` - Registration page
+- `/settings` - Profile settings
+- `/settings/update` - Update profile information
+- `/password` - Change password
+- `/messenger` - Messages/chat page
+- `/404` - Not found page
+- `/error` - Error page
+
 ## Install dependencies
 
 ```bash

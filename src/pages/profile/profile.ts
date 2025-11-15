@@ -1,23 +1,39 @@
 import { InputComponent, ButtonComponent, BackButtonComponent } from "../../components";
 import Block from "../../core/block";
-import type { ProfilePageProps } from "./types";
+import { ROUTER } from "../../constants";
+import { connect } from "../../helpers/connect";
+import { withRouter } from "../../helpers/with-router";
+import { logoutUser } from "../../services/auth.service";
+import type { AppState } from "../../types";
+import type { BlockProps } from "../../core/types";
+import { getAvatarUrl } from "../../helpers/get-avatar-url";
 
-export default class ProfilePage extends Block<ProfilePageProps> {
+interface ProfilePageProps extends BlockProps {
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  avatar: string;
+}
+class ProfilePage extends Block<ProfilePageProps> {
   constructor(props: ProfilePageProps) {
     super("main", {
+      ...props,
       FirstNameInput: new InputComponent({
         label: "First name",
-        value: props.firstName,
+        value: props.first_name,
         readOnly: true,
       }),
       SecondNameInput: new InputComponent({
         label: "Second name",
-        value: props.secondName,
+        value: props.second_name,
         readOnly: true,
       }),
       NicknameInput: new InputComponent({
         label: "Nickname",
-        value: props.displayName,
+        value: props.display_name,
         readOnly: true,
       }),
       LoginInput: new InputComponent({
@@ -40,7 +56,7 @@ export default class ProfilePage extends Block<ProfilePageProps> {
         variant: "primary",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log("Change profile clicked");
+          window.router.go(ROUTER.profileUpdate);
         },
       }),
       UpdatePasswordButton: new ButtonComponent({
@@ -48,7 +64,7 @@ export default class ProfilePage extends Block<ProfilePageProps> {
         variant: "primary",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log("Navigate to password update page");
+          window.router.go(ROUTER.password);
         },
       }),
       LogoutButton: new ButtonComponent({
@@ -56,15 +72,41 @@ export default class ProfilePage extends Block<ProfilePageProps> {
         variant: "error",
         onClick: (e: Event) => {
           e.preventDefault();
-          console.log("Logout clicked");
+          logoutUser();
         },
       }),
       BackButton: new BackButtonComponent({
         onClick: () => {
-          console.log("Go to previous page");
+          window.router.back();
         },
       }),
     });
+  }
+
+  componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
+    if (oldProps.avatar !== newProps.avatar) {
+      this.setProps({ avatar: newProps.avatar });
+    }
+    if (oldProps.first_name !== newProps.first_name) {
+      this.getChild("FirstNameInput")?.setProps({ value: newProps.first_name });
+    }
+    if (oldProps.second_name !== newProps.second_name) {
+      this.getChild("SecondNameInput")?.setProps({ value: newProps.second_name });
+    }
+    if (oldProps.display_name !== newProps.display_name) {
+      this.getChild("NicknameInput")?.setProps({ value: newProps.display_name });
+    }
+    if (oldProps.login !== newProps.login) {
+      this.getChild("LoginInput")?.setProps({ value: newProps.login });
+    }
+    if (oldProps.email !== newProps.email) {
+      this.getChild("EmailInput")?.setProps({ value: newProps.email });
+    }
+    if (oldProps.phone !== newProps.phone) {
+      this.getChild("PhoneInput")?.setProps({ value: newProps.phone });
+    }
+
+    return true;
   }
 
   render() {
@@ -73,7 +115,7 @@ export default class ProfilePage extends Block<ProfilePageProps> {
             <div class="profile-container border">
                 <h1>My profile</h1>
                 <div class="profile-avatar">
-                    <img src="./avatar.png" alt="User Avatar" class="profile-avatar__image"/>
+                    <img src={{avatar}} alt="User Avatar" class="profile-avatar__image"/>
                 </div>
                 {{{ FirstNameInput }}}
                 {{{ SecondNameInput }}}
@@ -92,3 +134,15 @@ export default class ProfilePage extends Block<ProfilePageProps> {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  first_name: state.user.first_name,
+  second_name: state.user.second_name,
+  display_name: state.user.display_name,
+  login: state.user.login,
+  email: state.user.email,
+  phone: state.user.phone,
+  avatar: getAvatarUrl(state.user.avatar),
+});
+
+export default connect(mapStateToProps)(withRouter(ProfilePage));

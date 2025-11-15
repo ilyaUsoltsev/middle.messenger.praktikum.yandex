@@ -1,9 +1,9 @@
 import type { BlockProps } from "../../core/types";
 
 export interface ProfilePageProps extends BlockProps {
-  firstName: string;
-  secondName: string;
-  displayName: string;
+  first_name: string;
+  second_name: string;
+  display_name: string;
   login: string;
   email: string;
   phone: string;

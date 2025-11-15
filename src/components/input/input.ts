@@ -12,6 +12,7 @@ interface InputProps extends BlockProps {
   error?: string;
   readOnly?: boolean;
   disabled?: boolean;
+  accept?: string;
 }
 
 export default class InputComponent extends Block<InputProps> {
@@ -40,6 +41,7 @@ export default class InputComponent extends Block<InputProps> {
             {{#if readOnly}} readonly {{/if}}
             {{#if disabled}} disabled {{/if}}
             {{#if value}} value="{{value}}" {{/if}}
+            {{#if accept}} accept="{{accept}}" {{/if}}
         />
     </div>
         {{#if error}}

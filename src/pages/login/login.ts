@@ -1,16 +1,30 @@
+import type { LoginRequestData } from "../../api/auth.types";
 import { ButtonComponent, FormComponent, LoginFormComponent } from "../../components";
+import { ROUTER } from "../../constants";
 import Block from "../../core/block";
+import type { BlockProps } from "../../core/types";
+import { connect } from "../../helpers/connect";
 import { getFormData } from "../../helpers/get-form-data";
 import { validateInput } from "../../helpers/validation";
+import { withRouter } from "../../helpers/with-router";
+import { loginUser } from "../../services/auth.service";
+import type { AppState } from "../../types";
 
-export default class LoginPage extends Block {
-  constructor() {
+interface LoginPageProps extends BlockProps {
+  isLoading?: boolean;
+  loginError?: string;
+}
+
+class LoginPage extends Block<LoginPageProps> {
+  constructor(props: LoginPageProps) {
     super("main", {
+      ...props,
       LoginForm: new FormComponent({
         label: "Sign In",
         Body: new LoginFormComponent(),
         onSubmitButtonLabel: "Login",
         className: "border",
+        isLoading: props.isLoading,
         onSubmit: (e: SubmitEvent) => {
           e.preventDefault();
           const data = getFormData(e);
@@ -28,18 +42,33 @@ export default class LoginPage extends Block {
             this.getChild("LoginForm")?.setProps({ error: "" });
           }
 
-          console.log("Form submitted with data:", data);
+          loginUser(data as LoginRequestData);
         },
         AdditionalButtons: new ButtonComponent({
           label: "Register",
           variant: "secondary",
           onClick: (e: Event) => {
             e.preventDefault();
-            console.log("Register button clicked");
+            window.router.go(ROUTER.register);
           },
         }),
       }),
     });
+  }
+
+  componentDidUpdate(oldProps: LoginPageProps, newProps: LoginPageProps): boolean {
+    // Update LoginForm when isLoading changes
+    if (oldProps.isLoading !== newProps.isLoading) {
+      console.log("Updating isLoading to:", newProps.isLoading);
+      this.getChild("LoginForm")?.setProps({ isLoading: newProps.isLoading });
+    }
+
+    // Update LoginForm when loginError changes
+    if (oldProps.loginError !== newProps.loginError) {
+      this.getChild("LoginForm")?.setProps({ error: newProps.loginError });
+    }
+
+    return true;
   }
 
   render() {
@@ -55,3 +84,10 @@ export default class LoginPage extends Block {
         `;
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.isLoading,
+  loginError: state.loginError,
+});
+
+export default connect(mapStateToProps)(withRouter(LoginPage));

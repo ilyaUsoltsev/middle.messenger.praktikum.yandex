@@ -5,14 +5,15 @@ import { ButtonComponent } from "../button";
 interface DialogProps extends BlockProps {
   title: string;
   Body: Block;
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 export default class DialogComponent extends Block<DialogProps> {
   constructor(props: DialogProps) {
     super("div", {
       ...props,
+      renderButtons: !!props.onConfirm || !!props.onCancel,
       className: "dialog-container",
       ConfirmButton: new ButtonComponent({
         label: "Confirm",
@@ -34,10 +35,12 @@ export default class DialogComponent extends Block<DialogProps> {
             <div class="dialog__body">
             {{{Body}}}
             </div>
-            <div class="dialog__footer">
-                {{{ConfirmButton}}}
-                {{{CancelButton}}}
-            </div>
+            {{#if renderButtons}}
+              <div class="dialog__footer">
+                  {{{ConfirmButton}}}
+                  {{{CancelButton}}}
+              </div>
+            {{/if}}
         </div>
   `;
   }
