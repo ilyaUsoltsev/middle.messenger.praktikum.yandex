@@ -15,7 +15,7 @@ interface WebSocketMessage {
 
 class WebSocketService {
   private socket: WebSocket | null = null;
-  private pingInterval: number | null = null;
+  private pingInterval: ReturnType<typeof setInterval> | null = null;
   private chatId: number | null = null;
 
   connect(userId: number, chatId: number, token: string): void {
