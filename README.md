@@ -61,3 +61,11 @@ npm run format
 npm run lint
 
 ```
+
+## Run unit tests
+
+```bash
+
+npm run test
+
+```

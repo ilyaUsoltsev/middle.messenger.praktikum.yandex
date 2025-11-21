@@ -253,7 +253,7 @@ export default abstract class Block<P extends BlockProps = BlockProps> {
         return true;
       },
       deleteProperty() {
-        throw new Error("Нет доступа");
+        throw new Error("No access");
       },
     });
   }
