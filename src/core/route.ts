@@ -16,7 +16,7 @@ function render(query: string, block: Block<BlockProps>): void {
   if (!content) {
     throw new Error("Block content is null");
   }
-  // root.innerHTML = "";
+  root.innerHTML = "";
   root.appendChild(content);
 }
 
@@ -59,11 +59,10 @@ class Route {
   render(): void {
     if (!this._block) {
       this._block = new this._blockClass();
-      render(this._props.rootQuery, this._block);
-      return;
     }
 
     this._block.show();
+    render(this._props.rootQuery, this._block);
   }
 }
 
